@@ -146,4 +146,111 @@ public class Store {
     public void setVouchers(Set<Voucher> vouchers) {
         this.vouchers = vouchers;
     }
+
+
+    public static final class StoreBuilder {
+        private long id;
+        private String name;
+        private String email;
+        private String phone;
+        private String image;
+        private long created;
+        private long updated;
+        private int status;
+        private Account_Store_Owner account_store_owner;
+        private Type_Store type_store;
+        private Set<Store_Address> store_addresses;
+        private Set<History_Order> history_orders;
+        private Set<Voucher> vouchers;
+
+        private StoreBuilder() {
+        }
+
+        public static StoreBuilder aStore() {
+            return new StoreBuilder();
+        }
+
+        public StoreBuilder withId(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public StoreBuilder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public StoreBuilder withEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public StoreBuilder withPhone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public StoreBuilder withImage(String image) {
+            this.image = image;
+            return this;
+        }
+
+        public StoreBuilder withCreated(long created) {
+            this.created = created;
+            return this;
+        }
+
+        public StoreBuilder withUpdated(long updated) {
+            this.updated = updated;
+            return this;
+        }
+
+        public StoreBuilder withStatus(int status) {
+            this.status = status;
+            return this;
+        }
+
+        public StoreBuilder withAccount_store_owner(Account_Store_Owner account_store_owner) {
+            this.account_store_owner = account_store_owner;
+            return this;
+        }
+
+        public StoreBuilder withType_store(Type_Store type_store) {
+            this.type_store = type_store;
+            return this;
+        }
+
+        public StoreBuilder withStore_addresses(Set<Store_Address> store_addresses) {
+            this.store_addresses = store_addresses;
+            return this;
+        }
+
+        public StoreBuilder withHistory_orders(Set<History_Order> history_orders) {
+            this.history_orders = history_orders;
+            return this;
+        }
+
+        public StoreBuilder withVouchers(Set<Voucher> vouchers) {
+            this.vouchers = vouchers;
+            return this;
+        }
+
+        public Store build() {
+            Store store = new Store();
+            store.setId(id);
+            store.setName(name);
+            store.setEmail(email);
+            store.setPhone(phone);
+            store.setImage(image);
+            store.setCreated(created);
+            store.setUpdated(updated);
+            store.setStatus(status);
+            store.setAccount_store_owner(account_store_owner);
+            store.setType_store(type_store);
+            store.setStore_addresses(store_addresses);
+            store.setHistory_orders(history_orders);
+            store.setVouchers(vouchers);
+            return store;
+        }
+    }
 }

@@ -98,4 +98,69 @@ public class Account_Store_Owner {
                 ", shop_owner_information=" + shop_owner_information +
                 '}';
     }
+
+
+    public static final class Account_Store_OwnerBuilder {
+        private long id;
+        private String username;
+        private String password;
+        private int status;
+        private Store_Owner_Information shop_owner_information;
+        private Set<Store_Owner_Credential> credentials;
+        private Store store;
+
+        private Account_Store_OwnerBuilder() {
+        }
+
+        public static Account_Store_OwnerBuilder anAccount_Store_Owner() {
+            return new Account_Store_OwnerBuilder();
+        }
+
+        public Account_Store_OwnerBuilder withId(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Account_Store_OwnerBuilder withUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Account_Store_OwnerBuilder withPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Account_Store_OwnerBuilder withStatus(int status) {
+            this.status = status;
+            return this;
+        }
+
+        public Account_Store_OwnerBuilder withShop_owner_information(Store_Owner_Information shop_owner_information) {
+            this.shop_owner_information = shop_owner_information;
+            return this;
+        }
+
+        public Account_Store_OwnerBuilder withCredentials(Set<Store_Owner_Credential> credentials) {
+            this.credentials = credentials;
+            return this;
+        }
+
+        public Account_Store_OwnerBuilder withStore(Store store) {
+            this.store = store;
+            return this;
+        }
+
+        public Account_Store_Owner build() {
+            Account_Store_Owner account_Store_Owner = new Account_Store_Owner();
+            account_Store_Owner.setId(id);
+            account_Store_Owner.setUsername(username);
+            account_Store_Owner.setPassword(password);
+            account_Store_Owner.setStatus(status);
+            account_Store_Owner.setShop_owner_information(shop_owner_information);
+            account_Store_Owner.setCredentials(credentials);
+            account_Store_Owner.store = this.store;
+            return account_Store_Owner;
+        }
+    }
 }

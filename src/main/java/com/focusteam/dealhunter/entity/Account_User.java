@@ -71,4 +71,62 @@ public class Account_User {
     public void setHistory_orders(Set<History_Order> history_orders) {
         this.history_orders = history_orders;
     }
+
+
+    public static final class Account_UserBuilder {
+        private long id;
+        private String username;
+        private String password;
+        private int status;
+        private User_Information user_information;
+        private Set<History_Order> history_orders;
+
+        private Account_UserBuilder() {
+        }
+
+        public static Account_UserBuilder anAccount_User() {
+            return new Account_UserBuilder();
+        }
+
+        public Account_UserBuilder withId(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Account_UserBuilder withUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Account_UserBuilder withPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Account_UserBuilder withStatus(int status) {
+            this.status = status;
+            return this;
+        }
+
+        public Account_UserBuilder withUser_information(User_Information user_information) {
+            this.user_information = user_information;
+            return this;
+        }
+
+        public Account_UserBuilder withHistory_orders(Set<History_Order> history_orders) {
+            this.history_orders = history_orders;
+            return this;
+        }
+
+        public Account_User build() {
+            Account_User account_User = new Account_User();
+            account_User.setId(id);
+            account_User.setUsername(username);
+            account_User.setPassword(password);
+            account_User.setStatus(status);
+            account_User.setUser_information(user_information);
+            account_User.setHistory_orders(history_orders);
+            return account_User;
+        }
+    }
 }

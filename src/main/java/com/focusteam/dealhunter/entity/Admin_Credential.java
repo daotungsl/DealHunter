@@ -101,4 +101,83 @@ public class Admin_Credential {
     public void setAccount_admin(Account_Admin account_admin) {
         this.account_admin = account_admin;
     }
+
+
+    public static final class Admin_CredentialBuilder {
+        private long id;
+        private String access_token;
+        private String refresh_token;
+        private String client_type;
+        private long created;
+        private long expired;
+        private long updated;
+        private int status;
+        private Account_Admin account_admin;
+
+        private Admin_CredentialBuilder() {
+        }
+
+        public static Admin_CredentialBuilder anAdmin_Credential() {
+            return new Admin_CredentialBuilder();
+        }
+
+        public Admin_CredentialBuilder withId(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Admin_CredentialBuilder withAccess_token(String access_token) {
+            this.access_token = access_token;
+            return this;
+        }
+
+        public Admin_CredentialBuilder withRefresh_token(String refresh_token) {
+            this.refresh_token = refresh_token;
+            return this;
+        }
+
+        public Admin_CredentialBuilder withClient_type(String client_type) {
+            this.client_type = client_type;
+            return this;
+        }
+
+        public Admin_CredentialBuilder withCreated(long created) {
+            this.created = created;
+            return this;
+        }
+
+        public Admin_CredentialBuilder withExpired(long expired) {
+            this.expired = expired;
+            return this;
+        }
+
+        public Admin_CredentialBuilder withUpdated(long updated) {
+            this.updated = updated;
+            return this;
+        }
+
+        public Admin_CredentialBuilder withStatus(int status) {
+            this.status = status;
+            return this;
+        }
+
+        public Admin_CredentialBuilder withAccount_admin(Account_Admin account_admin) {
+            this.account_admin = account_admin;
+            return this;
+        }
+
+        public Admin_Credential build() {
+            Admin_Credential admin_Credential = new Admin_Credential();
+            admin_Credential.setId(id);
+            admin_Credential.setAccess_token(access_token);
+            admin_Credential.setRefresh_token(refresh_token);
+            admin_Credential.setClient_type(client_type);
+            admin_Credential.setCreated(created);
+            admin_Credential.setExpired(expired);
+            admin_Credential.setUpdated(updated);
+            admin_Credential.setStatus(status);
+            admin_Credential.setAccount_admin(account_admin);
+            return admin_Credential;
+        }
+    }
 }
