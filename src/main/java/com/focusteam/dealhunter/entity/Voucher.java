@@ -152,4 +152,118 @@ public class Voucher {
     public void setStore(Store store) {
         this.store = store;
     }
+
+
+    public static final class VoucherBuilder {
+        private long id;
+        private String name;
+        private String description;
+        private String image;
+        private String code_sale;
+        private int percent;
+        private int max_slot;
+        private long created;
+        private long expired;
+        private long updated;
+        private int status;
+        private Promotion_Time promotion_time;
+        private Type_Voucher type_voucher;
+        private Store store;
+
+        private VoucherBuilder() {
+        }
+
+        public static VoucherBuilder aVoucher() {
+            return new VoucherBuilder();
+        }
+
+        public VoucherBuilder withId(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public VoucherBuilder withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public VoucherBuilder withDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public VoucherBuilder withImage(String image) {
+            this.image = image;
+            return this;
+        }
+
+        public VoucherBuilder withCode_sale(String code_sale) {
+            this.code_sale = code_sale;
+            return this;
+        }
+
+        public VoucherBuilder withPercent(int percent) {
+            this.percent = percent;
+            return this;
+        }
+
+        public VoucherBuilder withMax_slot(int max_slot) {
+            this.max_slot = max_slot;
+            return this;
+        }
+
+        public VoucherBuilder withCreated(long created) {
+            this.created = created;
+            return this;
+        }
+
+        public VoucherBuilder withExpired(long expired) {
+            this.expired = expired;
+            return this;
+        }
+
+        public VoucherBuilder withUpdated(long updated) {
+            this.updated = updated;
+            return this;
+        }
+
+        public VoucherBuilder withStatus(int status) {
+            this.status = status;
+            return this;
+        }
+
+        public VoucherBuilder withPromotion_time(Promotion_Time promotion_time) {
+            this.promotion_time = promotion_time;
+            return this;
+        }
+
+        public VoucherBuilder withType_voucher(Type_Voucher type_voucher) {
+            this.type_voucher = type_voucher;
+            return this;
+        }
+
+        public VoucherBuilder withStore(Store store) {
+            this.store = store;
+            return this;
+        }
+
+        public Voucher build() {
+            Voucher voucher = new Voucher();
+            voucher.setId(id);
+            voucher.setName(name);
+            voucher.setDescription(description);
+            voucher.setImage(image);
+            voucher.setCode_sale(code_sale);
+            voucher.setPercent(percent);
+            voucher.setMax_slot(max_slot);
+            voucher.setCreated(created);
+            voucher.setExpired(expired);
+            voucher.setUpdated(updated);
+            voucher.setStatus(status);
+            voucher.setPromotion_time(promotion_time);
+            voucher.setType_voucher(type_voucher);
+            voucher.setStore(store);
+            return voucher;
+        }
+    }
 }

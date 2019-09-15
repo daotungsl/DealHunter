@@ -108,4 +108,90 @@ public class User_Information {
     public void setAccount_user(Account_User account_user) {
         this.account_user = account_user;
     }
+
+
+    public static final class User_InformationBuilder {
+        private String email;
+        private String fullName;
+        private int gender;
+        private String birthday;
+        private String phone;
+        private String avatar;
+        private String address;
+        private long created;
+        private long updated;
+        private Account_User account_user;
+
+        private User_InformationBuilder() {
+        }
+
+        public static User_InformationBuilder anUser_Information() {
+            return new User_InformationBuilder();
+        }
+
+        public User_InformationBuilder withEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public User_InformationBuilder withFullName(String fullName) {
+            this.fullName = fullName;
+            return this;
+        }
+
+        public User_InformationBuilder withGender(int gender) {
+            this.gender = gender;
+            return this;
+        }
+
+        public User_InformationBuilder withBirthday(String birthday) {
+            this.birthday = birthday;
+            return this;
+        }
+
+        public User_InformationBuilder withPhone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public User_InformationBuilder withAvatar(String avatar) {
+            this.avatar = avatar;
+            return this;
+        }
+
+        public User_InformationBuilder withAddress(String address) {
+            this.address = address;
+            return this;
+        }
+
+        public User_InformationBuilder withCreated(long created) {
+            this.created = created;
+            return this;
+        }
+
+        public User_InformationBuilder withUpdated(long updated) {
+            this.updated = updated;
+            return this;
+        }
+
+        public User_InformationBuilder withAccount_user(Account_User account_user) {
+            this.account_user = account_user;
+            return this;
+        }
+
+        public User_Information build() {
+            User_Information user_Information = new User_Information();
+            user_Information.setEmail(email);
+            user_Information.setFullName(fullName);
+            user_Information.setGender(gender);
+            user_Information.setBirthday(birthday);
+            user_Information.setPhone(phone);
+            user_Information.setAvatar(avatar);
+            user_Information.setAddress(address);
+            user_Information.setCreated(created);
+            user_Information.setUpdated(updated);
+            user_Information.setAccount_user(account_user);
+            return user_Information;
+        }
+    }
 }
