@@ -1,7 +1,6 @@
 package com.focusteam.dealhunter.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.util.Set;
@@ -27,18 +26,18 @@ public class Store {
     private int status;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "store_owner_id", referencedColumnName = "id", nullable = false)
-    private Account_Store_Owner account_store_owner;
+    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
+    private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "type_store_id", nullable = false)
-    private Type_Store type_store;
+    @JoinColumn(name = "typeStore_id", nullable = false)
+    private TypeStore typeStore;
 
     @OneToMany(mappedBy = "store")
-    private Set<Store_Address> store_addresses;
+    private Set<StoreAddress> storeAddresses;
 
     @OneToMany(mappedBy = "store")
-    private Set<History_Order> history_orders;
+    private Set<Transaction> transactions;
 
     @OneToMany(mappedBy = "store")
     private Set<Voucher> vouchers;
@@ -107,36 +106,36 @@ public class Store {
         this.status = status;
     }
 
-    public Account_Store_Owner getAccount_store_owner() {
-        return account_store_owner;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setAccount_store_owner(Account_Store_Owner account_store_owner) {
-        this.account_store_owner = account_store_owner;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
-    public Type_Store getType_store() {
-        return type_store;
+    public TypeStore getTypeStore() {
+        return typeStore;
     }
 
-    public void setType_store(Type_Store type_store) {
-        this.type_store = type_store;
+    public void setTypeStore(TypeStore typeStore) {
+        this.typeStore = typeStore;
     }
 
-    public Set<Store_Address> getStore_addresses() {
-        return store_addresses;
+    public Set<StoreAddress> getStoreAddresses() {
+        return storeAddresses;
     }
 
-    public void setStore_addresses(Set<Store_Address> store_addresses) {
-        this.store_addresses = store_addresses;
+    public void setStoreAddresses(Set<StoreAddress> storeAddresses) {
+        this.storeAddresses = storeAddresses;
     }
 
-    public Set<History_Order> getHistory_orders() {
-        return history_orders;
+    public Set<Transaction> getTransactions() {
+        return transactions;
     }
 
-    public void setHistory_orders(Set<History_Order> history_orders) {
-        this.history_orders = history_orders;
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
     public Set<Voucher> getVouchers() {
@@ -157,10 +156,10 @@ public class Store {
         private long created;
         private long updated;
         private int status;
-        private Account_Store_Owner account_store_owner;
-        private Type_Store type_store;
-        private Set<Store_Address> store_addresses;
-        private Set<History_Order> history_orders;
+        private Account account;
+        private TypeStore typeStore;
+        private Set<StoreAddress> storeAddresses;
+        private Set<Transaction> transactions;
         private Set<Voucher> vouchers;
 
         private StoreBuilder() {
@@ -210,23 +209,23 @@ public class Store {
             return this;
         }
 
-        public StoreBuilder withAccount_store_owner(Account_Store_Owner account_store_owner) {
-            this.account_store_owner = account_store_owner;
+        public StoreBuilder withAccount(Account account) {
+            this.account = account;
             return this;
         }
 
-        public StoreBuilder withType_store(Type_Store type_store) {
-            this.type_store = type_store;
+        public StoreBuilder withTypeStore(TypeStore typeStore) {
+            this.typeStore = typeStore;
             return this;
         }
 
-        public StoreBuilder withStore_addresses(Set<Store_Address> store_addresses) {
-            this.store_addresses = store_addresses;
+        public StoreBuilder withStoreAddresses(Set<StoreAddress> storeAddresses) {
+            this.storeAddresses = storeAddresses;
             return this;
         }
 
-        public StoreBuilder withHistory_orders(Set<History_Order> history_orders) {
-            this.history_orders = history_orders;
+        public StoreBuilder withTransactions(Set<Transaction> transactions) {
+            this.transactions = transactions;
             return this;
         }
 
@@ -245,10 +244,10 @@ public class Store {
             store.setCreated(created);
             store.setUpdated(updated);
             store.setStatus(status);
-            store.setAccount_store_owner(account_store_owner);
-            store.setType_store(type_store);
-            store.setStore_addresses(store_addresses);
-            store.setHistory_orders(history_orders);
+            store.setAccount(account);
+            store.setTypeStore(typeStore);
+            store.setStoreAddresses(storeAddresses);
+            store.setTransactions(transactions);
             store.setVouchers(vouchers);
             return store;
         }

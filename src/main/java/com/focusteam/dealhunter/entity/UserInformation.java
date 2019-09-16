@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
 @Entity
-public class User_Information {
+public class UserInformation {
     @Id
     private String email;
     @Null
@@ -26,8 +26,8 @@ public class User_Information {
     private long updated;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_user_id", referencedColumnName = "id", nullable = false)
-    private Account_User account_user;
+    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
+    private Account account;
 
     public String getEmail() {
         return email;
@@ -101,16 +101,16 @@ public class User_Information {
         this.updated = updated;
     }
 
-    public Account_User getAccount_user() {
-        return account_user;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setAccount_user(Account_User account_user) {
-        this.account_user = account_user;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
 
-    public static final class User_InformationBuilder {
+    public static final class UserInformationBuilder {
         private String email;
         private String fullName;
         private int gender;
@@ -120,78 +120,78 @@ public class User_Information {
         private String address;
         private long created;
         private long updated;
-        private Account_User account_user;
+        private Account account;
 
-        private User_InformationBuilder() {
+        private UserInformationBuilder() {
         }
 
-        public static User_InformationBuilder anUser_Information() {
-            return new User_InformationBuilder();
+        public static UserInformationBuilder anUserInformation() {
+            return new UserInformationBuilder();
         }
 
-        public User_InformationBuilder withEmail(String email) {
+        public UserInformationBuilder withEmail(String email) {
             this.email = email;
             return this;
         }
 
-        public User_InformationBuilder withFullName(String fullName) {
+        public UserInformationBuilder withFullName(String fullName) {
             this.fullName = fullName;
             return this;
         }
 
-        public User_InformationBuilder withGender(int gender) {
+        public UserInformationBuilder withGender(int gender) {
             this.gender = gender;
             return this;
         }
 
-        public User_InformationBuilder withBirthday(String birthday) {
+        public UserInformationBuilder withBirthday(String birthday) {
             this.birthday = birthday;
             return this;
         }
 
-        public User_InformationBuilder withPhone(String phone) {
+        public UserInformationBuilder withPhone(String phone) {
             this.phone = phone;
             return this;
         }
 
-        public User_InformationBuilder withAvatar(String avatar) {
+        public UserInformationBuilder withAvatar(String avatar) {
             this.avatar = avatar;
             return this;
         }
 
-        public User_InformationBuilder withAddress(String address) {
+        public UserInformationBuilder withAddress(String address) {
             this.address = address;
             return this;
         }
 
-        public User_InformationBuilder withCreated(long created) {
+        public UserInformationBuilder withCreated(long created) {
             this.created = created;
             return this;
         }
 
-        public User_InformationBuilder withUpdated(long updated) {
+        public UserInformationBuilder withUpdated(long updated) {
             this.updated = updated;
             return this;
         }
 
-        public User_InformationBuilder withAccount_user(Account_User account_user) {
-            this.account_user = account_user;
+        public UserInformationBuilder withAccount(Account account) {
+            this.account = account;
             return this;
         }
 
-        public User_Information build() {
-            User_Information user_Information = new User_Information();
-            user_Information.setEmail(email);
-            user_Information.setFullName(fullName);
-            user_Information.setGender(gender);
-            user_Information.setBirthday(birthday);
-            user_Information.setPhone(phone);
-            user_Information.setAvatar(avatar);
-            user_Information.setAddress(address);
-            user_Information.setCreated(created);
-            user_Information.setUpdated(updated);
-            user_Information.setAccount_user(account_user);
-            return user_Information;
+        public UserInformation build() {
+            UserInformation userInformation = new UserInformation();
+            userInformation.setEmail(email);
+            userInformation.setFullName(fullName);
+            userInformation.setGender(gender);
+            userInformation.setBirthday(birthday);
+            userInformation.setPhone(phone);
+            userInformation.setAvatar(avatar);
+            userInformation.setAddress(address);
+            userInformation.setCreated(created);
+            userInformation.setUpdated(updated);
+            userInformation.setAccount(account);
+            return userInformation;
         }
     }
 }

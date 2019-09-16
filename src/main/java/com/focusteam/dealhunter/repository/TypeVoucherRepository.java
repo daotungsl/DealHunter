@@ -1,7 +1,9 @@
 package com.focusteam.dealhunter.repository;
 
-import com.focusteam.dealhunter.entity.Type_Voucher;
+import com.focusteam.dealhunter.entity.TypeVoucher;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface TypeVoucherRepository extends JpaRepository<Type_Voucher, Long> {
+@Repository
+public interface TypeVoucherRepository extends JpaRepository<TypeVoucher, Long> {
 }

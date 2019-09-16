@@ -1,7 +1,9 @@
 package com.focusteam.dealhunter.repository;
 
-import com.focusteam.dealhunter.entity.Promotion_Time;
+import com.focusteam.dealhunter.entity.PromotionTime;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface PromotionTimeRepository extends JpaRepository<Promotion_Time, Long> {
+@Repository
+public interface PromotionTimeRepository extends JpaRepository<PromotionTime, Long> {
 }

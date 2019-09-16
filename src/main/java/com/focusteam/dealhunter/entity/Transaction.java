@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
 @Entity
-public class History_Order {
+public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -23,16 +23,17 @@ public class History_Order {
     private int status;
 
     @ManyToOne
-    @JoinColumn(name = "account_user_id", nullable = false)
-    private Account_User account_user;
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
 
     @ManyToOne
-    @JoinColumn(name = "store_address_id", nullable = false)
-    private Store_Address store_address;
+    @JoinColumn(name = "storeAddress_id", nullable = false)
+    private StoreAddress storeAddress;
 
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
+
 
     public long getId() {
         return id;
@@ -90,20 +91,20 @@ public class History_Order {
         this.status = status;
     }
 
-    public Account_User getAccount_user() {
-        return account_user;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setAccount_user(Account_User account_user) {
-        this.account_user = account_user;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
-    public Store_Address getStore_address() {
-        return store_address;
+    public StoreAddress getStoreAddress() {
+        return storeAddress;
     }
 
-    public void setStore_address(Store_Address store_address) {
-        this.store_address = store_address;
+    public void setStoreAddress(StoreAddress storeAddress) {
+        this.storeAddress = storeAddress;
     }
 
     public Store getStore() {
@@ -115,7 +116,7 @@ public class History_Order {
     }
 
 
-    public static final class History_OrderBuilder {
+    public static final class TransactionBuilder {
         private long id;
         private String time;
         private String day;
@@ -123,80 +124,80 @@ public class History_Order {
         private long created;
         private long updated;
         private int status;
-        private Account_User account_user;
-        private Store_Address store_address;
+        private Account account;
+        private StoreAddress storeAddress;
         private Store store;
 
-        private History_OrderBuilder() {
+        private TransactionBuilder() {
         }
 
-        public static History_OrderBuilder aHistory_Order() {
-            return new History_OrderBuilder();
+        public static TransactionBuilder aTransaction() {
+            return new TransactionBuilder();
         }
 
-        public History_OrderBuilder withId(long id) {
+        public TransactionBuilder withId(long id) {
             this.id = id;
             return this;
         }
 
-        public History_OrderBuilder withTime(String time) {
+        public TransactionBuilder withTime(String time) {
             this.time = time;
             return this;
         }
 
-        public History_OrderBuilder withDay(String day) {
+        public TransactionBuilder withDay(String day) {
             this.day = day;
             return this;
         }
 
-        public History_OrderBuilder withDescription(String description) {
+        public TransactionBuilder withDescription(String description) {
             this.description = description;
             return this;
         }
 
-        public History_OrderBuilder withCreated(long created) {
+        public TransactionBuilder withCreated(long created) {
             this.created = created;
             return this;
         }
 
-        public History_OrderBuilder withUpdated(long updated) {
+        public TransactionBuilder withUpdated(long updated) {
             this.updated = updated;
             return this;
         }
 
-        public History_OrderBuilder withStatus(int status) {
+        public TransactionBuilder withStatus(int status) {
             this.status = status;
             return this;
         }
 
-        public History_OrderBuilder withAccount_user(Account_User account_user) {
-            this.account_user = account_user;
+        public TransactionBuilder withAccount(Account account) {
+            this.account = account;
             return this;
         }
 
-        public History_OrderBuilder withStore_address(Store_Address store_address) {
-            this.store_address = store_address;
+        public TransactionBuilder withStoreAddress(StoreAddress storeAddress) {
+            this.storeAddress = storeAddress;
             return this;
         }
 
-        public History_OrderBuilder withStore(Store store) {
+        public TransactionBuilder withStore(Store store) {
             this.store = store;
             return this;
         }
 
-        public History_Order build() {
-            History_Order history_Order = new History_Order();
-            history_Order.setId(id);
-            history_Order.setTime(time);
-            history_Order.setDay(day);
-            history_Order.setDescription(description);
-            history_Order.setCreated(created);
-            history_Order.setUpdated(updated);
-            history_Order.setStatus(status);
-            history_Order.setAccount_user(account_user);
-            history_Order.setStore_address(store_address);
-            history_Order.setStore(store);
-            return history_Order;
+        public Transaction build() {
+            Transaction transaction = new Transaction();
+            transaction.setId(id);
+            transaction.setTime(time);
+            transaction.setDay(day);
+            transaction.setDescription(description);
+            transaction.setCreated(created);
+            transaction.setUpdated(updated);
+            transaction.setStatus(status);
+            transaction.setAccount(account);
+            transaction.setStoreAddress(storeAddress);
+            transaction.setStore(store);
+            return transaction;
         }
     }
 }

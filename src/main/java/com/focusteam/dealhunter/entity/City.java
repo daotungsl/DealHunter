@@ -22,7 +22,7 @@ public class City {
     private int status;
 
     @OneToMany(mappedBy = "city")
-    private Set<Store_Address> store_addresses;
+    private Set<StoreAddress> storeAddresses;
 
     public long getId() {
         return id;
@@ -72,12 +72,12 @@ public class City {
         this.status = status;
     }
 
-    public Set<Store_Address> getStore_addresses() {
-        return store_addresses;
+    public Set<StoreAddress> getStoreAddresses() {
+        return storeAddresses;
     }
 
-    public void setStore_addresses(Set<Store_Address> store_addresses) {
-        this.store_addresses = store_addresses;
+    public void setStoreAddresses(Set<StoreAddress> storeAddresses) {
+        this.storeAddresses = storeAddresses;
     }
 
 
@@ -88,7 +88,7 @@ public class City {
         private long created;
         private long updated;
         private int status;
-        private Set<Store_Address> store_addresses;
+        private Set<StoreAddress> storeAddresses;
 
         private CityBuilder() {
         }
@@ -127,8 +127,8 @@ public class City {
             return this;
         }
 
-        public CityBuilder withStore_addresses(Set<Store_Address> store_addresses) {
-            this.store_addresses = store_addresses;
+        public CityBuilder withStoreAddresses(Set<StoreAddress> storeAddresses) {
+            this.storeAddresses = storeAddresses;
             return this;
         }
 
@@ -140,7 +140,7 @@ public class City {
             city.setCreated(created);
             city.setUpdated(updated);
             city.setStatus(status);
-            city.setStore_addresses(store_addresses);
+            city.setStoreAddresses(storeAddresses);
             return city;
         }
     }

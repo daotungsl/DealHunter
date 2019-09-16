@@ -6,7 +6,7 @@ import javax.validation.constraints.Null;
 import java.util.Set;
 
 @Entity
-public class Type_Voucher {
+public class TypeVoucher {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -21,7 +21,7 @@ public class Type_Voucher {
     @NotNull
     private int status;
 
-    @OneToMany(mappedBy = "type_voucher")
+    @OneToMany(mappedBy = "typeVoucher")
     private Set<Voucher> vouchers;
 
     public long getId() {
@@ -81,7 +81,7 @@ public class Type_Voucher {
     }
 
 
-    public static final class Type_VoucherBuilder {
+    public static final class TypeVoucherBuilder {
         private long id;
         private String name;
         private String description;
@@ -90,58 +90,58 @@ public class Type_Voucher {
         private int status;
         private Set<Voucher> vouchers;
 
-        private Type_VoucherBuilder() {
+        private TypeVoucherBuilder() {
         }
 
-        public static Type_VoucherBuilder aType_Voucher() {
-            return new Type_VoucherBuilder();
+        public static TypeVoucherBuilder aTypeVoucher() {
+            return new TypeVoucherBuilder();
         }
 
-        public Type_VoucherBuilder withId(long id) {
+        public TypeVoucherBuilder withId(long id) {
             this.id = id;
             return this;
         }
 
-        public Type_VoucherBuilder withName(String name) {
+        public TypeVoucherBuilder withName(String name) {
             this.name = name;
             return this;
         }
 
-        public Type_VoucherBuilder withDescription(String description) {
+        public TypeVoucherBuilder withDescription(String description) {
             this.description = description;
             return this;
         }
 
-        public Type_VoucherBuilder withCreated(long created) {
+        public TypeVoucherBuilder withCreated(long created) {
             this.created = created;
             return this;
         }
 
-        public Type_VoucherBuilder withUpdated(long updated) {
+        public TypeVoucherBuilder withUpdated(long updated) {
             this.updated = updated;
             return this;
         }
 
-        public Type_VoucherBuilder withStatus(int status) {
+        public TypeVoucherBuilder withStatus(int status) {
             this.status = status;
             return this;
         }
 
-        public Type_VoucherBuilder withVouchers(Set<Voucher> vouchers) {
+        public TypeVoucherBuilder withVouchers(Set<Voucher> vouchers) {
             this.vouchers = vouchers;
             return this;
         }
 
-        public Type_Voucher build() {
-            Type_Voucher type_Voucher = new Type_Voucher();
-            type_Voucher.setId(id);
-            type_Voucher.setName(name);
-            type_Voucher.setDescription(description);
-            type_Voucher.setCreated(created);
-            type_Voucher.setUpdated(updated);
-            type_Voucher.setStatus(status);
-            type_Voucher.setVouchers(vouchers);
-            return type_Voucher;
+        public TypeVoucher build() {
+            TypeVoucher typeVoucher = new TypeVoucher();
+            typeVoucher.setId(id);
+            typeVoucher.setName(name);
+            typeVoucher.setDescription(description);
+            typeVoucher.setCreated(created);
+            typeVoucher.setUpdated(updated);
+            typeVoucher.setStatus(status);
+            typeVoucher.setVouchers(vouchers);
+            return typeVoucher;
         }
     }
 }

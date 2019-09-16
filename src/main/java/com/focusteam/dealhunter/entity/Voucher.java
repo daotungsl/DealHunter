@@ -31,15 +31,16 @@ public class Voucher {
     private int status;
 
     @OneToOne(mappedBy = "voucher")
-    private Promotion_Time promotion_time;
+    private PromotionTime promotionTime;
 
     @ManyToOne
-    @JoinColumn(name = "type_voucher_id", nullable = false)
-    private Type_Voucher type_voucher;
+    @JoinColumn(name = "typeVoucher_id", nullable = false)
+    private TypeVoucher typeVoucher;
 
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
+
 
     public long getId() {
         return id;
@@ -129,20 +130,20 @@ public class Voucher {
         this.status = status;
     }
 
-    public Type_Voucher getType_voucher() {
-        return type_voucher;
+    public PromotionTime getPromotionTime() {
+        return promotionTime;
     }
 
-    public void setType_voucher(Type_Voucher type_voucher) {
-        this.type_voucher = type_voucher;
+    public void setPromotionTime(PromotionTime promotionTime) {
+        this.promotionTime = promotionTime;
     }
 
-    public Promotion_Time getPromotion_time() {
-        return promotion_time;
+    public TypeVoucher getTypeVoucher() {
+        return typeVoucher;
     }
 
-    public void setPromotion_time(Promotion_Time promotion_time) {
-        this.promotion_time = promotion_time;
+    public void setTypeVoucher(TypeVoucher typeVoucher) {
+        this.typeVoucher = typeVoucher;
     }
 
     public Store getStore() {
@@ -166,8 +167,8 @@ public class Voucher {
         private long expired;
         private long updated;
         private int status;
-        private Promotion_Time promotion_time;
-        private Type_Voucher type_voucher;
+        private PromotionTime promotionTime;
+        private TypeVoucher typeVoucher;
         private Store store;
 
         private VoucherBuilder() {
@@ -232,13 +233,13 @@ public class Voucher {
             return this;
         }
 
-        public VoucherBuilder withPromotion_time(Promotion_Time promotion_time) {
-            this.promotion_time = promotion_time;
+        public VoucherBuilder withPromotionTime(PromotionTime promotionTime) {
+            this.promotionTime = promotionTime;
             return this;
         }
 
-        public VoucherBuilder withType_voucher(Type_Voucher type_voucher) {
-            this.type_voucher = type_voucher;
+        public VoucherBuilder withTypeVoucher(TypeVoucher typeVoucher) {
+            this.typeVoucher = typeVoucher;
             return this;
         }
 
@@ -260,8 +261,8 @@ public class Voucher {
             voucher.setExpired(expired);
             voucher.setUpdated(updated);
             voucher.setStatus(status);
-            voucher.setPromotion_time(promotion_time);
-            voucher.setType_voucher(type_voucher);
+            voucher.setPromotionTime(promotionTime);
+            voucher.setTypeVoucher(typeVoucher);
             voucher.setStore(store);
             return voucher;
         }
