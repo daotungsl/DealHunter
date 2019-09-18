@@ -15,8 +15,8 @@ public class Voucher {
     private String description;
     @NotNull
     private String image;
-    @NotNull
-    private String code_sale;
+    @Null
+    private String codeSale;
     @NotNull
     private int percent;
     @NotNull
@@ -74,12 +74,12 @@ public class Voucher {
         this.image = image;
     }
 
-    public String getCode_sale() {
-        return code_sale;
+    public String getCodeSale() {
+        return codeSale;
     }
 
-    public void setCode_sale(String code_sale) {
-        this.code_sale = code_sale;
+    public void setCodeSale(String codeSale) {
+        this.codeSale = codeSale;
     }
 
     public int getPercent() {
@@ -160,7 +160,7 @@ public class Voucher {
         private String name;
         private String description;
         private String image;
-        private String code_sale;
+        private String codeSale;
         private int percent;
         private int max_slot;
         private long created;
@@ -198,8 +198,8 @@ public class Voucher {
             return this;
         }
 
-        public VoucherBuilder withCode_sale(String code_sale) {
-            this.code_sale = code_sale;
+        public VoucherBuilder withCodeSale(String codeSale) {
+            this.codeSale = codeSale;
             return this;
         }
 
@@ -254,7 +254,7 @@ public class Voucher {
             voucher.setName(name);
             voucher.setDescription(description);
             voucher.setImage(image);
-            voucher.setCode_sale(code_sale);
+            voucher.setCodeSale(codeSale);
             voucher.setPercent(percent);
             voucher.setMax_slot(max_slot);
             voucher.setCreated(created);
