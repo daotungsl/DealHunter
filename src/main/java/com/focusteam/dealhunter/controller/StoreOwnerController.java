@@ -10,10 +10,7 @@ import com.focusteam.dealhunter.rest.RESTResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -32,6 +29,7 @@ public class StoreOwnerController {
     @Autowired
     private StoreAddressRepository storeAddressRepository;
 
+    @CrossOrigin
     @RequestMapping(value = "/home", method = RequestMethod.POST)
     public ResponseEntity<Object> getStoreInformation(@RequestBody StoreId storeId){
         Optional<Store> storeOptional = storeRepository.findById(storeId.getId());
@@ -50,6 +48,7 @@ public class StoreOwnerController {
                 .setMessage("Error!").build(), HttpStatus.FORBIDDEN);
     }
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Object> createStoreInformation(@RequestBody StoreDto storeDto){
         Optional<Account> optionalAccount = accountRepository.findById(storeDto.getAccountId());
@@ -71,6 +70,7 @@ public class StoreOwnerController {
                 .setMessage("Success!").build(), HttpStatus.CREATED);
     }
 
+    @CrossOrigin
     @RequestMapping(method = RequestMethod.POST, value = "/address")
     public ResponseEntity<Object> updateUserInformation(@RequestBody StoreAddressDto storeAddressDto){
         Optional<Store> optionalStore = storeRepository.findById(storeAddressDto.getStoreId());
