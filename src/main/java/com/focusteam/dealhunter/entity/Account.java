@@ -1,5 +1,7 @@
 package com.focusteam.dealhunter.entity;
 
+import com.focusteam.dealhunter.dto.AccountDto;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -18,7 +20,7 @@ public class Account {
     @NotNull
     private int status;
 
-    @OneToOne(mappedBy = "account")
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private UserInformation userInformation;
 
     @OneToMany(mappedBy = "account")
@@ -52,6 +54,20 @@ public class Account {
         this.userInformation = userInformation;
         this.credentials = credentials;
         this.store = store;
+    }
+
+    public Account(AccountDto accountDto) {
+        this.username = accountDto.getEmail();
+        this.password = accountDto.getPassword();
+        this.typeAccount = 1;
+        this.status = 1;
+        UserInformation userInformation = new UserInformation();
+        userInformation.setCreated(System.currentTimeMillis());
+        userInformation.setUpdated(System.currentTimeMillis());
+        userInformation.setEmail(accountDto.getEmail());
+        userInformation.setPhone(accountDto.getPhone());
+        userInformation.setAccount(this);
+        this.userInformation = userInformation;
     }
 
     public long getId() {

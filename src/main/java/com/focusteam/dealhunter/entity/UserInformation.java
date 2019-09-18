@@ -8,26 +8,25 @@ import javax.validation.constraints.Null;
 public class UserInformation {
     @Id
     private String email;
-    @Null
     private String fullName;
-    @Null
     private int gender;
-    @Null
     private String birthday;
     @NotNull
     private String phone;
-    @Null
     private String avatar;
-    @Null
     private String address;
     @NotNull
     private long created;
-    @Null
     private long updated;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private Account account;
+
+    public UserInformation() {
+        this.created = System.currentTimeMillis();
+        this.updated = System.currentTimeMillis();
+    }
 
     public String getEmail() {
         return email;

@@ -42,6 +42,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authenticationProvider(provider)
                 .addFilterBefore(authenticationFilter(), AnonymousAuthenticationFilter.class)
                 .authorizeRequests()
+                .antMatchers("/so")
+                .permitAll()
                 .requestMatchers(PROTECTED_URLS)
                 .authenticated()
                 .and()
