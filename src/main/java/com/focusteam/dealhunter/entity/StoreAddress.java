@@ -6,7 +6,7 @@ import javax.validation.constraints.Null;
 import java.util.Set;
 
 @Entity
-public class Store_Address {
+public class StoreAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -29,8 +29,9 @@ public class Store_Address {
     @JoinColumn(name = "city_id", nullable = false)
     private City city;
 
-    @OneToMany(mappedBy = "store_address")
-    private Set<History_Order> history_orders;
+    @OneToMany(mappedBy = "storeAddress")
+    private Set<Transaction> transactions;
+
 
     public long getId() {
         return id;
@@ -96,16 +97,16 @@ public class Store_Address {
         this.city = city;
     }
 
-    public Set<History_Order> getHistory_orders() {
-        return history_orders;
+    public Set<Transaction> getTransactions() {
+        return transactions;
     }
 
-    public void setHistory_orders(Set<History_Order> history_orders) {
-        this.history_orders = history_orders;
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
 
-    public static final class Store_AddressBuilder {
+    public static final class StoreAddressBuilder {
         private long id;
         private String address;
         private String description;
@@ -114,72 +115,72 @@ public class Store_Address {
         private int status;
         private Store store;
         private City city;
-        private Set<History_Order> history_orders;
+        private Set<Transaction> transactions;
 
-        private Store_AddressBuilder() {
+        private StoreAddressBuilder() {
         }
 
-        public static Store_AddressBuilder aStore_Address() {
-            return new Store_AddressBuilder();
+        public static StoreAddressBuilder aStoreAddress() {
+            return new StoreAddressBuilder();
         }
 
-        public Store_AddressBuilder withId(long id) {
+        public StoreAddressBuilder withId(long id) {
             this.id = id;
             return this;
         }
 
-        public Store_AddressBuilder withAddress(String address) {
+        public StoreAddressBuilder withAddress(String address) {
             this.address = address;
             return this;
         }
 
-        public Store_AddressBuilder withDescription(String description) {
+        public StoreAddressBuilder withDescription(String description) {
             this.description = description;
             return this;
         }
 
-        public Store_AddressBuilder withCreated(long created) {
+        public StoreAddressBuilder withCreated(long created) {
             this.created = created;
             return this;
         }
 
-        public Store_AddressBuilder withUpdated(long updated) {
+        public StoreAddressBuilder withUpdated(long updated) {
             this.updated = updated;
             return this;
         }
 
-        public Store_AddressBuilder withStatus(int status) {
+        public StoreAddressBuilder withStatus(int status) {
             this.status = status;
             return this;
         }
 
-        public Store_AddressBuilder withStore(Store store) {
+        public StoreAddressBuilder withStore(Store store) {
             this.store = store;
             return this;
         }
 
-        public Store_AddressBuilder withCity(City city) {
+        public StoreAddressBuilder withCity(City city) {
             this.city = city;
             return this;
         }
 
-        public Store_AddressBuilder withHistory_orders(Set<History_Order> history_orders) {
-            this.history_orders = history_orders;
+        public StoreAddressBuilder withTransactions(Set<Transaction> transactions) {
+            this.transactions = transactions;
             return this;
         }
 
-        public Store_Address build() {
-            Store_Address store_Address = new Store_Address();
-            store_Address.setId(id);
-            store_Address.setAddress(address);
-            store_Address.setDescription(description);
-            store_Address.setCreated(created);
-            store_Address.setUpdated(updated);
-            store_Address.setStatus(status);
-            store_Address.setStore(store);
-            store_Address.setCity(city);
-            store_Address.setHistory_orders(history_orders);
-            return store_Address;
+        public StoreAddress build() {
+            StoreAddress storeAddress = new StoreAddress();
+            storeAddress.setId(id);
+            storeAddress.setAddress(address);
+            storeAddress.setDescription(description);
+            storeAddress.setCreated(created);
+            storeAddress.setUpdated(updated);
+            storeAddress.setStatus(status);
+            storeAddress.setStore(store);
+            storeAddress.setCity(city);
+            storeAddress.setTransactions(transactions);
+            return storeAddress;
         }
     }
 }

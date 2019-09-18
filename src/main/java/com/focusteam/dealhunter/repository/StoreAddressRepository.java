@@ -1,7 +1,9 @@
 package com.focusteam.dealhunter.repository;
 
-import com.focusteam.dealhunter.entity.Store_Address;
+import com.focusteam.dealhunter.entity.StoreAddress;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface StoreAddressRepository extends JpaRepository<Store_Address, Long> {
+@Repository
+public interface StoreAddressRepository extends JpaRepository<StoreAddress, Long> {
 }

@@ -6,7 +6,7 @@ import javax.validation.constraints.Null;
 import java.util.Set;
 
 @Entity
-public class Type_Store {
+public class TypeStore {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -21,7 +21,7 @@ public class Type_Store {
     @NotNull
     private int status;
 
-    @OneToMany(mappedBy = "type_store")
+    @OneToMany(mappedBy = "typeStore")
     private Set<Store> stores;
 
     public long getId() {
@@ -81,7 +81,7 @@ public class Type_Store {
     }
 
 
-    public static final class Type_StoreBuilder {
+    public static final class TypeStoreBuilder {
         private long id;
         private String name;
         private String description;
@@ -90,58 +90,58 @@ public class Type_Store {
         private int status;
         private Set<Store> stores;
 
-        private Type_StoreBuilder() {
+        private TypeStoreBuilder() {
         }
 
-        public static Type_StoreBuilder aType_Store() {
-            return new Type_StoreBuilder();
+        public static TypeStoreBuilder aTypeStore() {
+            return new TypeStoreBuilder();
         }
 
-        public Type_StoreBuilder withId(long id) {
+        public TypeStoreBuilder withId(long id) {
             this.id = id;
             return this;
         }
 
-        public Type_StoreBuilder withName(String name) {
+        public TypeStoreBuilder withName(String name) {
             this.name = name;
             return this;
         }
 
-        public Type_StoreBuilder withDescription(String description) {
+        public TypeStoreBuilder withDescription(String description) {
             this.description = description;
             return this;
         }
 
-        public Type_StoreBuilder withCreated(long created) {
+        public TypeStoreBuilder withCreated(long created) {
             this.created = created;
             return this;
         }
 
-        public Type_StoreBuilder withUpdated(long updated) {
+        public TypeStoreBuilder withUpdated(long updated) {
             this.updated = updated;
             return this;
         }
 
-        public Type_StoreBuilder withStatus(int status) {
+        public TypeStoreBuilder withStatus(int status) {
             this.status = status;
             return this;
         }
 
-        public Type_StoreBuilder withStores(Set<Store> stores) {
+        public TypeStoreBuilder withStores(Set<Store> stores) {
             this.stores = stores;
             return this;
         }
 
-        public Type_Store build() {
-            Type_Store type_Store = new Type_Store();
-            type_Store.setId(id);
-            type_Store.setName(name);
-            type_Store.setDescription(description);
-            type_Store.setCreated(created);
-            type_Store.setUpdated(updated);
-            type_Store.setStatus(status);
-            type_Store.setStores(stores);
-            return type_Store;
+        public TypeStore build() {
+            TypeStore typeStore = new TypeStore();
+            typeStore.setId(id);
+            typeStore.setName(name);
+            typeStore.setDescription(description);
+            typeStore.setCreated(created);
+            typeStore.setUpdated(updated);
+            typeStore.setStatus(status);
+            typeStore.setStores(stores);
+            return typeStore;
         }
     }
 }

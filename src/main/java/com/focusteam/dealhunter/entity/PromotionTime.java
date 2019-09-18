@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Promotion_Time {
+public class PromotionTime {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -60,53 +60,53 @@ public class Promotion_Time {
     }
 
 
-    public static final class Promotion_TimeBuilder {
+    public static final class PromotionTimeBuilder {
         private long id;
         private long start_time;
         private long end_time;
         private String day_week;
         private Voucher voucher;
 
-        private Promotion_TimeBuilder() {
+        private PromotionTimeBuilder() {
         }
 
-        public static Promotion_TimeBuilder aPromotion_Time() {
-            return new Promotion_TimeBuilder();
+        public static PromotionTimeBuilder aPromotionTime() {
+            return new PromotionTimeBuilder();
         }
 
-        public Promotion_TimeBuilder withId(long id) {
+        public PromotionTimeBuilder withId(long id) {
             this.id = id;
             return this;
         }
 
-        public Promotion_TimeBuilder withStart_time(long start_time) {
+        public PromotionTimeBuilder withStart_time(long start_time) {
             this.start_time = start_time;
             return this;
         }
 
-        public Promotion_TimeBuilder withEnd_time(long end_time) {
+        public PromotionTimeBuilder withEnd_time(long end_time) {
             this.end_time = end_time;
             return this;
         }
 
-        public Promotion_TimeBuilder withDay_week(String day_week) {
+        public PromotionTimeBuilder withDay_week(String day_week) {
             this.day_week = day_week;
             return this;
         }
 
-        public Promotion_TimeBuilder withVoucher(Voucher voucher) {
+        public PromotionTimeBuilder withVoucher(Voucher voucher) {
             this.voucher = voucher;
             return this;
         }
 
-        public Promotion_Time build() {
-            Promotion_Time promotion_Time = new Promotion_Time();
-            promotion_Time.setId(id);
-            promotion_Time.setStart_time(start_time);
-            promotion_Time.setEnd_time(end_time);
-            promotion_Time.setDay_week(day_week);
-            promotion_Time.setVoucher(voucher);
-            return promotion_Time;
+        public PromotionTime build() {
+            PromotionTime promotionTime = new PromotionTime();
+            promotionTime.setId(id);
+            promotionTime.setStart_time(start_time);
+            promotionTime.setEnd_time(end_time);
+            promotionTime.setDay_week(day_week);
+            promotionTime.setVoucher(voucher);
+            return promotionTime;
         }
     }
 }

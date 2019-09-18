@@ -1,7 +1,9 @@
 package com.focusteam.dealhunter.repository;
 
-import com.focusteam.dealhunter.entity.User_Information;
+import com.focusteam.dealhunter.entity.UserInformation;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserInformationRepository extends JpaRepository<User_Information, String> {
+@Repository
+public interface UserInformationRepository extends JpaRepository<UserInformation, String> {
 }
