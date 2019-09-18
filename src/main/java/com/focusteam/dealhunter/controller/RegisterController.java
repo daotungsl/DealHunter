@@ -21,6 +21,7 @@ public class RegisterController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Object> accountRegister(@RequestBody AccountDto accountDto) {
         Account account = new Account(accountDto);
+
         accountRepository.save(account);
         return new ResponseEntity<>(new RESTResponse.Success()
                 .setStatus(HttpStatus.CREATED.value())
