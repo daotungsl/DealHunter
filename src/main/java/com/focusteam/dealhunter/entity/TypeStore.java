@@ -12,11 +12,9 @@ public class TypeStore {
     private long id;
     @NotNull
     private String name;
-    @Null
     private String description;
     @NotNull
     private long created;
-    @Null
     private long updated;
     @NotNull
     private int status;

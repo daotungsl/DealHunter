@@ -13,11 +13,9 @@ public class Transaction {
     private String time;
     @NotNull
     private String day;
-    @Null
     private String description;
     @NotNull
     private long created;
-    @Null
     private long updated;
     @NotNull
     private int status;

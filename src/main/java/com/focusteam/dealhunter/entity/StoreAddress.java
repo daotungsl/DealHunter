@@ -12,11 +12,9 @@ public class StoreAddress {
     private long id;
     @NotNull
     private String address;
-    @Null
     private String description;
     @NotNull
     private long created;
-    @Null
     private long updated;
     @NotNull
     private int status;

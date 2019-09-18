@@ -11,17 +11,12 @@ public class Credential {
     private long id;
     @NotNull
     private String accessToken;
-    @Null
     private String refreshToken;
-    @Null
     private String clientType;
     @NotNull
     private long created;
-    @Null
     private long expired;
-    @Null
     private long updated;
-    @Null
     private int status;
 
     @ManyToOne

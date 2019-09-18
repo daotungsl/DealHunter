@@ -11,11 +11,9 @@ public class Voucher {
     private long id;
     @NotNull
     private String name;
-    @Null
     private String description;
     @NotNull
     private String image;
-    @Null
     private String codeSale;
     @NotNull
     private int percent;
@@ -25,7 +23,6 @@ public class Voucher {
     private long created;
     @NotNull
     private long expired;
-    @Null
     private long updated;
     @NotNull
     private int status;

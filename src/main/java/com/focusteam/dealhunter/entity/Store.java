@@ -1,5 +1,7 @@
 package com.focusteam.dealhunter.entity;
 
+import com.focusteam.dealhunter.dto.StoreDto;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -20,7 +22,6 @@ public class Store {
     private String image;
     @NotNull
     private long created;
-    @Null
     private long updated;
     @NotNull
     private int status;
@@ -41,6 +42,19 @@ public class Store {
 
     @OneToMany(mappedBy = "store")
     private Set<Voucher> vouchers;
+
+    public Store() {
+    }
+
+    public Store(StoreDto storeDto) {
+        this.name = storeDto.getName();
+        this.email = storeDto.getEmail();
+        this.phone = storeDto.getPhone();
+        this.image = storeDto.getImage();
+        this.created = System.currentTimeMillis();
+        this.updated = System.currentTimeMillis();
+        this.status = 0;
+    }
 
     public long getId() {
         return id;
