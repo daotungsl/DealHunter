@@ -6,11 +6,13 @@ public class AccountDto {
     private String phone;
     private String email;
     private String password;
+    private String repassword;
 
-    public AccountDto(String phone, String email, String password) {
+    public AccountDto(String phone, String email, String password, String repassword) {
         this.phone = phone;
         this.email = email;
         this.password = password;
+        this.repassword = repassword;
     }
 
     public AccountDto() {
@@ -44,5 +46,13 @@ public class AccountDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRepassword() {
+        return repassword;
+    }
+
+    public void setRepassword(String repassword) {
+        this.repassword = repassword;
     }
 }
