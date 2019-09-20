@@ -3,6 +3,7 @@ package com.focusteam.dealhunter.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import java.util.Calendar;
 
 @Entity
 public class Credential {
@@ -11,6 +12,7 @@ public class Credential {
     private long id;
     @NotNull
     private String accessToken;
+    private String token;
     private String refreshToken;
     private String clientType;
     @NotNull
@@ -19,8 +21,22 @@ public class Credential {
     private long updated;
     private int status;
 
-    @ManyToOne
-    @JoinColumn(name = "account_id", nullable = false)
+    public Credential() {
+    }
+
+    public Credential(@NotNull String accessToken, String refreshToken, String clientType, Account account) {
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+        this.clientType = clientType;
+        this.created = Calendar.getInstance().getTimeInMillis();
+        this.expired = created + (86400000*3);
+        this.updated = created;
+        this.status = 1;
+        this.account = account;
+    }
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private Account account;
 
 
@@ -96,10 +112,19 @@ public class Credential {
         this.account = account;
     }
 
+    public String getToken() {
+        return token;
+    }
 
-    public static final class AccountCredentialBuilder {
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+
+    public static final class CredentialBuilder {
         private long id;
         private String accessToken;
+        private String token;
         private String refreshToken;
         private String clientType;
         private long created;
@@ -108,70 +133,76 @@ public class Credential {
         private int status;
         private Account account;
 
-        private AccountCredentialBuilder() {
+        private CredentialBuilder() {
         }
 
-        public static AccountCredentialBuilder anAccountCredential() {
-            return new AccountCredentialBuilder();
+        public static CredentialBuilder aCredential() {
+            return new CredentialBuilder();
         }
 
-        public AccountCredentialBuilder withId(long id) {
+        public CredentialBuilder withId(long id) {
             this.id = id;
             return this;
         }
 
-        public AccountCredentialBuilder withAccessToken(String accessToken) {
+        public CredentialBuilder withAccessToken(String accessToken) {
             this.accessToken = accessToken;
             return this;
         }
 
-        public AccountCredentialBuilder withRefreshToken(String refreshToken) {
+        public CredentialBuilder withToken(String token) {
+            this.token = token;
+            return this;
+        }
+
+        public CredentialBuilder withRefreshToken(String refreshToken) {
             this.refreshToken = refreshToken;
             return this;
         }
 
-        public AccountCredentialBuilder withClientType(String clientType) {
+        public CredentialBuilder withClientType(String clientType) {
             this.clientType = clientType;
             return this;
         }
 
-        public AccountCredentialBuilder withCreated(long created) {
+        public CredentialBuilder withCreated(long created) {
             this.created = created;
             return this;
         }
 
-        public AccountCredentialBuilder withExpired(long expired) {
+        public CredentialBuilder withExpired(long expired) {
             this.expired = expired;
             return this;
         }
 
-        public AccountCredentialBuilder withUpdated(long updated) {
+        public CredentialBuilder withUpdated(long updated) {
             this.updated = updated;
             return this;
         }
 
-        public AccountCredentialBuilder withStatus(int status) {
+        public CredentialBuilder withStatus(int status) {
             this.status = status;
             return this;
         }
 
-        public AccountCredentialBuilder withAccount(Account account) {
+        public CredentialBuilder withAccount(Account account) {
             this.account = account;
             return this;
         }
 
         public Credential build() {
-            Credential accountCredential = new Credential();
-            accountCredential.setId(id);
-            accountCredential.setAccessToken(accessToken);
-            accountCredential.setRefreshToken(refreshToken);
-            accountCredential.setClientType(clientType);
-            accountCredential.setCreated(created);
-            accountCredential.setExpired(expired);
-            accountCredential.setUpdated(updated);
-            accountCredential.setStatus(status);
-            accountCredential.setAccount(account);
-            return accountCredential;
+            Credential credential = new Credential();
+            credential.setId(id);
+            credential.setAccessToken(accessToken);
+            credential.setToken(token);
+            credential.setRefreshToken(refreshToken);
+            credential.setClientType(clientType);
+            credential.setCreated(created);
+            credential.setExpired(expired);
+            credential.setUpdated(updated);
+            credential.setStatus(status);
+            credential.setAccount(account);
+            return credential;
         }
     }
 }

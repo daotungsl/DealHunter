@@ -17,14 +17,15 @@ public class Account {
     private String password;
     @NotNull
     private int typeAccount;
+    private String token;
     @NotNull
     private int status;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private UserInformation userInformation;
 
-    @OneToMany(mappedBy = "account")
-    private Set<Credential> credentials;
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    private Credential credential;
 
     @OneToOne(mappedBy = "account")
     private Store store;
@@ -46,13 +47,13 @@ public class Account {
         this.typeAccount = typeAccount;
     }
 
-    public Account(@NotNull String username, @NotNull String password, @NotNull int typeAccount, @NotNull int status,  UserInformation userInformation, Set<Credential> credentials, Store store) {
+    public Account(@NotNull String username, @NotNull String password, @NotNull int typeAccount, @NotNull int status,  UserInformation userInformation, Credential credential, Store store) {
         this.username = username;
         this.password = password;
         this.typeAccount = typeAccount;
         this.status = status;
         this.userInformation = userInformation;
-        this.credentials = credentials;
+        this.credential = credential;
         this.store = store;
     }
 
@@ -118,12 +119,12 @@ public class Account {
         this.userInformation = userInformation;
     }
 
-    public Set<Credential> getCredentials() {
-        return credentials;
+    public Credential getCredential() {
+        return credential;
     }
 
-    public void setCredentials(Set<Credential> credentials) {
-        this.credentials = credentials;
+    public void setCredential(Credential credential) {
+        this.credential = credential;
     }
 
     public Store getStore() {
@@ -134,15 +135,24 @@ public class Account {
         this.store = store;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
 
     public static final class AccountBuilder {
         private long id;
         private String username;
         private String password;
         private int typeAccount;
+        private String token;
         private int status;
         private UserInformation userInformation;
-        private Set<Credential> credentials;
+        private Credential credential;
         private Store store;
 
         private AccountBuilder() {
@@ -172,6 +182,11 @@ public class Account {
             return this;
         }
 
+        public AccountBuilder withToken(String token) {
+            this.token = token;
+            return this;
+        }
+
         public AccountBuilder withStatus(int status) {
             this.status = status;
             return this;
@@ -182,8 +197,8 @@ public class Account {
             return this;
         }
 
-        public AccountBuilder withCredentials(Set<Credential> credentials) {
-            this.credentials = credentials;
+        public AccountBuilder withCredential(Credential credential) {
+            this.credential = credential;
             return this;
         }
 
@@ -198,9 +213,10 @@ public class Account {
             account.setUsername(username);
             account.setPassword(password);
             account.setTypeAccount(typeAccount);
+            account.setToken(token);
             account.setStatus(status);
             account.setUserInformation(userInformation);
-            account.setCredentials(credentials);
+            account.setCredential(credential);
             account.setStore(store);
             return account;
         }
