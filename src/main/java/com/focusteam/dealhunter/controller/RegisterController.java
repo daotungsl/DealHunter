@@ -26,13 +26,25 @@ public class RegisterController {
     @CrossOrigin
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Object> accountRegister(@RequestBody AccountDto accountDto) {
-        Account account = new Account(accountDto);
-
-        accountRepository.save(account);
-        return new ResponseEntity<>(new RESTResponse.Success()
-                .setStatus(HttpStatus.CREATED.value())
-                .setData(accountDto)
-                .setMessage("Success!").build(), HttpStatus.CREATED);
+        if (!accountDto.getPassword().equals(accountDto.getRepassword())){
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Re Password error!").build(), HttpStatus.FORBIDDEN);
+        }
+        Optional<Account> optionalAccount = accountRepository.findByName(accountDto.getEmail());
+        if (!optionalAccount.isPresent()){
+            Account account = new Account(accountDto);
+            accountRepository.save(account);
+            return new ResponseEntity<>(new RESTResponse.Success()
+                    .setStatus(HttpStatus.CREATED.value())
+                    .setData(accountDto)
+                    .setMessage("Success!").build(), HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(new RESTResponse.Error()
+                .setStatus(HttpStatus.FORBIDDEN.value())
+                .setData("")
+                .setMessage("Accounts exist!").build(), HttpStatus.FORBIDDEN);
     }
 
     @CrossOrigin
