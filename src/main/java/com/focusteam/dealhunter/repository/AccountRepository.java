@@ -20,7 +20,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> login(String username, String password);
     Optional<Account> findByToken(String token);
 
-    @Query("SELECT a FROM Account a WHERE a.name = ?1")
+    @Query("SELECT a FROM Account a WHERE a.username = ?1")
     Optional<Account> findByName(String name);
 
 }

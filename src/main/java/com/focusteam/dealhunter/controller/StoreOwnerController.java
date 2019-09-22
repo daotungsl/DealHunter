@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/so/store")
+@RequestMapping(value = "/api/so/store")
 public class StoreOwnerController {
 
     @Autowired

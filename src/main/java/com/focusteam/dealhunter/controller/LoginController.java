@@ -14,9 +14,11 @@ public class LoginController {
     private AccountService accountService;
 
     @CrossOrigin
-    @PostMapping("/token")
+    @PostMapping("/unauthentic/login")
     public ResponseEntity<Object> getToken(@RequestBody AccountLoginDto accountLoginDto){
         ResponseEntity<Object> response = accountService.login(accountLoginDto);
         return response;
     }
+
+
 }

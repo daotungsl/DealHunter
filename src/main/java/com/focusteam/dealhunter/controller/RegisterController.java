@@ -17,14 +17,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/so")
 public class RegisterController {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private CityRepository cityRepository;
     @CrossOrigin
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, value = "/unauthentic/register")
     public ResponseEntity<Object> accountRegister(@RequestBody AccountDto accountDto) {
         if (!accountDto.getPassword().equals(accountDto.getRepassword())){
             return new ResponseEntity<>(new RESTResponse.Error()
@@ -48,7 +47,7 @@ public class RegisterController {
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/cities", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/so/cities", method = RequestMethod.GET)
     public ResponseEntity<Object> getListCity(){
         List<City> cities = cityRepository.findAll();
         if (cities != null){

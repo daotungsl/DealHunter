@@ -3,6 +3,7 @@ package com.focusteam.dealhunter.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import java.util.Set;
 
 @Entity
 public class Voucher {
@@ -37,6 +38,7 @@ public class Voucher {
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
+
 
 
     public long getId() {
