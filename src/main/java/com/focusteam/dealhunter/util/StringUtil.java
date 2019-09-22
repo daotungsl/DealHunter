@@ -1,7 +1,10 @@
 package com.focusteam.dealhunter.util;
 
 import java.security.SecureRandom;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 public class StringUtil {
@@ -23,7 +26,9 @@ public class StringUtil {
         return sb.toString();
     }
 
-    public static void main(String[] args) {
-        System.out.println("AACC-" + UUID.randomUUID().toString());
+    public String dateFormatFromLong(long time){
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat("HH:mm:ss dd MM yyyy");
+        return format.format(date);
     }
 }

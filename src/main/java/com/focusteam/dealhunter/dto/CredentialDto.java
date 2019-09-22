@@ -1,14 +1,13 @@
 package com.focusteam.dealhunter.dto;
 
 import com.focusteam.dealhunter.entity.Credential;
-
-import javax.validation.constraints.NotNull;
+import com.focusteam.dealhunter.util.StringUtil;
 
 public class CredentialDto {
     private String accessToken;
     private String clientType;
-    private long created;
-    private long expired;
+    private String created;
+    private String expired;
 
     public CredentialDto() {
     }
@@ -16,8 +15,8 @@ public class CredentialDto {
     public CredentialDto(Credential credential) {
         this.accessToken = credential.getAccessToken();
         this.clientType = credential.getClientType();
-        this.created = credential.getCreated();
-        this.expired = credential.getExpired();
+        this.created = new StringUtil().dateFormatFromLong(credential.getCreated());
+        this.expired = new StringUtil().dateFormatFromLong(credential.getExpired());
     }
 
     public String getAccessToken() {
@@ -36,19 +35,19 @@ public class CredentialDto {
         this.clientType = clientType;
     }
 
-    public long getCreated() {
+    public String getCreated() {
         return created;
     }
 
-    public void setCreated(long created) {
+    public void setCreated(String created) {
         this.created = created;
     }
 
-    public long getExpired() {
+    public String getExpired() {
         return expired;
     }
 
-    public void setExpired(long expired) {
+    public void setExpired(String expired) {
         this.expired = expired;
     }
 }

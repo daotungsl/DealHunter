@@ -28,10 +28,6 @@ public class Credential {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
         this.clientType = clientType;
-        this.created = Calendar.getInstance().getTimeInMillis();
-        this.expired = created + (86400000*3);
-        this.updated = created;
-        this.status = 1;
         this.account = account;
     }
 

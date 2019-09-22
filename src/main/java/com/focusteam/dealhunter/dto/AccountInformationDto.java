@@ -1,8 +1,7 @@
 package com.focusteam.dealhunter.dto;
 
 import com.focusteam.dealhunter.entity.Account;
-
-import javax.validation.constraints.NotNull;
+import com.focusteam.dealhunter.util.StringUtil;
 
 public class AccountInformationDto {
     private String username;
@@ -16,8 +15,8 @@ public class AccountInformationDto {
     private String phone;
     private String avatar;
     private String address;
-    private long created;
-    private long updated;
+    private String created;
+    private String updated;
 
     public AccountInformationDto() {
     }
@@ -34,8 +33,8 @@ public class AccountInformationDto {
         this.phone = account.getUserInformation().getPhone();
         this.avatar = account.getUserInformation().getAvatar();
         this.address = account.getUserInformation().getAddress();
-        this.created = account.getUserInformation().getCreated();
-        this.updated = account.getUserInformation().getUpdated();
+        this.created = new StringUtil().dateFormatFromLong(account.getUserInformation().getCreated());
+        this.updated = new StringUtil().dateFormatFromLong(account.getUserInformation().getUpdated());
     }
 
     public String getUsername() {
@@ -126,19 +125,19 @@ public class AccountInformationDto {
         this.address = address;
     }
 
-    public long getCreated() {
+    public String getCreated() {
         return created;
     }
 
-    public void setCreated(long created) {
+    public void setCreated(String created) {
         this.created = created;
     }
 
-    public long getUpdated() {
+    public String getUpdated() {
         return updated;
     }
 
-    public void setUpdated(long updated) {
+    public void setUpdated(String updated) {
         this.updated = updated;
     }
 }
