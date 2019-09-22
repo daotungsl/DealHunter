@@ -6,14 +6,14 @@ import com.focusteam.dealhunter.entity.Account;
 
 public class RESTLogin {
     private AccountInformationDto account;
-    private CredentialDto credentialDto;
+    private CredentialDto credential;
 
     public RESTLogin() {
     }
 
     public RESTLogin(AccountInformationDto account, CredentialDto credentialDto) {
         this.account = account;
-        this.credentialDto = credentialDto;
+        this.credential = credentialDto;
     }
 
     public AccountInformationDto getAccount() {
@@ -24,11 +24,11 @@ public class RESTLogin {
         this.account = account;
     }
 
-    public CredentialDto getCredentialDto() {
-        return credentialDto;
+    public CredentialDto getCredential() {
+        return credential;
     }
 
-    public void setCredentialDto(CredentialDto credentialDto) {
-        this.credentialDto = credentialDto;
+    public void setCredential(CredentialDto credential) {
+        this.credential = credential;
     }
 }

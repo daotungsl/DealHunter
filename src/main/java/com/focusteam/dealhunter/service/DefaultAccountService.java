@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Calendar;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -36,15 +37,35 @@ public class DefaultAccountService implements AccountService{
         Optional<Account> account = accountRepository.login(accountLoginDto.getUsername(), accountLoginDto.getPassword());
         if (account.isPresent()) {
             Account acc = account.get();
-
             Credential credential= new Credential();
-            credential.setAccessToken("AAWEB-" + UUID.randomUUID().toString());
-            credential.setRefreshToken("RFWEB-" + UUID.randomUUID().toString());
-            credential.setToken(credential.getAccessToken());
-            credential.setClientType("WEB");
-            credential.setAccount(acc);
-            acc.setCredential(credential);
-            acc.setToken(credential.getAccessToken());
+
+            if (acc.getToken() == null){
+                credential.setAccessToken("AAWEB-" + UUID.randomUUID().toString());
+                credential.setRefreshToken("RFWEB-" + UUID.randomUUID().toString());
+                credential.setToken(credential.getAccessToken());
+                credential.setClientType("WEB");
+                credential.setCreated(Calendar.getInstance().getTimeInMillis());
+                credential.setExpired(credential.getCreated() + 86400000*3);
+                credential.setUpdated(credential.getCreated());
+                credential.setStatus(1);
+                credential.setAccount(acc);
+                acc.setCredential(credential);
+                acc.setToken(credential.getAccessToken());
+            }else {
+                Optional<Credential> cre = credentialRepository.findByToken(acc.getToken());
+                credential = cre.get();
+                credential.setAccessToken("AAWEB-" + UUID.randomUUID().toString());
+                credential.setRefreshToken("RFWEB-" + UUID.randomUUID().toString());
+                credential.setToken(credential.getAccessToken());
+                credential.setClientType("WEB");
+                credential.setCreated(Calendar.getInstance().getTimeInMillis());
+                credential.setExpired(credential.getCreated() + 86400000*3);
+                credential.setUpdated(credential.getCreated());
+                credential.setStatus(1);
+                credential.setAccount(acc);
+                acc.setCredential(credential);
+                acc.setToken(credential.getAccessToken());
+            }
 
             accountRepository.save(acc);
             credentialRepository.save(credential);
@@ -53,8 +74,6 @@ public class DefaultAccountService implements AccountService{
             CredentialDto credentialDto = new CredentialDto(credential);
             RESTLogin restLogin = new RESTLogin(accountInformationDto, credentialDto);
 
-            System.out.println(accountInformationDto.getUsername());
-            System.out.println(credentialDto.getAccessToken());
 
             return new ResponseEntity<>(new RESTResponse.Success()
                     .setStatus(HttpStatus.ACCEPTED.value())
@@ -74,9 +93,9 @@ public class DefaultAccountService implements AccountService{
         Optional<Account> acc = accountRepository.findById(credential.getAccount().getId());
         if (acc.isPresent()){
             Account account = acc.get();
-            AccountInformationDto accountInformationDto = new AccountInformationDto(account);
-            CredentialDto credentialDto = new CredentialDto(credential);
-            RESTLogin restLogin = new RESTLogin(accountInformationDto, credentialDto);
+//            AccountInformationDto accountInformationDto = new AccountInformationDto(account);
+//            CredentialDto credentialDto = new CredentialDto(credential);
+//            RESTLogin restLogin = new RESTLogin(accountInformationDto, credentialDto);
             User user = new User(account.getUsername(), account.getPassword(), true, true, true, true, AuthorityUtils.createAuthorityList("USER"));
 
             return Optional.of(user);
