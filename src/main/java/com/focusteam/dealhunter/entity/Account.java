@@ -24,7 +24,7 @@ public class Account {
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private UserInformation userInformation;
 
-    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Credential credential;
 
     @OneToOne(mappedBy = "account")
@@ -143,6 +143,20 @@ public class Account {
         this.token = token;
     }
 
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", typeAccount=" + typeAccount +
+                ", token='" + token + '\'' +
+                ", status=" + status +
+                ", userInformation=" + userInformation +
+                ", credential=" + credential +
+                ", store=" + store +
+                '}';
+    }
 
     public static final class AccountBuilder {
         private long id;

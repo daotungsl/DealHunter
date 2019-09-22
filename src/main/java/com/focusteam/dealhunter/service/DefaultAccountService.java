@@ -37,6 +37,7 @@ public class DefaultAccountService implements AccountService{
         Optional<Account> account = accountRepository.login(accountLoginDto.getUsername(), accountLoginDto.getPassword());
         if (account.isPresent()) {
             Account acc = account.get();
+
             Credential credential= new Credential();
 
             if (acc.getToken() == null){
@@ -51,6 +52,9 @@ public class DefaultAccountService implements AccountService{
                 credential.setAccount(acc);
                 acc.setCredential(credential);
                 acc.setToken(credential.getAccessToken());
+
+                accountRepository.save(acc);
+                //credentialRepository.save(credential);
             }else {
                 Optional<Credential> cre = credentialRepository.findByToken(acc.getToken());
                 credential = cre.get();
@@ -65,10 +69,10 @@ public class DefaultAccountService implements AccountService{
                 credential.setAccount(acc);
                 acc.setCredential(credential);
                 acc.setToken(credential.getAccessToken());
-            }
 
-            accountRepository.save(acc);
-            credentialRepository.save(credential);
+                accountRepository.save(acc);
+                //credentialRepository.save(credential);
+            }
 
             AccountInformationDto accountInformationDto = new AccountInformationDto(acc);
             CredentialDto credentialDto = new CredentialDto(credential);
