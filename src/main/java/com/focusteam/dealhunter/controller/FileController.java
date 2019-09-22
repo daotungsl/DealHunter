@@ -51,7 +51,7 @@ public class FileController {
         return new ResponseEntity<>(new RESTResponse.Success()
                 .setStatus(HttpStatus.OK.value())
                 .setData(medias)
-                .setMessage("Upload file success !").build(), HttpStatus.OK);
+                .setMessage("Upload files success !").build(), HttpStatus.OK);
     }
 
 
