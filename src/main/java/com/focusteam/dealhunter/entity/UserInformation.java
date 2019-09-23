@@ -1,6 +1,9 @@
 package com.focusteam.dealhunter.entity;
 
+import com.focusteam.dealhunter.dto.UserInformationDto;
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
@@ -27,6 +30,17 @@ public class UserInformation {
         this.created = System.currentTimeMillis();
         this.updated = System.currentTimeMillis();
     }
+
+    public UserInformation(UserInformationDto userInformationDto) {
+        this.fullName = userInformationDto.getFullName();
+        this.gender = userInformationDto.getGender();
+        this.birthday = userInformationDto.getBirthday();
+        this.avatar = userInformationDto.getAvatar();
+        this.address = userInformationDto.getAddress();
+        //this.updated = userInformationDto.getUpdated();
+    }
+
+
 
     public String getEmail() {
         return email;
@@ -108,6 +122,21 @@ public class UserInformation {
         this.account = account;
     }
 
+    @Override
+    public String toString() {
+        return "UserInformation{" +
+                "email='" + email + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", gender=" + gender +
+                ", birthday='" + birthday + '\'' +
+                ", phone='" + phone + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", address='" + address + '\'' +
+                ", created=" + created +
+                ", updated=" + updated +
+                ", account=" + account +
+                '}';
+    }
 
     public static final class UserInformationBuilder {
         private String email;

@@ -3,6 +3,7 @@ package com.focusteam.dealhunter.entity;
 import com.focusteam.dealhunter.dto.AccountDto;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
