@@ -17,37 +17,15 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping(value = "/api/so")
 public class RegisterController {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private CityRepository cityRepository;
-    @CrossOrigin
-    @RequestMapping(method = RequestMethod.POST, value = "/unauthentic/register")
-    public ResponseEntity<Object> accountRegister(@RequestBody AccountDto accountDto) {
-        if (!accountDto.getPassword().equals(accountDto.getRepassword())){
-            return new ResponseEntity<>(new RESTResponse.Error()
-                    .setStatus(HttpStatus.FORBIDDEN.value())
-                    .setData("")
-                    .setMessage("Re Password error!").build(), HttpStatus.FORBIDDEN);
-        }
-        Optional<Account> optionalAccount = accountRepository.findByName(accountDto.getEmail());
-        if (!optionalAccount.isPresent()){
-            Account account = new Account(accountDto);
-            accountRepository.save(account);
-            return new ResponseEntity<>(new RESTResponse.Success()
-                    .setStatus(HttpStatus.CREATED.value())
-                    .setData(accountDto)
-                    .setMessage("Success!").build(), HttpStatus.CREATED);
-        }
-        return new ResponseEntity<>(new RESTResponse.Error()
-                .setStatus(HttpStatus.FORBIDDEN.value())
-                .setData("")
-                .setMessage("Accounts exist!").build(), HttpStatus.FORBIDDEN);
-    }
 
     @CrossOrigin
-    @RequestMapping(value = "/api/so/cities", method = RequestMethod.GET)
+    @RequestMapping(value = "/cities", method = RequestMethod.GET)
     public ResponseEntity<Object> getListCity(){
         List<City> cities = cityRepository.findAll();
         if (cities != null){

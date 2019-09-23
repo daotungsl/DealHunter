@@ -3,39 +3,36 @@ package com.focusteam.dealhunter.dto;
 import com.focusteam.dealhunter.entity.Account;
 import com.focusteam.dealhunter.util.StringUtil;
 
-public class AccountInformationDto {
-    private long id;
-    private String username;
-    private String password;
-    private int typeAccount;
-    private long storeId;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+public class UserInformationDto {
     private String email;
+
+    @Size(min = 5, max = 50)
     private String fullName;
+
     private int gender;
+
+    @NotBlank
+    @Size(min = 10, max = 50)
     private String birthday;
+
     private String phone;
+
+    @NotBlank
+    @Size(min = 20)
     private String avatar;
+
+    @Size(min = 10, max = 100)
     private String address;
 
     private String created;
     private String updated;
-    private int status;
 
-    public AccountInformationDto() {
-    }
-
-    public AccountInformationDto(Account account) {
-        this.id = account.getId();
-        this.username = account.getUsername();
-        this.password = account.getPassword();
-        this.typeAccount = account.getTypeAccount();
-        if (account.getStore() == null) {
-            this.storeId = -1;
-        }else {
-            this.storeId = account.getStore().getId();
-        }
-
+    public UserInformationDto(Account account) {
         this.email = account.getUserInformation().getEmail();
         this.fullName = account.getUserInformation().getFullName();
         this.gender = account.getUserInformation().getGender();
@@ -43,58 +40,11 @@ public class AccountInformationDto {
         this.phone = account.getUserInformation().getPhone();
         this.avatar = account.getUserInformation().getAvatar();
         this.address = account.getUserInformation().getAddress();
-
         this.created = new StringUtil().dateFormatFromLong(account.getUserInformation().getCreated());
         this.updated = new StringUtil().dateFormatFromLong(account.getUserInformation().getUpdated());
-        this.status = account.getStatus();
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getStoreId() {
-        return storeId;
-    }
-
-    public void setStoreId(long storeId) {
-        this.storeId = storeId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getTypeAccount() {
-        return typeAccount;
-    }
-
-    public void setTypeAccount(int typeAccount) {
-        this.typeAccount = typeAccount;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
+    public UserInformationDto() {
     }
 
     public String getEmail() {
