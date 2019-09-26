@@ -7,7 +7,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 public class AccountDto {
-    @NotEmpty(message = "")
     @Size(min = 10, max = 15)
     private String phone;
 

@@ -1,8 +1,9 @@
 package com.focusteam.dealhunter.entity;
 
+import com.focusteam.dealhunter.dto.TypeVoucherCreateDto;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.util.Set;
 
 @Entity
@@ -18,6 +19,17 @@ public class TypeVoucher {
     private long updated;
     @NotNull
     private int status;
+
+    public TypeVoucher() {
+    }
+
+    public TypeVoucher(TypeVoucherCreateDto typeVoucherCreateDto) {
+        this.name = typeVoucherCreateDto.getName();
+        this.description = typeVoucherCreateDto.getDescription();
+        this.created = System.currentTimeMillis();
+        this.updated = System.currentTimeMillis();
+        this.status = 1;
+    }
 
     @OneToMany(mappedBy = "typeVoucher")
     private Set<Voucher> vouchers;

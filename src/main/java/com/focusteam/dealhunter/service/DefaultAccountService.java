@@ -10,6 +10,7 @@ import com.focusteam.dealhunter.repository.CredentialRepository;
 import com.focusteam.dealhunter.repository.UserInformationRepository;
 import com.focusteam.dealhunter.rest.RESTLogin;
 import com.focusteam.dealhunter.rest.RESTResponse;
+import com.focusteam.dealhunter.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpRequest;
@@ -42,27 +43,37 @@ public class DefaultAccountService implements AccountService{
 
     @Override
     public ResponseEntity<Object> login(@RequestBody AccountLoginDto accountLoginDto) {
-        Optional<Account> account = accountRepository.login(accountLoginDto.getUsername(), accountLoginDto.getPassword());
-        if (account.isPresent()) {
-            Account acc = account.get();
-            Credential credential= new Credential();
-            if (acc.getToken() == null){
-                saveAccountCredential(acc, credential);
+        Optional<Account> account1 = accountRepository.findByUsername(accountLoginDto.getUsername());
+        if (account1.isPresent()){
+            Account account2 = account1.get();
+            Credential credential = new Credential();
+            //String salt = account2.getUserInformation().getSalt();
+            accountLoginDto.setPassword(accountLoginDto.getPassword() + (new StringUtil().encryptMD5(account2.getUserInformation().getSalt())));
+            //System.out.println(accountLoginDto.getPassword());
+            if (accountLoginDto.getPassword().equals(account2.getPassword())){
+                //System.out.println("Password equal!");
+                if (account2.getToken() == null){
+                    saveAccountCredential(account2, credential);
+                }else {
+                    Optional<Credential> cre = credentialRepository.findByToken(account2.getToken());
+                    credential = cre.get();
+                    saveAccountCredential(account2, credential);
+                }
+                AccountInformationDto accountInformationDto = new AccountInformationDto(account2);
+                CredentialDto credentialDto = new CredentialDto(credential);
+                RESTLogin restLogin = new RESTLogin(accountInformationDto, credentialDto);
+
+
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.ACCEPTED.value())
+                        .setData(restLogin)
+                        .setMessage("User logged in successfully!").build(), HttpStatus.ACCEPTED);
             }else {
-                Optional<Credential> cre = credentialRepository.findByToken(acc.getToken());
-                credential = cre.get();
-                saveAccountCredential(acc, credential);
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .setStatus(HttpStatus.UNAUTHORIZED.value())
+                        .setData(StringUtils.EMPTY)
+                        .setMessage("Invalid email or password").build(), HttpStatus.UNAUTHORIZED);
             }
-
-            AccountInformationDto accountInformationDto = new AccountInformationDto(acc);
-            CredentialDto credentialDto = new CredentialDto(credential);
-            RESTLogin restLogin = new RESTLogin(accountInformationDto, credentialDto);
-
-
-            return new ResponseEntity<>(new RESTResponse.Success()
-                    .setStatus(HttpStatus.ACCEPTED.value())
-                    .setData(restLogin)
-                    .setMessage("User logged in successfully!").build(), HttpStatus.ACCEPTED);
         }
         return new ResponseEntity<>(new RESTResponse.Error()
                 .setStatus(HttpStatus.UNAUTHORIZED.value())
@@ -99,10 +110,13 @@ public class DefaultAccountService implements AccountService{
             Optional<UserInformation> userInformation = userInformationRepository.findByPhone(accountDto.getPhone());
             if (!userInformation.isPresent()){
                 Account acc = new Account(accountDto);
+                String salt = new StringUtil().randomString();
+                acc.getUserInformation().setSalt(salt);
+                acc.setPassword(new StringUtil().encryptMD5(accountDto.getPassword()) + new StringUtil().encryptMD5(salt));
                 accountRepository.save(acc);
                 return new ResponseEntity<>(new RESTResponse.Success()
                         .setStatus(HttpStatus.CREATED.value())
-                        .setData(accountDto)
+                        .setData(new AccountLoginDto(accountDto.getEmail(), accountDto.getPassword()))
                         .setMessage("Account register success !").build(), HttpStatus.CREATED);
             }
             hashMap.clear();
@@ -132,6 +146,7 @@ public class DefaultAccountService implements AccountService{
             User user = new User(account.getUsername(), account.getPassword(), true, true, true, true, AuthorityUtils.createAuthorityList("USER"));
             return Optional.of(user);
         }
+
         return Optional.empty();
     }
 
