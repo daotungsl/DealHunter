@@ -1,4 +1,4 @@
-package com.focusteam.dealhunter.service;
+package com.focusteam.dealhunter.service.fileAndMail;
 
 import com.focusteam.dealhunter.exception.FileStorageException;
 import com.focusteam.dealhunter.exception.MyFileNotFoundException;

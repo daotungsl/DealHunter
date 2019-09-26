@@ -1,13 +1,11 @@
-package com.focusteam.dealhunter.service;
+package com.focusteam.dealhunter.service.iml;
 
-import com.focusteam.dealhunter.dto.TypeVoucherCreateDto;
-import com.focusteam.dealhunter.dto.TypeVoucherDto;
-import com.focusteam.dealhunter.dto.TypeVoucherUpdate;
+import com.focusteam.dealhunter.dto.groupTypeVoucherDto.TypeVoucherCreateDto;
+import com.focusteam.dealhunter.dto.groupTypeVoucherDto.TypeVoucherUpdate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;

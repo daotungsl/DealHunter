@@ -1,4 +1,4 @@
-package com.focusteam.dealhunter.dto;
+package com.focusteam.dealhunter.dto.groupAccountDto;
 
 import com.focusteam.dealhunter.entity.Account;
 

@@ -1,6 +1,5 @@
 package com.focusteam.dealhunter.controller;
 
-import com.focusteam.dealhunter.dto.AccountDto;
 import com.focusteam.dealhunter.dto.StoreAddressDto;
 import com.focusteam.dealhunter.dto.StoreDto;
 import com.focusteam.dealhunter.dto.StoreId;
