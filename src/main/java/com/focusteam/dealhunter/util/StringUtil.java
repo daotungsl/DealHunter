@@ -1,5 +1,8 @@
 package com.focusteam.dealhunter.util;
 
+import javax.xml.bind.DatatypeConverter;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -15,7 +18,7 @@ public class StringUtil {
     private static final String DATA_FOR_RANDOM_STRING = CHAR_LOWER + CHAR_UPPER + NUMBER + SYMBOL;
     private static SecureRandom random = new SecureRandom();
 
-    public static String randomString(){
+    public String randomString(){
         StringBuilder sb = new StringBuilder(10);
         for (int i = 0; i < 20; i++) {
             int rndCharAt = random.nextInt(DATA_FOR_RANDOM_STRING.length());
@@ -30,5 +33,17 @@ public class StringUtil {
         Date date = new Date(time);
         Format format = new SimpleDateFormat("HH:mm:ss dd MM yyyy");
         return format.format(date);
+    }
+
+    public String encryptMD5(String password){
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(password.getBytes());
+            byte[] digest = md.digest();
+            return DatatypeConverter.printHexBinary(digest).toUpperCase();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

@@ -5,6 +5,13 @@ public class AccountLoginDto {
     private String password;
     private String clientType;
 
+    public AccountLoginDto(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public AccountLoginDto() {
+    }
 
     public String getUsername() {
         return username;

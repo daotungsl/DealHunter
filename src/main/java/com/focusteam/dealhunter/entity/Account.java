@@ -1,6 +1,7 @@
 package com.focusteam.dealhunter.entity;
 
 import com.focusteam.dealhunter.dto.AccountDto;
+import com.focusteam.dealhunter.util.StringUtil;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -68,6 +69,7 @@ public class Account {
         userInformation.setUpdated(System.currentTimeMillis());
         userInformation.setEmail(accountDto.getEmail());
         userInformation.setPhone(accountDto.getPhone());
+        //userInformation.setSalt(new StringUtil().randomString());
         userInformation.setAccount(this);
         this.userInformation = userInformation;
     }

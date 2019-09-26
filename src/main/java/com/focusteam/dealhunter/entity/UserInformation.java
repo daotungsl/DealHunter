@@ -18,6 +18,7 @@ public class UserInformation {
     private String phone;
     private String avatar;
     private String address;
+    private String salt;
     @NotNull
     private long created;
     private long updated;
@@ -41,6 +42,13 @@ public class UserInformation {
     }
 
 
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 
     public String getEmail() {
         return email;
@@ -132,11 +140,13 @@ public class UserInformation {
                 ", phone='" + phone + '\'' +
                 ", avatar='" + avatar + '\'' +
                 ", address='" + address + '\'' +
+                ", salt='" + salt + '\'' +
                 ", created=" + created +
                 ", updated=" + updated +
                 ", account=" + account +
                 '}';
     }
+
 
     public static final class UserInformationBuilder {
         private String email;
@@ -146,6 +156,7 @@ public class UserInformation {
         private String phone;
         private String avatar;
         private String address;
+        private String salt;
         private long created;
         private long updated;
         private Account account;
@@ -192,6 +203,11 @@ public class UserInformation {
             return this;
         }
 
+        public UserInformationBuilder withSalt(String salt) {
+            this.salt = salt;
+            return this;
+        }
+
         public UserInformationBuilder withCreated(long created) {
             this.created = created;
             return this;
@@ -216,6 +232,7 @@ public class UserInformation {
             userInformation.setPhone(phone);
             userInformation.setAvatar(avatar);
             userInformation.setAddress(address);
+            userInformation.setSalt(salt);
             userInformation.setCreated(created);
             userInformation.setUpdated(updated);
             userInformation.setAccount(account);
