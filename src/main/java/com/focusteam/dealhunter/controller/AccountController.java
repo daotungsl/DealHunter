@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -17,15 +18,15 @@ public class AccountController {
 
     @CrossOrigin
     @PostMapping("/unauthentic/account/login")
-    public ResponseEntity<Object> login(@RequestBody AccountLoginDto accountLoginDto){
-        ResponseEntity<Object> response = accountService.login(accountLoginDto);
+    public ResponseEntity<Object> login(@RequestBody AccountLoginDto accountLoginDto, HttpServletRequest request){
+        ResponseEntity<Object> response = accountService.login(accountLoginDto, request);
         return response;
     }
 
     @CrossOrigin
     @PostMapping("/unauthentic/account/register")
-    public ResponseEntity<Object> register(@RequestBody @Valid AccountDto accountDto, BindingResult bindingResult){
-        ResponseEntity<Object> response = accountService.register(accountDto, bindingResult);
+    public ResponseEntity<Object> register(@RequestBody @Valid AccountDto accountDto, BindingResult bindingResult, HttpServletRequest request){
+        ResponseEntity<Object> response = accountService.register(accountDto, bindingResult, request);
         return response;
     }
 

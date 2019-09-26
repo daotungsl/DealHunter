@@ -10,6 +10,12 @@ public class AccountLoginDto {
         this.password = password;
     }
 
+    public AccountLoginDto(String username, String password, String clientType) {
+        this.username = username;
+        this.password = password;
+        this.clientType = clientType;
+    }
+
     public AccountLoginDto() {
     }
 

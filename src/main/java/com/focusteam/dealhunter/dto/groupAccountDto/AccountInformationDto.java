@@ -14,7 +14,7 @@ public class AccountInformationDto {
     private String fullName;
     private int gender;
     private String birthday;
-    private String salt;
+    //private String salt;
     private String phone;
     private String avatar;
     private String address;
@@ -170,11 +170,11 @@ public class AccountInformationDto {
         this.updated = updated;
     }
 
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
+//    public String getSalt() {
+//        return salt;
+//    }
+//
+//    public void setSalt(String salt) {
+//        this.salt = salt;
+//    }
 }
