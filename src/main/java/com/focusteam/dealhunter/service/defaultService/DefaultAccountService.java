@@ -43,7 +43,7 @@ public class DefaultAccountService implements AccountService {
     UserInformationRepository userInformationRepository;
 
     @Override
-    public ResponseEntity<Object> login(@RequestBody AccountLoginDto accountLoginDto) {
+    public ResponseEntity<Object> login(@RequestBody AccountLoginDto accountLoginDto, HttpServletRequest request) {
         Optional<Account> account1 = accountRepository.findByUsername(accountLoginDto.getUsername());
         if (account1.isPresent()){
             Account account2 = account1.get();
@@ -54,11 +54,11 @@ public class DefaultAccountService implements AccountService {
             if (accountLoginDto.getPassword().equals(account2.getPassword())){
                 //System.out.println("Password equal!");
                 if (account2.getToken() == null){
-                    saveAccountCredential(account2, credential);
+                    saveAccountCredential(account2, credential, request);
                 }else {
                     Optional<Credential> cre = credentialRepository.findByToken(account2.getToken());
                     credential = cre.get();
-                    saveAccountCredential(account2, credential);
+                    saveAccountCredential(account2, credential, request);
                 }
                 AccountInformationDto accountInformationDto = new AccountInformationDto(account2);
                 CredentialDto credentialDto = new CredentialDto(credential);
@@ -83,7 +83,7 @@ public class DefaultAccountService implements AccountService {
     }
 
     @Override
-    public ResponseEntity<Object> register(@RequestBody @Valid AccountDto accountDto, BindingResult bindingResult) {
+    public ResponseEntity<Object> register(@RequestBody @Valid AccountDto accountDto, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()){
             hashMap.clear();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -117,7 +117,7 @@ public class DefaultAccountService implements AccountService {
                 accountRepository.save(acc);
                 return new ResponseEntity<>(new RESTResponse.Success()
                         .setStatus(HttpStatus.CREATED.value())
-                        .setData(new AccountLoginDto(accountDto.getEmail(), accountDto.getPassword()))
+                        .setData(new AccountLoginDto(accountDto.getEmail(), accountDto.getPassword(), request.getHeader("user-agent")))
                         .setMessage("Account register success !").build(), HttpStatus.CREATED);
             }
             hashMap.clear();
@@ -243,7 +243,7 @@ public class DefaultAccountService implements AccountService {
         }
     }
 
-    private void saveAccountCredential(Account account, Credential credential){
+    private void saveAccountCredential(Account account, Credential credential, HttpServletRequest request){
         credential.setAccessToken("AAWEB-" + UUID.randomUUID().toString().toUpperCase());
         credential.setRefreshToken("RFWEB-" + UUID.randomUUID().toString().toUpperCase());
         credential.setToken(credential.getAccessToken());
@@ -251,6 +251,7 @@ public class DefaultAccountService implements AccountService {
         credential.setCreated(Calendar.getInstance().getTimeInMillis());
         credential.setExpired(credential.getCreated() + 86400000*3);
         credential.setUpdated(credential.getCreated());
+        credential.setClientType(request.getHeader("user-agent"));
         credential.setStatus(1);
         credential.setAccount(account);
         account.setCredential(credential);

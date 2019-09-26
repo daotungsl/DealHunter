@@ -14,9 +14,9 @@ import java.util.Optional;
 
 public interface AccountService {
 
-    public ResponseEntity<Object> login(@RequestBody AccountLoginDto accountLoginDto);
+    public ResponseEntity<Object> login(@RequestBody AccountLoginDto accountLoginDto, HttpServletRequest request);
 
-    public ResponseEntity<Object> register(@RequestBody @Valid AccountDto accountDto, BindingResult bindingResult);
+    public ResponseEntity<Object> register(@RequestBody @Valid AccountDto accountDto, BindingResult bindingResult, HttpServletRequest request);
 
     public Optional<Account> findByToken(String token);
 
