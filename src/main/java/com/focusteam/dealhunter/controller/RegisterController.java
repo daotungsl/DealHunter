@@ -1,8 +1,6 @@
 package com.focusteam.dealhunter.controller;
 
-import com.focusteam.dealhunter.dto.AccountDto;
 import com.focusteam.dealhunter.dto.CityDto;
-import com.focusteam.dealhunter.entity.Account;
 import com.focusteam.dealhunter.entity.City;
 import com.focusteam.dealhunter.repository.AccountRepository;
 import com.focusteam.dealhunter.repository.CityRepository;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/api/so")

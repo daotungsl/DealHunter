@@ -1,6 +1,6 @@
 package com.focusteam.dealhunter.entity;
 
-import com.focusteam.dealhunter.dto.TypeVoucherCreateDto;
+import com.focusteam.dealhunter.dto.groupTypeVoucherDto.TypeVoucherCreateDto;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

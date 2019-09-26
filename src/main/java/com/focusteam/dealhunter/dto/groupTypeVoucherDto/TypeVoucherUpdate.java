@@ -1,8 +1,9 @@
-package com.focusteam.dealhunter.dto;
+package com.focusteam.dealhunter.dto.groupTypeVoucherDto;
 
-public class TypeVoucherCreateDto {
+public class TypeVoucherUpdate {
     private String name;
     private String description;
+    private int status;
 
     public String getName() {
         return name;
@@ -18,5 +19,13 @@ public class TypeVoucherCreateDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

@@ -1,12 +1,9 @@
 package com.focusteam.dealhunter.entity;
 
-import com.focusteam.dealhunter.dto.AccountDto;
-import com.focusteam.dealhunter.util.StringUtil;
+import com.focusteam.dealhunter.dto.groupAccountDto.AccountDto;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 @Entity
 public class Account {

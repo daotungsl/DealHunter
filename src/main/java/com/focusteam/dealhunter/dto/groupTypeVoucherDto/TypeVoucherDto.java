@@ -1,4 +1,4 @@
-package com.focusteam.dealhunter.dto;
+package com.focusteam.dealhunter.dto.groupTypeVoucherDto;
 
 import com.focusteam.dealhunter.entity.TypeVoucher;
 import com.focusteam.dealhunter.util.StringUtil;

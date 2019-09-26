@@ -1,4 +1,4 @@
-package com.focusteam.dealhunter.service;
+package com.focusteam.dealhunter.service.fileAndMail;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;

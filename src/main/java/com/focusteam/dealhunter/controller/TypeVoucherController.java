@@ -1,9 +1,8 @@
 package com.focusteam.dealhunter.controller;
 
-import com.focusteam.dealhunter.dto.TypeVoucherCreateDto;
-import com.focusteam.dealhunter.dto.TypeVoucherDto;
-import com.focusteam.dealhunter.dto.TypeVoucherUpdate;
-import com.focusteam.dealhunter.service.TypeVoucherService;
+import com.focusteam.dealhunter.dto.groupTypeVoucherDto.TypeVoucherCreateDto;
+import com.focusteam.dealhunter.dto.groupTypeVoucherDto.TypeVoucherUpdate;
+import com.focusteam.dealhunter.service.iml.TypeVoucherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
