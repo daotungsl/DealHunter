@@ -1,5 +1,9 @@
 package com.focusteam.dealhunter.entity;
 
+import com.focusteam.dealhunter.dto.CityDto;
+import com.focusteam.dealhunter.dto.groupCityDto.CityCreateDto;
+import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreCreateDto;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -21,6 +25,17 @@ public class City {
 
     @OneToMany(mappedBy = "city")
     private Set<StoreAddress> storeAddresses;
+
+    public City(CityCreateDto cityCreateDto) {
+        this.name = cityCreateDto.getName();
+        this.description = cityCreateDto.getDescription();
+        this.created = System.currentTimeMillis();
+        this.updated = System.currentTimeMillis();
+        this.status = 1;
+    }
+
+    public City() {
+    }
 
     public long getId() {
         return id;
