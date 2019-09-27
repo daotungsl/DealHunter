@@ -31,7 +31,7 @@ public class TypeVoucher {
         this.status = 1;
     }
 
-    @OneToMany(mappedBy = "typeVoucher")
+    @OneToMany(mappedBy = "typeVoucher", cascade = CascadeType.ALL)
     private Set<Voucher> vouchers;
 
     public long getId() {

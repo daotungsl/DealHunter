@@ -1,5 +1,7 @@
 package com.focusteam.dealhunter.entity;
 
+import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreCreateDto;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -21,6 +23,17 @@ public class TypeStore {
 
     @OneToMany(mappedBy = "typeStore")
     private Set<Store> stores;
+
+    public TypeStore() {
+    }
+
+    public TypeStore(TypeStoreCreateDto typeStoreCreateDto) {
+        this.name = typeStoreCreateDto.getName();
+        this.description = typeStoreCreateDto.getDescription();
+        this.created = System.currentTimeMillis();
+        this.updated = System.currentTimeMillis();
+        this.status = 1;
+    }
 
     public long getId() {
         return id;
