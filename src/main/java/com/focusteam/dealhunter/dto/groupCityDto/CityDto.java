@@ -1,5 +1,6 @@
 package com.focusteam.dealhunter.dto.groupCityDto;
 
+import com.focusteam.dealhunter.entity.City;
 import com.focusteam.dealhunter.entity.TypeStore;
 import com.focusteam.dealhunter.util.StringUtil;
 
@@ -40,13 +41,13 @@ public class CityDto {
         this.status = status;
     }
 
-    public CityDto(TypeStore typeStore) {
-        this.id = typeStore.getId();
-        this.name = typeStore.getName();
-        this.description = typeStore.getDescription();
-        this.created = new StringUtil().dateFormatFromLong(typeStore.getUpdated());
-        this.updated = new StringUtil().dateFormatFromLong(typeStore.getUpdated());
-        this.status = typeStore.getStatus();
+    public CityDto(City city) {
+        this.id = city.getId();
+        this.name = city.getName();
+        this.description = city.getDescription();
+        this.created = new StringUtil().dateFormatFromLong(city.getUpdated());
+        this.updated = new StringUtil().dateFormatFromLong(city.getUpdated());
+        this.status = city.getStatus();
     }
 
     public long getId() {
