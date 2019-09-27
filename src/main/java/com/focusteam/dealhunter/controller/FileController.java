@@ -1,8 +1,11 @@
 package com.focusteam.dealhunter.controller;
 
-import com.focusteam.dealhunter.entity.Media;
+import com.focusteam.dealhunter.dto.groupMediaDto.Media;
+import com.focusteam.dealhunter.entity.Account;
+import com.focusteam.dealhunter.repository.AccountRepository;
 import com.focusteam.dealhunter.rest.RESTResponse;
 import com.focusteam.dealhunter.service.fileAndMail.FileStorageService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,39 +20,126 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 @RestController
 public class FileController {
+    HashMap<String, String> hashMap = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
     @Autowired
     private FileStorageService fileStorageService;
 
+    @Autowired
+    AccountRepository accountRepository;
+
     @CrossOrigin
     @PostMapping("/api/file/upload")
-    public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file) {
-        return new ResponseEntity<>(new RESTResponse.Success()
-                .setStatus(HttpStatus.OK.value())
-                .setData(upload(file))
-                .setMessage("Upload file success !").build(), HttpStatus.OK);
+    public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        if (accountOptional.isPresent()){
+            Account account = accountOptional.get();
+            if (account.getTypeAccount() == 0){
+                hashMap.clear();
+                hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .addErrors(hashMap)
+                        .setStatus(HttpStatus.UNAUTHORIZED.value())
+                        .setData("")
+                        .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+            }else {
+                if (file != null){
+                    if (isValidFileType(file)){
+                        return new ResponseEntity<>(new RESTResponse.Success()
+                                .setStatus(HttpStatus.OK.value())
+                                .setData(upload(file))
+                                .setMessage("Upload file success !").build(), HttpStatus.OK);
+                    }else {
+                        hashMap.clear();
+                        hashMap.put("File-Type", "File type not support to upload !");
+                        return new ResponseEntity<>(new RESTResponse.Error()
+                                .addErrors(hashMap)
+                                .setStatus(HttpStatus.FORBIDDEN.value())
+                                .setData(new Media(file.getOriginalFilename(), "Upload Fail : file type " + file.getContentType() + " not support !", file.getContentType(), file.getSize()))
+                                .setMessage("Upload data has errors !").build(), HttpStatus.FORBIDDEN);
+                    }
+                }else {
+                    hashMap.clear();
+                    hashMap.put("File", "File upload can't null !");
+                    return new ResponseEntity<>(new RESTResponse.Error()
+                            .addErrors(hashMap)
+                            .setStatus(HttpStatus.FORBIDDEN.value())
+                            .setData(StringUtils.EMPTY)
+                            .setMessage("Upload data has errors !").build(), HttpStatus.FORBIDDEN);
+                }
+            }
+        }else {
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @CrossOrigin
     @PostMapping("/api/file/uploads")
-    public ResponseEntity<Object> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files){
-        List<Media> medias = new ArrayList<>();
-        for (MultipartFile file: files
-             ) {
-            Media media = upload(file);
-            medias.add(media);
+    public ResponseEntity<Object> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files, HttpServletRequest request){
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        if (accountOptional.isPresent()){
+            Account account = accountOptional.get();
+            if (account.getTypeAccount() == 0){
+                hashMap.clear();
+                hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .addErrors(hashMap)
+                        .setStatus(HttpStatus.UNAUTHORIZED.value())
+                        .setData("")
+                        .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+            }else {
+                if (files != null){
+                    if (isValidFilesType(files)){
+                        List<Media> medias = new ArrayList<>();
+                        for (MultipartFile file: files
+                        ) {
+                            Media media = upload(file);
+                            medias.add(media);
+                        }
+                        return new ResponseEntity<>(new RESTResponse.Success()
+                                .setStatus(HttpStatus.OK.value())
+                                .setData(medias)
+                                .setMessage("Upload files success !").build(), HttpStatus.OK);
+                    }else {
+                        hashMap.clear();
+                        hashMap.put("File-Type", "Upload file list has at least one file that is not supported !");
+                        hashMap.put("Support", "image/jpeg || image/png || image/gif || video/mp4");
+                        return new ResponseEntity<>(new RESTResponse.Error()
+                                .addErrors(hashMap)
+                                .setStatus(HttpStatus.FORBIDDEN.value())
+                                .setData(StringUtils.EMPTY)
+                                .setMessage("Upload data has errors !").build(), HttpStatus.FORBIDDEN);
+                    }
+                }else {
+                    hashMap.clear();
+                    hashMap.put("File", "File upload can't null !");
+                    return new ResponseEntity<>(new RESTResponse.Error()
+                            .addErrors(hashMap)
+                            .setStatus(HttpStatus.FORBIDDEN.value())
+                            .setData(StringUtils.EMPTY)
+                            .setMessage("Upload data has errors !").build(), HttpStatus.FORBIDDEN);
+                }
+            }
+        }else {
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         }
-        return new ResponseEntity<>(new RESTResponse.Success()
-                .setStatus(HttpStatus.OK.value())
-                .setData(medias)
-                .setMessage("Upload files success !").build(), HttpStatus.OK);
     }
 
 
@@ -80,27 +170,44 @@ public class FileController {
 
 
     public Media upload(MultipartFile file){
+        String fileName = fileStorageService.storeFile(file);
+
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/unauthentic/file/download/")
+                .path(fileName)
+                .toUriString();
+        return new Media(fileName, fileDownloadUri, "Upload success !",
+                file.getContentType(), file.getSize(), Calendar.getInstance().getTimeInMillis());
+    }
+
+    public boolean isValidFileType(MultipartFile file){
         if (file.getContentType().equalsIgnoreCase("image/jpeg")
                 || file.getContentType().equalsIgnoreCase("image/png")
                 || file.getContentType().equalsIgnoreCase("image/gif")
                 || file.getContentType().equalsIgnoreCase("video/mp4")){
-            String fileName = fileStorageService.storeFile(file);
-
-            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/unauthentic/file/download/")
-                    .path(fileName)
-                    .toUriString();
-            Resource resource = fileStorageService.loadFileAsResource(fileName);
-            String fileUrl = "";
-            try {
-                fileUrl = resource.getURL().toString();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return new Media(fileName, fileDownloadUri, fileUrl,
-                    file.getContentType(), file.getSize(), Calendar.getInstance().getTimeInMillis());
+            return true;
         }else {
-            return null;
+            return false;
         }
+    }
+
+    public boolean isValidFilesType(MultipartFile[] files){
+        List<Boolean> check = new ArrayList<>();
+        for (MultipartFile file: files
+             ) {
+            if (isValidFileType(file)){
+                check.add(true);
+            }else {
+                check.add(false);
+            }
+        }
+        boolean end = true;
+        for (Boolean b : check){
+            if (!b){
+                end = false;
+                break;
+            }
+        }
+        return end;
     }
 }

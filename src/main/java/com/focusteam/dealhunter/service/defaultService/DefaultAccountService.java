@@ -94,16 +94,16 @@ public class DefaultAccountService implements AccountService {
             return new ResponseEntity<>(new RESTResponse.Error()
                     .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
-                    .setData("")
+                    .setData(StringUtils.EMPTY)
                     .setMessage("Register data has errors !").build(), HttpStatus.FORBIDDEN);
         }
         if (!accountDto.getPassword().equals(accountDto.getRepassword())){
             hashMap.clear();
-            hashMap.put("Repassword", "The repassword does not match the password !");
+            hashMap.put("Re-Password", "The re-password does not match the password !");
             return new ResponseEntity<>(new RESTResponse.Error()
                     .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
-                    .setData("")
+                    .setData(StringUtils.EMPTY)
                     .setMessage("Register data has errors !").build(), HttpStatus.FORBIDDEN);
         }
         Optional<Account> accountOptional = accountRepository.findByUsername(accountDto.getEmail());
@@ -140,15 +140,19 @@ public class DefaultAccountService implements AccountService {
     @Override
     public Optional findByToken(String token) {
         Optional<Credential> credentialOptional = credentialRepository.findByToken(token);
-        Credential credential = credentialOptional.get();
-        Optional<Account> accountOptional = accountRepository.findById(credential.getAccount().getId());
-        if (accountOptional.isPresent()){
-            Account account = accountOptional.get();
-            User user = new User(account.getUsername(), account.getPassword(), true, true, true, true, AuthorityUtils.createAuthorityList("USER"));
-            return Optional.of(user);
+        if (credentialOptional.isPresent()){
+            Credential credential = credentialOptional.get();
+            Optional<Account> accountOptional = accountRepository.findById(credential.getAccount().getId());
+            if (accountOptional.isPresent()){
+                Account account = accountOptional.get();
+                User user = new User(account.getUsername(), account.getPassword(), true, true, true, true, AuthorityUtils.createAuthorityList("USER"));
+                return Optional.of(user);
+            }else {
+                return Optional.empty();
+            }
+        }else {
+            return Optional.empty();
         }
-
-        return Optional.empty();
     }
 
     @Override
