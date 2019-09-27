@@ -44,9 +44,9 @@ public class DefaultAccountService implements AccountService {
 
     @Override
     public ResponseEntity<Object> login(@RequestBody AccountLoginDto accountLoginDto, HttpServletRequest request) {
-        Optional<Account> account1 = accountRepository.findByUsername(accountLoginDto.getUsername());
-        if (account1.isPresent()){
-            Account account2 = account1.get();
+        Optional<Account> accountOptional = accountRepository.findByUsername(accountLoginDto.getUsername());
+        if (accountOptional.isPresent()){
+            Account account2 = accountOptional.get();
             Credential credential = new Credential();
             //String salt = account2.getUserInformation().getSalt();
             accountLoginDto.setPassword(accountLoginDto.getPassword() + (new StringUtil().encryptMD5(account2.getUserInformation().getSalt())));
@@ -56,8 +56,8 @@ public class DefaultAccountService implements AccountService {
                 if (account2.getToken() == null){
                     saveAccountCredential(account2, credential, request);
                 }else {
-                    Optional<Credential> cre = credentialRepository.findByToken(account2.getToken());
-                    credential = cre.get();
+                    Optional<Credential> credentialOptional = credentialRepository.findByToken(account2.getToken());
+                    credential = credentialOptional.get();
                     saveAccountCredential(account2, credential, request);
                 }
                 AccountInformationDto accountInformationDto = new AccountInformationDto(account2);
@@ -106,10 +106,10 @@ public class DefaultAccountService implements AccountService {
                     .setData("")
                     .setMessage("Register data has errors !").build(), HttpStatus.FORBIDDEN);
         }
-        Optional<Account> account = accountRepository.findByUsername(accountDto.getEmail());
-        if (!account.isPresent()){
-            Optional<UserInformation> userInformation = userInformationRepository.findByPhone(accountDto.getPhone());
-            if (!userInformation.isPresent()){
+        Optional<Account> accountOptional = accountRepository.findByUsername(accountDto.getEmail());
+        if (!accountOptional.isPresent()){
+            Optional<UserInformation> userInformationOptional = userInformationRepository.findByPhone(accountDto.getPhone());
+            if (!userInformationOptional.isPresent()){
                 Account acc = new Account(accountDto);
                 String salt = new StringUtil().randomString();
                 acc.getUserInformation().setSalt(salt);
@@ -139,11 +139,11 @@ public class DefaultAccountService implements AccountService {
 
     @Override
     public Optional findByToken(String token) {
-        Optional<Credential> cre = credentialRepository.findByToken(token);
-        Credential credential = cre.get();
-        Optional<Account> acc = accountRepository.findById(credential.getAccount().getId());
-        if (acc.isPresent()){
-            Account account = acc.get();
+        Optional<Credential> credentialOptional = credentialRepository.findByToken(token);
+        Credential credential = credentialOptional.get();
+        Optional<Account> accountOptional = accountRepository.findById(credential.getAccount().getId());
+        if (accountOptional.isPresent()){
+            Account account = accountOptional.get();
             User user = new User(account.getUsername(), account.getPassword(), true, true, true, true, AuthorityUtils.createAuthorityList("USER"));
             return Optional.of(user);
         }
@@ -153,9 +153,9 @@ public class DefaultAccountService implements AccountService {
 
     @Override
     public ResponseEntity<Object> findById(Long id) {
-        Optional<Account> acc = accountRepository.findById(id);
-        if (acc.isPresent()){
-            Account account = acc.get();
+        Optional<Account> accountOptional = accountRepository.findById(id);
+        if (accountOptional.isPresent()){
+            Account account = accountOptional.get();
             AccountInformationDto accountInformationDto = new AccountInformationDto(account);
             CredentialDto credentialDto = new CredentialDto(account.getCredential());
             RESTLogin restLogin = new RESTLogin(accountInformationDto, credentialDto);
@@ -186,9 +186,9 @@ public class DefaultAccountService implements AccountService {
                         .setData("")
                         .setMessage("User information data has errors !").build(), HttpStatus.FORBIDDEN);
             }
-            Optional<Account> acc = accountRepository.findByUsername(userInformationDto.getEmail());
-            if (acc.isPresent()){
-                Account account = acc.get();
+            Optional<Account> accountOptional = accountRepository.findByUsername(userInformationDto.getEmail());
+            if (accountOptional.isPresent()){
+                Account account = accountOptional.get();
                 if (userInformationDto.getPhone() != StringUtils.EMPTY && account.getUserInformation().getPhone().equals(userInformationDto.getPhone())){
                     account.getUserInformation().setFullName(userInformationDto.getFullName());
                     account.getUserInformation().setGender(userInformationDto.getGender());
@@ -232,10 +232,10 @@ public class DefaultAccountService implements AccountService {
 
     @Override
     public boolean tokenForOneAccount(String token, String email) {
-        Optional<Account> acc1 = accountRepository.findByUsername(email);
-        Optional<Account> acc2 = accountRepository.findByTokenAccount(token);
-        Account account1 = acc1.get();
-        Account account2 = acc2.get();
+        Optional<Account> accountOptional = accountRepository.findByUsername(email);
+        Optional<Account> accountOptional1 = accountRepository.findByTokenAccount(token);
+        Account account1 = accountOptional.get();
+        Account account2 = accountOptional1.get();
         if (account1.equals(account2)){
             return true;
         }else {

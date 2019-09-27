@@ -4,7 +4,7 @@ import com.focusteam.dealhunter.util.StringUtil;
 
 public class TEST {
     public static void main(String[] args) {
-        String password = "123123aa";
+        String password = "Tung1991";
         String md51 = new StringUtil().encryptMD5(password);
         String md52 = new StringUtil().encryptMD5(password);
         if (md51.equals(md52)){

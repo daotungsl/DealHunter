@@ -1,15 +1,9 @@
-package com.focusteam.dealhunter.dto.groupTypeVoucherDto;
+package com.focusteam.dealhunter.dto.groupTypeStoreDto;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-
-public class TypeVoucherCreateDto {
-    @NotEmpty
-    @Size(min = 10, max = 15)
+public class TypeStoreUpdate {
     private String name;
-
-    @Size(min = 10, max = 2000)
     private String description;
+    private int status;
 
     public String getName() {
         return name;
@@ -25,5 +19,13 @@ public class TypeVoucherCreateDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

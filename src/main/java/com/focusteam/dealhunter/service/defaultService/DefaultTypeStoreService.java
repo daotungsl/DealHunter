@@ -1,43 +1,39 @@
 package com.focusteam.dealhunter.service.defaultService;
 
-import com.focusteam.dealhunter.dto.groupTypeVoucherDto.TypeVoucherCreateDto;
+import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreCreateDto;
+import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreDto;
+import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreUpdate;
 import com.focusteam.dealhunter.dto.groupTypeVoucherDto.TypeVoucherDto;
-import com.focusteam.dealhunter.dto.groupTypeVoucherDto.TypeVoucherUpdate;
 import com.focusteam.dealhunter.entity.Account;
+import com.focusteam.dealhunter.entity.TypeStore;
 import com.focusteam.dealhunter.entity.TypeVoucher;
 import com.focusteam.dealhunter.repository.AccountRepository;
-import com.focusteam.dealhunter.repository.CredentialRepository;
-import com.focusteam.dealhunter.repository.TypeVoucherRepository;
+import com.focusteam.dealhunter.repository.TypeStoreRepository;
 import com.focusteam.dealhunter.rest.RESTResponse;
-import com.focusteam.dealhunter.service.iml.TypeVoucherService;
+import com.focusteam.dealhunter.service.iml.TypeStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
 
-@Service("typeVoucherService")
-public class DefaultTypeVoucherService implements TypeVoucherService {
+@Service("typeStoreService")
+public class DefaultTypeStoreService implements TypeStoreService {
     HashMap<String, String> hashMap = new HashMap<>();
 
     @Autowired
-    TypeVoucherRepository typeVoucherRepository;
+    TypeStoreRepository typeStoreRepository;
 
     @Autowired
     AccountRepository accountRepository;
 
-    @Autowired
-    CredentialRepository credentialRepository;
-
     @Override
-    public ResponseEntity<Object> create(@Valid @RequestBody TypeVoucherCreateDto typeVoucherCreateDto, BindingResult bindingResult, HttpServletRequest request) {
+    public ResponseEntity<Object> create(@Valid TypeStoreCreateDto typeStoreCreateDto, BindingResult bindingResult, HttpServletRequest request) {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         if (accountOptional.isPresent()){
             Account account = accountOptional.get();
@@ -61,25 +57,25 @@ public class DefaultTypeVoucherService implements TypeVoucherService {
                             .addErrors(hashMap)
                             .setStatus(HttpStatus.FORBIDDEN.value())
                             .setData("")
-                            .setMessage("Type voucher data has errors !").build(), HttpStatus.FORBIDDEN);
+                            .setMessage("Type store data has errors !").build(), HttpStatus.FORBIDDEN);
                 }else {
-                    Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findByName(typeVoucherCreateDto.getName());
-                    if (!typeVoucherOptional.isPresent()){
-                        TypeVoucher typeVoucher = new TypeVoucher(typeVoucherCreateDto);
-                        typeVoucherRepository.save(typeVoucher);
+                    Optional<TypeStore> typeStoreOptional = typeStoreRepository.findByName(typeStoreCreateDto.getName());
+                    if (!typeStoreOptional.isPresent()){
+                        TypeStore typeStore = new TypeStore(typeStoreCreateDto);
+                        typeStoreRepository.save(typeStore);
 
                         return new ResponseEntity<>(new RESTResponse.Success()
                                 .setStatus(HttpStatus.CREATED.value())
-                                .setData(new TypeVoucherDto(typeVoucher))
-                                .setMessage("Created type voucher success !").build(), HttpStatus.CREATED);
+                                .setData(new TypeStoreDto(typeStore))
+                                .setMessage("Created type store success !").build(), HttpStatus.CREATED);
                     }else {
                         hashMap.clear();
-                        hashMap.put("Name", "This type voucher name has exist !");
+                        hashMap.put("Name", "This type store name has exist !");
                         return new ResponseEntity<>(new RESTResponse.Error()
                                 .addErrors(hashMap)
                                 .setStatus(HttpStatus.FORBIDDEN.value())
                                 .setData("")
-                                .setMessage("Type voucher data has errors !").build(), HttpStatus.FORBIDDEN);
+                                .setMessage("Type store data has errors !").build(), HttpStatus.FORBIDDEN);
                     }
                 }
             }
@@ -95,17 +91,17 @@ public class DefaultTypeVoucherService implements TypeVoucherService {
     }
 
     @Override
-    public ResponseEntity<Object> getOne(@PathVariable long id) {
-        Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findById(id);
-        if (typeVoucherOptional.isPresent()){
-            TypeVoucher typeVoucher1 = typeVoucherOptional.get();
+    public ResponseEntity<Object> getOne(long id) {
+        Optional<TypeStore> typeStoreOptional = typeStoreRepository.findById(id);
+        if (typeStoreOptional.isPresent()){
+            TypeStore typeStore = typeStoreOptional.get();
             return new ResponseEntity<>(new RESTResponse.Success()
                     .setStatus(HttpStatus.FOUND.value())
-                    .setData(new TypeVoucherDto(typeVoucher1))
-                    .setMessage("Type voucher with id = " + id + " !").build(), HttpStatus.FOUND);
+                    .setData(new TypeStoreDto(typeStore))
+                    .setMessage("Type store with id = " + id + " !").build(), HttpStatus.FOUND);
         }else {
             hashMap.clear();
-            hashMap.put("ID", "No type voucher found with this id = " + id + " !");
+            hashMap.put("ID", "No type store found with this id = " + id + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
                     .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
@@ -116,22 +112,22 @@ public class DefaultTypeVoucherService implements TypeVoucherService {
 
     @Override
     public ResponseEntity<Object> getAll() {
-        List<TypeVoucher> typeVouchers = typeVoucherRepository.findAll();
-        if (!typeVouchers.isEmpty()){
-            List<TypeVoucherDto> typeVoucherDtos = new ArrayList<>();
-            TypeVoucherDto typeVoucherDto = null;
-            for (TypeVoucher typeVoucher: typeVouchers
-                 ) {
-                typeVoucherDto = new TypeVoucherDto(typeVoucher);
-                typeVoucherDtos.add(typeVoucherDto);
+        List<TypeStore> typeStores = typeStoreRepository.findAll();
+        if (!typeStores.isEmpty()){
+            List<TypeStoreDto> typeStoreDtos = new ArrayList<>();
+            TypeStoreDto typeStoreDto = null;
+            for (TypeStore typeStore: typeStores
+            ) {
+                typeStoreDto = new TypeStoreDto(typeStore);
+                typeStoreDtos.add(typeStoreDto);
             }
             return new ResponseEntity<>(new RESTResponse.Success()
                     .setStatus(HttpStatus.FOUND.value())
-                    .setData(typeVoucherDtos)
+                    .setData(typeStoreDtos)
                     .setMessage("Success!").build(), HttpStatus.FOUND);
         }
         hashMap.clear();
-        hashMap.put("TypeVoucher", "No type voucher found !");
+        hashMap.put("TypeStore", "No type store found !");
         return new ResponseEntity<>(new RESTResponse.Error()
                 .addErrors(hashMap)
                 .setStatus(HttpStatus.NOT_FOUND.value())
@@ -140,7 +136,7 @@ public class DefaultTypeVoucherService implements TypeVoucherService {
     }
 
     @Override
-    public ResponseEntity<Object> update(@PathVariable long id, @Valid @RequestBody TypeVoucherUpdate typeVoucherUpdate, BindingResult bindingResult, HttpServletRequest request) {
+    public ResponseEntity<Object> update(long id, @Valid TypeStoreUpdate typeStoreUpdate, BindingResult bindingResult, HttpServletRequest request) {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         if (accountOptional.isPresent()){
             Account account1 = accountOptional.get();
@@ -164,25 +160,25 @@ public class DefaultTypeVoucherService implements TypeVoucherService {
                             .addErrors(hashMap)
                             .setStatus(HttpStatus.FORBIDDEN.value())
                             .setData("")
-                            .setMessage("Type voucher data has errors !").build(), HttpStatus.FORBIDDEN);
+                            .setMessage("Type store data has errors !").build(), HttpStatus.FORBIDDEN);
                 }else {
-                    Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findById(id);
-                    if (typeVoucherOptional.isPresent()){
-                        TypeVoucher typeVoucher1 = typeVoucherOptional.get();
-                        typeVoucher1.setName(typeVoucherUpdate.getName());
-                        typeVoucher1.setDescription(typeVoucherUpdate.getDescription());
-                        typeVoucher1.setUpdated(Calendar.getInstance().getTimeInMillis());
-                        typeVoucher1.setStatus(typeVoucherUpdate.getStatus());
+                    Optional<TypeStore> typeStoreOptional = typeStoreRepository.findById(id);
+                    if (typeStoreOptional.isPresent()){
+                        TypeStore typeStore = typeStoreOptional.get();
+                        typeStore.setName(typeStoreUpdate.getName());
+                        typeStore.setDescription(typeStoreUpdate.getDescription());
+                        typeStore.setUpdated(Calendar.getInstance().getTimeInMillis());
+                        typeStore.setStatus(typeStoreUpdate.getStatus());
 
-                        typeVoucherRepository.save(typeVoucher1);
+                        typeStoreRepository.save(typeStore);
 
                         return new ResponseEntity<>(new RESTResponse.Success()
                                 .setStatus(HttpStatus.OK.value())
-                                .setData(new TypeVoucherDto(typeVoucher1))
-                                .setMessage("Update type voucher data success !").build(), HttpStatus.OK);
+                                .setData(new TypeStoreDto(typeStore))
+                                .setMessage("Update type store data success !").build(), HttpStatus.OK);
                     }else {
                         hashMap.clear();
-                        hashMap.put("ID", "No type voucher found with this id !");
+                        hashMap.put("ID", "No type store found with this id !");
                         return new ResponseEntity<>(new RESTResponse.Error()
                                 .addErrors(hashMap)
                                 .setStatus(HttpStatus.FORBIDDEN.value())
@@ -203,7 +199,7 @@ public class DefaultTypeVoucherService implements TypeVoucherService {
     }
 
     @Override
-    public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request) {
+    public ResponseEntity<Object> delete(long id, HttpServletRequest request) {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         if (accountOptional.isPresent()){
             Account account = accountOptional.get();
@@ -216,17 +212,17 @@ public class DefaultTypeVoucherService implements TypeVoucherService {
                         .setData("")
                         .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
             }else {
-                Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findById(id);
-                if (typeVoucherOptional.isPresent()){
-                    TypeVoucher typeVoucher = typeVoucherOptional.get();
-                    typeVoucherRepository.delete(typeVoucher);
+                Optional<TypeStore> typeStoreOptional = typeStoreRepository.findById(id);
+                if (typeStoreOptional.isPresent()){
+                    TypeStore typeStore = typeStoreOptional.get();
+                    typeStoreRepository.delete(typeStore);
                     return new ResponseEntity<>(new RESTResponse.Success()
                             .setStatus(HttpStatus.OK.value())
-                            .setData(new TypeVoucherDto(typeVoucher))
-                            .setMessage("Delete type voucher success !").build(), HttpStatus.OK);
+                            .setData(new TypeStoreDto(typeStore))
+                            .setMessage("Delete type store success !").build(), HttpStatus.OK);
                 }else {
                     hashMap.clear();
-                    hashMap.put("ID", "No type voucher found with this id !");
+                    hashMap.put("ID", "No type store found with this id !");
                     return new ResponseEntity<>(new RESTResponse.Error()
                             .addErrors(hashMap)
                             .setStatus(HttpStatus.FORBIDDEN.value())
