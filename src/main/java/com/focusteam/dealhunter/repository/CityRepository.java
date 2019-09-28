@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface CityRepository extends JpaRepository<City, Long> {
-    @Query("SELECT  t FROM TypeVoucher t WHERE t.name = ?1")
+    @Query("SELECT  c FROM City c WHERE c.name = ?1")
     Optional<City> findByName(String name);
 }

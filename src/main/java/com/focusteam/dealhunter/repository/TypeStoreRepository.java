@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface TypeStoreRepository extends JpaRepository<TypeStore, Long> {
-    @Query("SELECT  t FROM TypeVoucher t WHERE t.name = ?1")
+    @Query("SELECT  ts FROM TypeStore ts WHERE ts.name = ?1")
     Optional<TypeStore> findByName(String name);
 }
