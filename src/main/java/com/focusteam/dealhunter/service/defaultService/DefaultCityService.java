@@ -34,9 +34,11 @@ public class DefaultCityService implements CityService {
     @Override
     public ResponseEntity<Object> create(@Valid CityCreateDto cityCreateDto, BindingResult bindingResult, HttpServletRequest request) {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+
         if (accountOptional.isPresent()){
             Account account = accountOptional.get();
             if (account.getTypeAccount() == 1 || account.getTypeAccount() == 0){
+
                 hashMap.clear();
                 hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
                 return new ResponseEntity<>(new RESTResponse.Error()
@@ -44,7 +46,9 @@ public class DefaultCityService implements CityService {
                         .setStatus(HttpStatus.UNAUTHORIZED.value())
                         .setData("")
                         .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+
             }else {
+
                 if (bindingResult.hasErrors()){
                     hashMap.clear();
                     List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -60,6 +64,7 @@ public class DefaultCityService implements CityService {
                 }else {
                     Optional<City> cityOptional = cityRepository.findByName(cityCreateDto.getName());
                     if (!cityOptional.isPresent()){
+                        System.out.println("Step5");
                         City city = new City(cityCreateDto);
                         cityRepository.save(city);
 
