@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 
 @Entity
 public class UserInformation {
@@ -16,6 +17,8 @@ public class UserInformation {
     private String birthday;
     @NotNull
     private String phone;
+
+    @Size(min = 255, max = 20000)
     private String avatar;
     private String address;
     private String salt;

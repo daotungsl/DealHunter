@@ -19,7 +19,8 @@ public class UserController {
     AccountRepository accountRepository;
 
     @CrossOrigin
-    @PutMapping("/api/account/user/update")
+    //@PutMapping("/api/account/user/update")
+    @RequestMapping(value = "/api/account/user/update", method = RequestMethod.PUT)
     public ResponseEntity<Object> userUpdate(@RequestBody @Valid UserInformationDto userInformationDto, BindingResult bindingResult, HttpServletRequest request){
         ResponseEntity<Object> response = accountService.updateInformation(userInformationDto, bindingResult, request);
         return response;

@@ -3,6 +3,7 @@ package com.focusteam.dealhunter.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -12,6 +13,7 @@ public class StoreAddress {
     private long id;
     @NotNull
     private String address;
+    @Size(min = 15, max = 200000)
     private String description;
     @NotNull
     private long created;
