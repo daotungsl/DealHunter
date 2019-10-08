@@ -5,6 +5,7 @@ import com.focusteam.dealhunter.dto.StoreDto;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -18,7 +19,9 @@ public class Store {
     private String email;
     @NotNull
     private String phone;
+
     @NotNull
+    @Size(min = 255, max = 200000)
     private String image;
     @NotNull
     private long created;

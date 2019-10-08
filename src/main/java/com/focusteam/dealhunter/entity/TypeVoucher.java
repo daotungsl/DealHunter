@@ -4,6 +4,7 @@ import com.focusteam.dealhunter.dto.groupTypeVoucherDto.TypeVoucherCreateDto;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -13,6 +14,7 @@ public class TypeVoucher {
     private long id;
     @NotNull
     private String name;
+    @Size(min = 15, max = 2000)
     private String description;
     @NotNull
     private long created;

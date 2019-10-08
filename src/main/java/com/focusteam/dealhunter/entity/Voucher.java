@@ -3,6 +3,7 @@ package com.focusteam.dealhunter.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -12,8 +13,11 @@ public class Voucher {
     private long id;
     @NotNull
     private String name;
+    @Size(min = 15, max = 200000)
     private String description;
+
     @NotNull
+    @Size(min = 255, max = 200000)
     private String image;
     private String codeSale;
     @NotNull

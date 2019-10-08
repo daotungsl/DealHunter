@@ -3,6 +3,7 @@ package com.focusteam.dealhunter.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Transaction {
@@ -13,6 +14,8 @@ public class Transaction {
     private String time;
     @NotNull
     private String day;
+
+    @Size(min = 15, max = 20000)
     private String description;
     @NotNull
     private long created;

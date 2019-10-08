@@ -7,6 +7,7 @@ import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreCreateDto;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -16,6 +17,8 @@ public class City {
     private long id;
     @NotNull
     private String name;
+
+    @Size(min = 15, max = 200000)
     private String description;
     @NotNull
     private long created;

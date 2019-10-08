@@ -34,7 +34,8 @@ public class FileController {
     AccountRepository accountRepository;
 
     @CrossOrigin
-    @PostMapping("/api/file/upload")
+    //@PostMapping("/api/file/upload")
+    @RequestMapping(value = "/api/file/upload", method = RequestMethod.POST)
     public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         if (accountOptional.isPresent()){
@@ -85,7 +86,8 @@ public class FileController {
     }
 
     @CrossOrigin
-    @PostMapping("/api/file/uploads")
+    //@PostMapping("/api/file/uploads")
+    @RequestMapping(value = "/api/file/uploads", method = RequestMethod.POST)
     public ResponseEntity<Object> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files, HttpServletRequest request){
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         if (accountOptional.isPresent()){
@@ -144,7 +146,8 @@ public class FileController {
 
 
     @CrossOrigin
-    @GetMapping("/unauthentic/file/download/{fileName:.+}")
+    //GetMapping("/unauthentic/file/download/{fileName:.+}")
+    @RequestMapping(value = "/unauthentic/file/download/{fileName:.+}", method = RequestMethod.GET)
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
         // Load file as Resource
         Resource resource = fileStorageService.loadFileAsResource(fileName);
