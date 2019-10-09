@@ -22,10 +22,13 @@ public class StoreUpdate {
     @NotBlank
     @NotEmpty
     @Size(min = 50, max = 20000)
-    private String image;
+    private String images;
 
     @NotNull
-    @NotBlank
+    @Digits(integer = 1, fraction = 0)
+    private long typeStoreId;
+
+    @NotNull
     @Digits(integer = 1, fraction = 0)
     private int status;
 
@@ -61,12 +64,12 @@ public class StoreUpdate {
         this.phone = phone;
     }
 
-    public String getImage() {
-        return image;
+    public String getImages() {
+        return images;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImages(String images) {
+        this.images = images;
     }
 
     public int getStatus() {
@@ -77,4 +80,12 @@ public class StoreUpdate {
         this.status = status;
     }
 
+
+    public long getTypeStoreId() {
+        return typeStoreId;
+    }
+
+    public void setTypeStoreId(long typeStoreId) {
+        this.typeStoreId = typeStoreId;
+    }
 }

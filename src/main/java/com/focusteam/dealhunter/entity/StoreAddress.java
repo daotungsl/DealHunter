@@ -23,7 +23,7 @@ public class StoreAddress {
     @NotNull
     private int status;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 

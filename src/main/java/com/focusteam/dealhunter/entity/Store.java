@@ -75,7 +75,7 @@ public class Store {
         this.name = storeUpdate.getName();
         this.email = storeUpdate.getEmail();
         this.phone = storeUpdate.getPhone();
-        this.images = storeUpdate.getImage();
+        this.images = storeUpdate.getImages();
         this.status = storeUpdate.getStatus();
         this.updated = System.currentTimeMillis();
     }

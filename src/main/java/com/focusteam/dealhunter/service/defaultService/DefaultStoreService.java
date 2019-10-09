@@ -206,8 +206,76 @@ public class DefaultStoreService implements StoreServices {
     public ResponseEntity<Object> update(long id, @Valid StoreUpdate storeUpdate, BindingResult bindingResult, HttpServletRequest request) {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         Optional<Store> storeOptional = storeRepository.findById(storeUpdate.getId());
+        Optional<TypeStore> typeStoreOptional = typeStoreRepository.findById(storeUpdate.getTypeStoreId());
+        if (accountOptional.get().getStore().getId() != id || accountOptional.get().getTypeAccount() == 0){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (id != storeUpdate.getId()){
+            hashMap.clear();
+            hashMap.put("ID", "The id in path variable does not match the id in the data update !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Data error !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (bindingResult.hasErrors()){
+            hashMap.clear();
+            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+            for (FieldError f: fieldErrors
+            ) {
+                hashMap.put(f.getField(), f.getDefaultMessage());
+            }
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Store data has errors !").build(), HttpStatus.FORBIDDEN);
+        }else if (!storeOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("ID", "No store found with this id !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+        }else if (!typeStoreOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("ID", "No type store found with this id = " + storeUpdate.getTypeStoreId() + " !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+        }else {
+            Store store = storeOptional.get();
+            store.setName(storeUpdate.getName());
+            store.setEmail(storeUpdate.getEmail());
+            store.setPhone(storeUpdate.getPhone());
+            store.setImages(storeUpdate.getImages());
+            store.setStatus(storeUpdate.getStatus());
+            store.setAccount(accountOptional.get());
+            store.setTypeStore(typeStoreOptional.get());
+            storeRepository.save(store);
+            List<StoreAddress> storeAddressList = new ArrayList<StoreAddress>(storeOptional.get().getStoreAddresses());
+            List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
+            for (StoreAddress s: storeAddressList
+            ) {
+                storeAddressDtoList.add(new StoreAddressDto(s));
+            }
+            StoreDto storeDto = new StoreDto(store);
 
-        return null;
+            storeDto.setStoreAddresses(storeAddressDtoList);
+
+            return new ResponseEntity<>(new RESTResponse.Success()
+                    .setStatus(HttpStatus.OK.value())
+                    .setData(storeDto)
+                    .setMessage("Update city data success !").build(), HttpStatus.OK);
+        }
     }
 
     @Override
