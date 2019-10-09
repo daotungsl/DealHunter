@@ -261,6 +261,7 @@ public class DefaultStoreService implements StoreServices {
             store.setAccount(accountOptional.get());
             store.setTypeStore(typeStoreOptional.get());
             storeRepository.save(store);
+
             List<StoreAddress> storeAddressList = new ArrayList<StoreAddress>(storeOptional.get().getStoreAddresses());
             List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
             for (StoreAddress s: storeAddressList
@@ -280,6 +281,49 @@ public class DefaultStoreService implements StoreServices {
 
     @Override
     public ResponseEntity<Object> delete(long id, HttpServletRequest request) {
-        return null;
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        Optional<Store> storeOptional = storeRepository.findById(id);
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (accountOptional.get().getStore().getId() != id || accountOptional.get().getTypeAccount() == 0){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else if (!storeOptional.isPresent()) {
+            hashMap.clear();
+            hashMap.put("ID", "No store found with this id !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+        }else {
+            Store store = storeOptional.get();
+            List<StoreAddress> storeAddressList = new ArrayList<>(store.getStoreAddresses());
+            List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
+            for (StoreAddress s: storeAddressList
+            ) {
+                storeAddressDtoList.add(new StoreAddressDto(s));
+            }
+            StoreDto storeDto = new StoreDto(store);
+
+            storeDto.setStoreAddresses(storeAddressDtoList);
+            storeRepository.delete(store);
+
+            return new ResponseEntity<>(new RESTResponse.Success()
+                    .setStatus(HttpStatus.OK.value())
+                    .setData(storeDto)
+                    .setMessage("Delete city success !").build(), HttpStatus.OK);
+        }
     }
 }

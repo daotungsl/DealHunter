@@ -43,4 +43,11 @@ public class StoreController {
         ResponseEntity<Object> response = storeServices.update(id, storeUpdate, bindingResult, request);
         return response;
     }
+
+    @CrossOrigin
+    @RequestMapping(value = "/api/stores/store/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request){
+        ResponseEntity<Object> response = storeServices.delete(id, request);
+        return response;
+    }
 }
