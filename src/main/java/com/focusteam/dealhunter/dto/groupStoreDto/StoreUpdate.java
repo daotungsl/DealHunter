@@ -3,6 +3,7 @@ package com.focusteam.dealhunter.dto.groupStoreDto;
 import javax.validation.constraints.*;
 
 public class StoreUpdate {
+    @NotNull
     private long id;
 
     @NotEmpty
@@ -25,7 +26,6 @@ public class StoreUpdate {
     private String images;
 
     @NotNull
-    @Digits(integer = 1, fraction = 0)
     private long typeStoreId;
 
     @NotNull

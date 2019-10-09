@@ -5,6 +5,7 @@ import com.focusteam.dealhunter.dto.groupStoreDto.StoreCreateDto;
 import com.focusteam.dealhunter.dto.groupStoreDto.StoreUpdate;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
@@ -29,9 +30,10 @@ public class Store {
     private long created;
     private long updated;
     @NotNull
+    @Digits(integer = 1, fraction = 0)
     private int status;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id", nullable = false)
     private Account account;
 

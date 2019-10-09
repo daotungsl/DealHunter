@@ -2,10 +2,7 @@ package com.focusteam.dealhunter.dto.groupStoreDto;
 
 import org.hibernate.validator.constraints.UniqueElements;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class StoreCreateDto {
     @NotEmpty
@@ -26,7 +23,13 @@ public class StoreCreateDto {
     @NotEmpty
     @Size(min = 50, max = 20000)
     private String images;
+
+    @NotNull
+    @NotEmpty
     private long accountId;
+
+    @NotNull
+    @NotEmpty
     private long typeStoreId;
 
     @NotEmpty
@@ -36,6 +39,9 @@ public class StoreCreateDto {
     @NotEmpty
     @Size(min = 20, max = 2000)
     private String description;
+
+    @NotNull
+    @NotEmpty
     private long cityId;
 
     public String getName() {
