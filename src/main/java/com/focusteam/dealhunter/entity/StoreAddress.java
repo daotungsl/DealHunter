@@ -1,8 +1,10 @@
 package com.focusteam.dealhunter.entity;
 
+import com.focusteam.dealhunter.dto.groupStoreDto.StoreAddressCreate;
 import com.focusteam.dealhunter.dto.groupStoreDto.StoreCreateDto;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
@@ -21,6 +23,7 @@ public class StoreAddress {
     private long created;
     private long updated;
     @NotNull
+    @Digits(integer = 1, fraction = 0)
     private int status;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -41,6 +44,13 @@ public class StoreAddress {
         this.address = storeCreateDto.getAddress();
         this.description = storeCreateDto.getDescription();
         this.created = System.currentTimeMillis();
+        this.updated = System.currentTimeMillis();
+        this.status = 0;
+    }
+
+    public StoreAddress(StoreAddressCreate storeAddressCreate) {
+        this.address = storeAddressCreate.getAddress();
+        this.description = storeAddressCreate.getDescription();
         this.updated = System.currentTimeMillis();
         this.status = 0;
     }

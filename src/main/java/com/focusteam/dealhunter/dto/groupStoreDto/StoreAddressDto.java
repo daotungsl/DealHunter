@@ -11,8 +11,10 @@ import javax.validation.constraints.Size;
 
 public class StoreAddressDto {
     private long id;
+    private String store;
     @NotNull
     private String address;
+    private String city;
     @Size(min = 15, max = 200000)
     private String description;
     @NotNull
@@ -26,7 +28,9 @@ public class StoreAddressDto {
 
     public StoreAddressDto(StoreAddress storeAddress) {
         this.id = storeAddress.getId();
+        this.store = storeAddress.getStore().getName();
         this.address = storeAddress.getAddress();
+        this.city = storeAddress.getCity().getName();
         this.description = storeAddress.getDescription();
         this.created = new StringUtil().dateFormatFromLong(storeAddress.getCreated());
         this.updated = new StringUtil().dateFormatFromLong(storeAddress.getUpdated());
@@ -35,6 +39,22 @@ public class StoreAddressDto {
         }else {
             this.status = "activated";
         }
+    }
+
+    public String getStore() {
+        return store;
+    }
+
+    public void setStore(String store) {
+        this.store = store;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public long getId() {
