@@ -25,4 +25,6 @@ public interface AccountService {
     public ResponseEntity<Object> updateInformation(@RequestBody @Valid UserInformationDto userInformationDto, BindingResult bindingResult, HttpServletRequest request);
 
     public boolean tokenForOneAccount(String token, String email);
+
+    public boolean tokenForOneAccountId(String token, long id);
 }

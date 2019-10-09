@@ -100,9 +100,9 @@ public class DefaultTypeVoucherService implements TypeVoucherService {
         if (typeVoucherOptional.isPresent()){
             TypeVoucher typeVoucher1 = typeVoucherOptional.get();
             return new ResponseEntity<>(new RESTResponse.Success()
-                    .setStatus(HttpStatus.FOUND.value())
+                    .setStatus(HttpStatus.OK.value())
                     .setData(new TypeVoucherDto(typeVoucher1))
-                    .setMessage("Type voucher with id = " + id + " !").build(), HttpStatus.FOUND);
+                    .setMessage("Type voucher with id = " + id + " !").build(), HttpStatus.OK);
         }else {
             hashMap.clear();
             hashMap.put("ID", "No type voucher found with this id = " + id + " !");
@@ -126,9 +126,9 @@ public class DefaultTypeVoucherService implements TypeVoucherService {
                 typeVoucherDtos.add(typeVoucherDto);
             }
             return new ResponseEntity<>(new RESTResponse.Success()
-                    .setStatus(HttpStatus.FOUND.value())
+                    .setStatus(HttpStatus.OK.value())
                     .setData(typeVoucherDtos)
-                    .setMessage("Success!").build(), HttpStatus.FOUND);
+                    .setMessage("Success!").build(), HttpStatus.OK);
         }
         hashMap.clear();
         hashMap.put("TypeVoucher", "No type voucher found !");

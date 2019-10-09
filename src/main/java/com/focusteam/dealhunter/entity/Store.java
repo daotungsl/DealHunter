@@ -1,6 +1,8 @@
 package com.focusteam.dealhunter.entity;
 
 import com.focusteam.dealhunter.dto.StoreDto;
+import com.focusteam.dealhunter.dto.groupStoreDto.StoreCreateDto;
+import com.focusteam.dealhunter.dto.groupStoreDto.StoreUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -21,8 +23,8 @@ public class Store {
     private String phone;
 
     @NotNull
-    @Size(min = 255, max = 200000)
-    private String image;
+    @Size(min = 50, max = 20000)
+    private String images;
     @NotNull
     private long created;
     private long updated;
@@ -37,7 +39,7 @@ public class Store {
     @JoinColumn(name = "typeStore_id", nullable = false)
     private TypeStore typeStore;
 
-    @OneToMany(mappedBy = "store")
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL)
     private Set<StoreAddress> storeAddresses;
 
     @OneToMany(mappedBy = "store")
@@ -53,10 +55,29 @@ public class Store {
         this.name = storeDto.getName();
         this.email = storeDto.getEmail();
         this.phone = storeDto.getPhone();
-        this.image = storeDto.getImage();
+        this.images = storeDto.getImage();
         this.created = System.currentTimeMillis();
         this.updated = System.currentTimeMillis();
         this.status = 0;
+    }
+
+    public Store(StoreCreateDto storeCreateDto) {
+        this.name = storeCreateDto.getName();
+        this.email = storeCreateDto.getEmail();
+        this.phone = storeCreateDto.getPhone();
+        this.images = storeCreateDto.getImages();
+        this.created = System.currentTimeMillis();
+        this.updated = System.currentTimeMillis();
+        this.status = 0;
+    }
+
+    public Store(StoreUpdate storeUpdate) {
+        this.name = storeUpdate.getName();
+        this.email = storeUpdate.getEmail();
+        this.phone = storeUpdate.getPhone();
+        this.images = storeUpdate.getImage();
+        this.status = storeUpdate.getStatus();
+        this.updated = System.currentTimeMillis();
     }
 
     public long getId() {
@@ -91,12 +112,12 @@ public class Store {
         this.phone = phone;
     }
 
-    public String getImage() {
-        return image;
+    public String getImages() {
+        return images;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImages(String images) {
+        this.images = images;
     }
 
     public long getCreated() {
@@ -169,7 +190,7 @@ public class Store {
         private String name;
         private String email;
         private String phone;
-        private String image;
+        private String images;
         private long created;
         private long updated;
         private int status;
@@ -206,8 +227,8 @@ public class Store {
             return this;
         }
 
-        public StoreBuilder withImage(String image) {
-            this.image = image;
+        public StoreBuilder withImages(String images) {
+            this.images = images;
             return this;
         }
 
@@ -257,7 +278,7 @@ public class Store {
             store.setName(name);
             store.setEmail(email);
             store.setPhone(phone);
-            store.setImage(image);
+            store.setImages(images);
             store.setCreated(created);
             store.setUpdated(updated);
             store.setStatus(status);
