@@ -64,7 +64,7 @@ public class DefaultCityService implements CityService {
                 }else {
                     Optional<City> cityOptional = cityRepository.findByName(cityCreateDto.getName());
                     if (!cityOptional.isPresent()){
-                        System.out.println("Step5");
+                        //System.out.println("Step5");
                         City city = new City(cityCreateDto);
                         cityRepository.save(city);
 
@@ -100,9 +100,9 @@ public class DefaultCityService implements CityService {
         if (cityOptional.isPresent()){
             City city = cityOptional.get();
             return new ResponseEntity<>(new RESTResponse.Success()
-                    .setStatus(HttpStatus.FOUND.value())
+                    .setStatus(HttpStatus.OK.value())
                     .setData(new CityDto(city))
-                    .setMessage("City with id = " + id + " !").build(), HttpStatus.FOUND);
+                    .setMessage("City with id = " + id + " !").build(), HttpStatus.OK);
         }else {
             hashMap.clear();
             hashMap.put("ID", "No city found with this id = " + id + " !");
@@ -126,9 +126,9 @@ public class DefaultCityService implements CityService {
                 cityDtos.add(cityDto);
             }
             return new ResponseEntity<>(new RESTResponse.Success()
-                    .setStatus(HttpStatus.FOUND.value())
+                    .setStatus(HttpStatus.OK.value())
                     .setData(cityDtos)
-                    .setMessage("Success!").build(), HttpStatus.FOUND);
+                    .setMessage("Success!").build(), HttpStatus.OK);
         }
         hashMap.clear();
         hashMap.put("City", "No city found !");

@@ -96,9 +96,9 @@ public class DefaultTypeStoreService implements TypeStoreService {
         if (typeStoreOptional.isPresent()){
             TypeStore typeStore = typeStoreOptional.get();
             return new ResponseEntity<>(new RESTResponse.Success()
-                    .setStatus(HttpStatus.FOUND.value())
+                    .setStatus(HttpStatus.OK.value())
                     .setData(new TypeStoreDto(typeStore))
-                    .setMessage("Type store with id = " + id + " !").build(), HttpStatus.FOUND);
+                    .setMessage("Type store with id = " + id + " !").build(), HttpStatus.OK);
         }else {
             hashMap.clear();
             hashMap.put("ID", "No type store found with this id = " + id + " !");
@@ -122,9 +122,9 @@ public class DefaultTypeStoreService implements TypeStoreService {
                 typeStoreDtos.add(typeStoreDto);
             }
             return new ResponseEntity<>(new RESTResponse.Success()
-                    .setStatus(HttpStatus.FOUND.value())
+                    .setStatus(HttpStatus.OK.value())
                     .setData(typeStoreDtos)
-                    .setMessage("Success!").build(), HttpStatus.FOUND);
+                    .setMessage("Success!").build(), HttpStatus.OK);
         }
         hashMap.clear();
         hashMap.put("TypeStore", "No type store found !");

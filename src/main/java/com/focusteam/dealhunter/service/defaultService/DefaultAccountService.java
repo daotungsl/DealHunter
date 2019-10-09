@@ -164,9 +164,9 @@ public class DefaultAccountService implements AccountService {
             CredentialDto credentialDto = new CredentialDto(account.getCredential());
             RESTLogin restLogin = new RESTLogin(accountInformationDto, credentialDto);
             return new ResponseEntity<>(new RESTResponse.Success()
-                    .setStatus(HttpStatus.FOUND.value())
+                    .setStatus(HttpStatus.OK.value())
                     .setData(restLogin)
-                    .setMessage("Found !").build(), HttpStatus.FOUND);
+                    .setMessage("Found !").build(), HttpStatus.OK);
         }
         return new ResponseEntity<>(new RESTResponse.Error()
                 .setStatus(HttpStatus.NOT_FOUND.value())
@@ -237,6 +237,19 @@ public class DefaultAccountService implements AccountService {
     @Override
     public boolean tokenForOneAccount(String token, String email) {
         Optional<Account> accountOptional = accountRepository.findByUsername(email);
+        Optional<Account> accountOptional1 = accountRepository.findByTokenAccount(token);
+        Account account1 = accountOptional.get();
+        Account account2 = accountOptional1.get();
+        if (account1.equals(account2)){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean tokenForOneAccountId(String token, long id) {
+        Optional<Account> accountOptional = accountRepository.findById(id);
         Optional<Account> accountOptional1 = accountRepository.findByTokenAccount(token);
         Account account1 = accountOptional.get();
         Account account2 = accountOptional1.get();

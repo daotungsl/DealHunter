@@ -21,7 +21,7 @@ public class StoreDto {
         this.name = store.getName();
         this.email = store.getEmail();
         this.phone = store.getPhone();
-        this.image = store.getImage();
+        this.image = store.getImages();
         this.created = store.getCreated();
         this.updated = store.getUpdated();
         this.accountId = store.getAccount().getId();
