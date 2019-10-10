@@ -24,7 +24,7 @@ import java.util.*;
 
 @Service("cityService")
 public class DefaultCityService implements CityService {
-    HashMap<String, String> hashMap = new HashMap<>();
+    private HashMap<String, String> hashMap = new HashMap<>();
     @Autowired
     CityRepository cityRepository;
 

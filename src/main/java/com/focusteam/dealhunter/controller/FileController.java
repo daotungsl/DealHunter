@@ -24,7 +24,7 @@ import java.util.*;
 
 @RestController
 public class FileController {
-    HashMap<String, String> hashMap = new HashMap<>();
+    private HashMap<String, String> hashMap = new HashMap<>();
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
     @Autowired

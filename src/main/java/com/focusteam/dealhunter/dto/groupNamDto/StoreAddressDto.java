@@ -1,4 +1,4 @@
-package com.focusteam.dealhunter.dto;
+package com.focusteam.dealhunter.dto.groupNamDto;
 
 public class StoreAddressDto {
     private String address;

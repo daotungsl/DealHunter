@@ -25,7 +25,7 @@ import java.util.*;
 
 @Service("typeVoucherService")
 public class DefaultTypeVoucherService implements TypeVoucherService {
-    HashMap<String, String> hashMap = new HashMap<>();
+    private HashMap<String, String> hashMap = new HashMap<>();
 
     @Autowired
     TypeVoucherRepository typeVoucherRepository;

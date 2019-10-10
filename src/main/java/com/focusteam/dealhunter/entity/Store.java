@@ -1,13 +1,12 @@
 package com.focusteam.dealhunter.entity;
 
-import com.focusteam.dealhunter.dto.StoreDto;
+import com.focusteam.dealhunter.dto.groupNamDto.StoreDto;
 import com.focusteam.dealhunter.dto.groupStoreDto.StoreCreateDto;
 import com.focusteam.dealhunter.dto.groupStoreDto.StoreUpdate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.Set;
 

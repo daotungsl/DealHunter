@@ -23,36 +23,31 @@ public class StoreController {
     @CrossOrigin
     @RequestMapping(value = "/api/stores/store" , method = RequestMethod.POST)
     public ResponseEntity<Object> create(@Valid @RequestBody StoreCreateDto storeCreateDto, BindingResult bindingResult, HttpServletRequest request){
-        ResponseEntity<Object> response = storeServices.create(storeCreateDto, bindingResult, request);
-        return response;
+        return storeServices.create(storeCreateDto, bindingResult, request);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/unauthentic/stores/store/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getOne(@PathVariable long id){
-        ResponseEntity<Object> response = storeServices.getOne(id);
-        return response;
+        return storeServices.getOne(id);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/unauthentic/stores/store", method = RequestMethod.GET)
     public ResponseEntity<Object> getAll(){
-        ResponseEntity<Object> response = storeServices.getAll();
-        return response;
+        return storeServices.getAll();
     }
 
     @CrossOrigin
     @RequestMapping(value = "/api/stores/store/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Object> update(@PathVariable long id, @Valid @RequestBody StoreUpdate storeUpdate, BindingResult bindingResult, HttpServletRequest request){
-        ResponseEntity<Object> response = storeServices.update(id, storeUpdate, bindingResult, request);
-        return response;
+        return storeServices.update(id, storeUpdate, bindingResult, request);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/api/stores/store/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request){
-        ResponseEntity<Object> response = storeServices.delete(id, request);
-        return response;
+        return storeServices.delete(id, request);
     }
 
     // Request - Response Store Address
@@ -60,35 +55,30 @@ public class StoreController {
     @CrossOrigin
     @RequestMapping(value = "/api/stores/store/address" , method = RequestMethod.POST)
     public ResponseEntity<Object> createSA(@Valid @RequestBody StoreAddressCreate storeAddressCreate, BindingResult bindingResult, HttpServletRequest request){
-        ResponseEntity<Object> response = storeServices.createSA(storeAddressCreate, bindingResult, request);
-        return response;
+        return storeServices.createSA(storeAddressCreate, bindingResult, request);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/unauthentic/stores/store/address/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getOneSA(@PathVariable long id){
-        ResponseEntity<Object> response = storeServices.getOneSA(id);
-        return response;
+        return storeServices.getOneSA(id);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/unauthentic/stores/store/address", method = RequestMethod.GET)
     public ResponseEntity<Object> getAllSA(){
-        ResponseEntity<Object> response = storeServices.getAllSA();
-        return response;
+        return storeServices.getAllSA();
     }
 
     @CrossOrigin
     @RequestMapping(value = "/api/stores/store/address/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Object> updateSA(@PathVariable long id, @Valid @RequestBody StoreAddressUpdate storeAddressUpdate, BindingResult bindingResult, HttpServletRequest request){
-        ResponseEntity<Object> response = storeServices.updateSA(id, storeAddressUpdate, bindingResult, request);
-        return response;
+        return storeServices.updateSA(id, storeAddressUpdate, bindingResult, request);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/api/stores/store/address/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteSA(@PathVariable long id, HttpServletRequest request){
-        ResponseEntity<Object> response = storeServices.deleteSA(id, request);
-        return response;
+        return storeServices.deleteSA(id, request);
     }
 }

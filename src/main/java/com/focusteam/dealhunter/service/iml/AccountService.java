@@ -2,7 +2,7 @@ package com.focusteam.dealhunter.service.iml;
 
 import com.focusteam.dealhunter.dto.groupAccountDto.AccountDto;
 import com.focusteam.dealhunter.dto.groupAccountDto.AccountLoginDto;
-import com.focusteam.dealhunter.dto.UserInformationDto;
+import com.focusteam.dealhunter.dto.groupAccountDto.UserInformationDto;
 import com.focusteam.dealhunter.entity.Account;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
