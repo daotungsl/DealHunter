@@ -51,6 +51,7 @@ public class StoreAddress {
     public StoreAddress(StoreAddressCreate storeAddressCreate) {
         this.address = storeAddressCreate.getAddress();
         this.description = storeAddressCreate.getDescription();
+        this.created = System.currentTimeMillis();
         this.updated = System.currentTimeMillis();
         this.status = 0;
     }

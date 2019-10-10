@@ -12,4 +12,7 @@ import java.util.Optional;
 public interface TypeStoreRepository extends JpaRepository<TypeStore, Long> {
     @Query("SELECT  ts FROM TypeStore ts WHERE ts.name = ?1")
     Optional<TypeStore> findByName(String name);
+
+    @Query("select ts FROM TypeStore ts WHERE ts.nameUnAccent = ?1")
+    Optional<TypeStore> findByNameUnAccent(String name);
 }

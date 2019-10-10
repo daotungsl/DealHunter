@@ -16,6 +16,8 @@ public class TypeStoreDto {
     @Size(min = 3, max = 50)
     private String name;
 
+    private String nameUnAccent;
+
     @Size(min = 10, max = 2000)
     private String description;
 
@@ -44,10 +46,19 @@ public class TypeStoreDto {
     public TypeStoreDto(TypeStore typeStore) {
         this.id = typeStore.getId();
         this.name = typeStore.getName();
+        this.nameUnAccent = typeStore.getNameUnAccent();
         this.description = typeStore.getDescription();
         this.created = new StringUtil().dateFormatFromLong(typeStore.getUpdated());
         this.updated = new StringUtil().dateFormatFromLong(typeStore.getUpdated());
         this.status = typeStore.getStatus();
+    }
+
+    public String getNameUnAccent() {
+        return nameUnAccent;
+    }
+
+    public void setNameUnAccent(String nameUnAccent) {
+        this.nameUnAccent = nameUnAccent;
     }
 
     public long getId() {

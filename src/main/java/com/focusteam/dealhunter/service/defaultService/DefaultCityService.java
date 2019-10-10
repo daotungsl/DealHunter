@@ -115,6 +115,26 @@ public class DefaultCityService implements CityService {
     }
 
     @Override
+    public ResponseEntity<Object> getOneByNameUA(String name) {
+        Optional<City> cityOptional = cityRepository.findByNameUnAccent(name);
+        if (cityOptional.isPresent()){
+            City city = cityOptional.get();
+            return new ResponseEntity<>(new RESTResponse.Success()
+                    .setStatus(HttpStatus.OK.value())
+                    .setData(new CityDto(city))
+                    .setMessage("City with id = " + name + " !").build(), HttpStatus.OK);
+        }else {
+            hashMap.clear();
+            hashMap.put("ID", "No city found with this nameUA = " + name + " !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @Override
     public ResponseEntity<Object> getAll() {
         List<City> cities = cityRepository.findAll();
         if (!cities.isEmpty()){

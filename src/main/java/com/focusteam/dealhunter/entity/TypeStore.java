@@ -1,6 +1,7 @@
 package com.focusteam.dealhunter.entity;
 
 import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreCreateDto;
+import com.focusteam.dealhunter.util.StringUtil;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,6 +16,8 @@ public class TypeStore {
     private long id;
     @NotNull
     private String name;
+
+    private String nameUnAccent;
 
     @Size(min = 15, max = 2000)
     private String description;
@@ -32,10 +35,19 @@ public class TypeStore {
 
     public TypeStore(TypeStoreCreateDto typeStoreCreateDto) {
         this.name = typeStoreCreateDto.getName();
+        this.nameUnAccent = new StringUtil().unAccent(typeStoreCreateDto.getName());
         this.description = typeStoreCreateDto.getDescription();
         this.created = System.currentTimeMillis();
         this.updated = System.currentTimeMillis();
         this.status = 1;
+    }
+
+    public String getNameUnAccent() {
+        return nameUnAccent;
+    }
+
+    public void setNameUnAccent(String nameUnAccent) {
+        this.nameUnAccent = nameUnAccent;
     }
 
     public long getId() {

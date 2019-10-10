@@ -25,9 +25,15 @@ public class TypeStoreController {
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/unauthentic/typeStore/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/unauthentic/typeStore/-/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getOne(@PathVariable long id){
         return typeStoreService.getOne(id);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/unauthentic/typeStore/{name}", method = RequestMethod.GET)
+    public ResponseEntity<Object> getOneByNameUA(@PathVariable String name){
+        return typeStoreService.getOneByNameUA(name);
     }
 
     @CrossOrigin

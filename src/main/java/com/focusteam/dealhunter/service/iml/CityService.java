@@ -15,6 +15,7 @@ import javax.validation.Valid;
 public interface CityService {
     public ResponseEntity<Object> create(@Valid @RequestBody CityCreateDto cityCreateDto, BindingResult bindingResult, HttpServletRequest request);
     public ResponseEntity<Object> getOne(@PathVariable long id);
+    public ResponseEntity<Object> getOneByNameUA(@PathVariable String name);
     public ResponseEntity<Object> getAll();
     public ResponseEntity<Object> update(@PathVariable long id, @Valid @RequestBody CityUpdate cityUpdate, BindingResult bindingResult, HttpServletRequest request);
     public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request);

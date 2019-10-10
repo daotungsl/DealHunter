@@ -3,6 +3,7 @@ package com.focusteam.dealhunter.entity;
 import com.focusteam.dealhunter.dto.groupNamDto.StoreDto;
 import com.focusteam.dealhunter.dto.groupStoreDto.StoreCreateDto;
 import com.focusteam.dealhunter.dto.groupStoreDto.StoreUpdate;
+import com.focusteam.dealhunter.util.StringUtil;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
@@ -17,6 +18,8 @@ public class Store {
     private long id;
     @NotNull
     private String name;
+    @NotNull
+    private String nameUnAccent;
     @NotNull
     private String email;
     @NotNull
@@ -64,6 +67,7 @@ public class Store {
 
     public Store(StoreCreateDto storeCreateDto) {
         this.name = storeCreateDto.getName();
+        this.nameUnAccent = new StringUtil().unAccent(storeCreateDto.getName());
         this.email = storeCreateDto.getEmail();
         this.phone = storeCreateDto.getPhone();
         this.images = storeCreateDto.getImages();
@@ -74,11 +78,20 @@ public class Store {
 
     public Store(StoreUpdate storeUpdate) {
         this.name = storeUpdate.getName();
+        this.nameUnAccent = new StringUtil().unAccent(storeUpdate.getName());
         this.email = storeUpdate.getEmail();
         this.phone = storeUpdate.getPhone();
         this.images = storeUpdate.getImages();
         this.status = storeUpdate.getStatus();
         this.updated = System.currentTimeMillis();
+    }
+
+    public String getNameUnAccent() {
+        return nameUnAccent;
+    }
+
+    public void setNameUnAccent(String nameUnAccent) {
+        this.nameUnAccent = nameUnAccent;
     }
 
     public long getId() {

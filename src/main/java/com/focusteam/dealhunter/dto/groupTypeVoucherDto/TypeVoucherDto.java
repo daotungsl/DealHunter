@@ -12,6 +12,8 @@ public class TypeVoucherDto {
     @Size(min = 3, max = 50)
     private String name;
 
+    private String nameUnAccent;
+
     @Size(min = 10, max = 2000)
     private String description;
 
@@ -40,13 +42,20 @@ public class TypeVoucherDto {
     public TypeVoucherDto(TypeVoucher typeVoucher) {
         this.id = typeVoucher.getId();
         this.name = typeVoucher.getName();
+        this.nameUnAccent = typeVoucher.getNameUnAccent();
         this.description = typeVoucher.getDescription();
         this.created = new StringUtil().dateFormatFromLong(typeVoucher.getUpdated());
         this.updated = new StringUtil().dateFormatFromLong(typeVoucher.getUpdated());
         this.status = typeVoucher.getStatus();
     }
 
+    public String getNameUnAccent() {
+        return nameUnAccent;
+    }
 
+    public void setNameUnAccent(String nameUnAccent) {
+        this.nameUnAccent = nameUnAccent;
+    }
 
     public long getId() {
         return id;

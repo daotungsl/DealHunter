@@ -19,31 +19,37 @@ public class CityController {
     private CityService cityService;
 
     @CrossOrigin
-    @RequestMapping(value = "/unauthentic/city", method = RequestMethod.GET)
+    @RequestMapping(value = "/unauthentic/cities/city", method = RequestMethod.GET)
     public ResponseEntity<Object> getAll(){
         return cityService.getAll();
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/unauthentic/city/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/unauthentic/cities/city/-/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getOne(@PathVariable long id){
         return cityService.getOne(id);
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/api/admin/city", method = RequestMethod.POST)
+    @RequestMapping(value = "/unauthentic/cities/city/{name}", method = RequestMethod.GET)
+    public ResponseEntity<Object> getOneByNameUA(@PathVariable String name){
+        return cityService.getOneByNameUA(name);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/api/admin/cities/city", method = RequestMethod.POST)
     public ResponseEntity<Object> create(@Valid @RequestBody CityCreateDto cityCreateDto, BindingResult bindingResult, HttpServletRequest request){
         return cityService.create(cityCreateDto, bindingResult, request);
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/api/admin/city/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/admin/cities/city/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Object> update(@PathVariable long id , @Valid @RequestBody CityUpdate cityUpdate, BindingResult bindingResult, HttpServletRequest request){
         return cityService.update(id, cityUpdate, bindingResult, request);
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/api/admin/city/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/admin/cities/city/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request){
         return cityService.delete(id, request);
     }

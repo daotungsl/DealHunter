@@ -1,6 +1,7 @@
 package com.focusteam.dealhunter.entity;
 
 import com.focusteam.dealhunter.dto.groupCityDto.CityCreateDto;
+import com.focusteam.dealhunter.util.StringUtil;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,6 +16,8 @@ public class City {
     @NotNull
     private String name;
 
+    private String nameUnAccent;
+
     @Size(min = 15, max = 200000)
     private String description;
     @NotNull
@@ -28,6 +31,7 @@ public class City {
 
     public City(CityCreateDto cityCreateDto) {
         this.name = cityCreateDto.getName();
+        this.nameUnAccent = new StringUtil().unAccent(cityCreateDto.getName());
         this.description = cityCreateDto.getDescription();
         this.created = System.currentTimeMillis();
         this.updated = System.currentTimeMillis();
@@ -35,6 +39,14 @@ public class City {
     }
 
     public City() {
+    }
+
+    public String getNameUnAccent() {
+        return nameUnAccent;
+    }
+
+    public void setNameUnAccent(String nameUnAccent) {
+        this.nameUnAccent = nameUnAccent;
     }
 
     public long getId() {

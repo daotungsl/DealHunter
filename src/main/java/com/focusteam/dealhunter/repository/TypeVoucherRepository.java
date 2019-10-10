@@ -11,4 +11,7 @@ import java.util.Optional;
 public interface TypeVoucherRepository extends JpaRepository<TypeVoucher, Long> {
     @Query("SELECT  t FROM TypeVoucher t WHERE t.name = ?1")
     Optional<TypeVoucher> findByName(String name);
+
+    @Query("SELECT tv FROM TypeVoucher tv WHERE tv.nameUnAccent = ?1")
+    Optional<TypeVoucher> findByNameUnAccent(String name);
 }

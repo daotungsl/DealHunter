@@ -25,11 +25,9 @@ public class StoreCreateDto {
     private String images;
 
     @NotNull
-    @NotEmpty
     private long accountId;
 
     @NotNull
-    @NotEmpty
     private long typeStoreId;
 
     @NotEmpty
@@ -41,7 +39,6 @@ public class StoreCreateDto {
     private String description;
 
     @NotNull
-    @NotEmpty
     private long cityId;
 
     public String getName() {

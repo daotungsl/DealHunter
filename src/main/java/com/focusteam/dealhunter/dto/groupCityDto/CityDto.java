@@ -16,6 +16,8 @@ public class CityDto {
     @Size(min = 3, max = 50)
     private String name;
 
+    private String nameUnAccent;
+
     @Size(min = 10, max = 2000)
     private String description;
 
@@ -44,10 +46,19 @@ public class CityDto {
     public CityDto(City city) {
         this.id = city.getId();
         this.name = city.getName();
+        this.nameUnAccent = city.getNameUnAccent();
         this.description = city.getDescription();
         this.created = new StringUtil().dateFormatFromLong(city.getUpdated());
         this.updated = new StringUtil().dateFormatFromLong(city.getUpdated());
         this.status = city.getStatus();
+    }
+
+    public String getNameUnAccent() {
+        return nameUnAccent;
+    }
+
+    public void setNameUnAccent(String nameUnAccent) {
+        this.nameUnAccent = nameUnAccent;
     }
 
     public long getId() {

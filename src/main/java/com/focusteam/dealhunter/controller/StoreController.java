@@ -27,9 +27,15 @@ public class StoreController {
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/unauthentic/stores/store/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/unauthentic/stores/store/-/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getOne(@PathVariable long id){
         return storeServices.getOne(id);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/unauthentic/stores/store/{name}", method = RequestMethod.GET)
+    public ResponseEntity<Object> getOneByNameUA(@PathVariable String name){
+        return storeServices.getOneByNameUA(name);
     }
 
     @CrossOrigin
