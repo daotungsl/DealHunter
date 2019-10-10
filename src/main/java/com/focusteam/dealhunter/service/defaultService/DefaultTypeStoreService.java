@@ -24,7 +24,7 @@ import java.util.*;
 
 @Service("typeStoreService")
 public class DefaultTypeStoreService implements TypeStoreService {
-    HashMap<String, String> hashMap = new HashMap<>();
+    private HashMap<String, String> hashMap = new HashMap<>();
 
     @Autowired
     TypeStoreRepository typeStoreRepository;

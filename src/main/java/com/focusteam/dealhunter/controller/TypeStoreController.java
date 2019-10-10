@@ -21,35 +21,30 @@ public class TypeStoreController {
     @CrossOrigin
     @RequestMapping(value = "/unauthentic/typeStore", method = RequestMethod.GET)
     public ResponseEntity<Object> getAll(){
-        ResponseEntity<Object> response = typeStoreService.getAll();
-        return response;
+        return typeStoreService.getAll();
     }
 
     @CrossOrigin
     @RequestMapping(value = "/unauthentic/typeStore/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getOne(@PathVariable long id){
-        ResponseEntity<Object> response = typeStoreService.getOne(id);
-        return response;
+        return typeStoreService.getOne(id);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/api/admin/typeStore", method = RequestMethod.POST)
     public ResponseEntity<Object> create(@Valid @RequestBody TypeStoreCreateDto typeStoreCreateDto, BindingResult bindingResult, HttpServletRequest request){
-        ResponseEntity<Object> response = typeStoreService.create(typeStoreCreateDto, bindingResult, request);
-        return response;
+        return typeStoreService.create(typeStoreCreateDto, bindingResult, request);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/api/admin/typeStore/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Object> update(@PathVariable long id , @Valid @RequestBody TypeStoreUpdate typeStoreUpdate, BindingResult bindingResult, HttpServletRequest request){
-        ResponseEntity<Object> response = typeStoreService.update(id, typeStoreUpdate, bindingResult, request);
-        return response;
+        return typeStoreService.update(id, typeStoreUpdate, bindingResult, request);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/api/admin/typeStore/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request){
-        ResponseEntity<Object> response = typeStoreService.delete(id, request);
-        return response;
+        return typeStoreService.delete(id, request);
     }
 }

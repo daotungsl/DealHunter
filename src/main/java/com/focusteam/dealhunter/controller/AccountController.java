@@ -20,16 +20,14 @@ public class AccountController {
     //@PostMapping("/unauthentic/account/login")
     @RequestMapping(value = "/unauthentic/account/login", method = RequestMethod.POST)
     public ResponseEntity<Object> login(@RequestBody AccountLoginDto accountLoginDto, HttpServletRequest request){
-        ResponseEntity<Object> response = accountService.login(accountLoginDto, request);
-        return response;
+        return accountService.login(accountLoginDto, request);
     }
 
     @CrossOrigin
     //@PostMapping("/unauthentic/account/register")
     @RequestMapping(value = "/unauthentic/account/register", method = RequestMethod.POST)
     public ResponseEntity<Object> register(@RequestBody @Valid AccountDto accountDto, BindingResult bindingResult, HttpServletRequest request){
-        ResponseEntity<Object> response = accountService.register(accountDto, bindingResult, request);
-        return response;
+        return accountService.register(accountDto, bindingResult, request);
     }
 
 

@@ -1,4 +1,4 @@
-package com.focusteam.dealhunter.dto;
+package com.focusteam.dealhunter.dto.groupNamDto;
 
 import com.focusteam.dealhunter.entity.City;
 

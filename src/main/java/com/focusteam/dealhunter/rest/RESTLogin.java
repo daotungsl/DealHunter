@@ -1,7 +1,7 @@
 package com.focusteam.dealhunter.rest;
 
 import com.focusteam.dealhunter.dto.groupAccountDto.AccountInformationDto;
-import com.focusteam.dealhunter.dto.CredentialDto;
+import com.focusteam.dealhunter.dto.groupAccountDto.CredentialDto;
 
 public class RESTLogin {
     private AccountInformationDto account;

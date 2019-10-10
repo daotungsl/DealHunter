@@ -1,6 +1,6 @@
 package com.focusteam.dealhunter.controller;
 
-import com.focusteam.dealhunter.dto.UserInformationDto;
+import com.focusteam.dealhunter.dto.groupAccountDto.UserInformationDto;
 import com.focusteam.dealhunter.repository.AccountRepository;
 import com.focusteam.dealhunter.service.iml.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,6 @@ public class UserController {
     //@PutMapping("/api/account/user/update")
     @RequestMapping(value = "/api/account/user/update", method = RequestMethod.PUT)
     public ResponseEntity<Object> userUpdate(@RequestBody @Valid UserInformationDto userInformationDto, BindingResult bindingResult, HttpServletRequest request){
-        ResponseEntity<Object> response = accountService.updateInformation(userInformationDto, bindingResult, request);
-        return response;
+        return accountService.updateInformation(userInformationDto, bindingResult, request);
     }
 }

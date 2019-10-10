@@ -1,9 +1,6 @@
 package com.focusteam.dealhunter.service.defaultService;
 
-import com.focusteam.dealhunter.dto.*;
-import com.focusteam.dealhunter.dto.groupAccountDto.AccountDto;
-import com.focusteam.dealhunter.dto.groupAccountDto.AccountInformationDto;
-import com.focusteam.dealhunter.dto.groupAccountDto.AccountLoginDto;
+import com.focusteam.dealhunter.dto.groupAccountDto.*;
 import com.focusteam.dealhunter.entity.Account;
 import com.focusteam.dealhunter.entity.Credential;
 import com.focusteam.dealhunter.entity.UserInformation;
@@ -31,7 +28,7 @@ import java.util.*;
 
 @Service("accountService")
 public class DefaultAccountService implements AccountService {
-    HashMap<String, String> hashMap = new HashMap<>();
+    private HashMap<String, String> hashMap = new HashMap<>();
 
     @Autowired
     AccountRepository accountRepository;

@@ -21,35 +21,30 @@ public class CityController {
     @CrossOrigin
     @RequestMapping(value = "/unauthentic/city", method = RequestMethod.GET)
     public ResponseEntity<Object> getAll(){
-        ResponseEntity<Object> response = cityService.getAll();
-        return response;
+        return cityService.getAll();
     }
 
     @CrossOrigin
     @RequestMapping(value = "/unauthentic/city/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getOne(@PathVariable long id){
-        ResponseEntity<Object> response = cityService.getOne(id);
-        return response;
+        return cityService.getOne(id);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/api/admin/city", method = RequestMethod.POST)
     public ResponseEntity<Object> create(@Valid @RequestBody CityCreateDto cityCreateDto, BindingResult bindingResult, HttpServletRequest request){
-        ResponseEntity<Object> response = cityService.create(cityCreateDto, bindingResult, request);
-        return response;
+        return cityService.create(cityCreateDto, bindingResult, request);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/api/admin/city/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Object> update(@PathVariable long id , @Valid @RequestBody CityUpdate cityUpdate, BindingResult bindingResult, HttpServletRequest request){
-        ResponseEntity<Object> response = cityService.update(id, cityUpdate, bindingResult, request);
-        return response;
+        return cityService.update(id, cityUpdate, bindingResult, request);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/api/admin/city/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request){
-        ResponseEntity<Object> response = cityService.delete(id, request);
-        return response;
+        return cityService.delete(id, request);
     }
 }

@@ -20,7 +20,7 @@ import java.util.*;
 
 @Service("storeService")
 public class DefaultStoreService implements StoreServices {
-    HashMap<String, String> hashMap = new HashMap<>();
+    private HashMap<String, String> hashMap = new HashMap<>();
     @Autowired
     AccountService accountService;
 
