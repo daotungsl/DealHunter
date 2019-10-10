@@ -15,7 +15,8 @@ public class StoreDto {
 
     private String created;
     private String updated;
-    private String status;
+    private int status;
+
     private long accountId;
 
     private String typeStore;
@@ -33,11 +34,7 @@ public class StoreDto {
         this.image = store.getImages();
         this.created = new StringUtil().dateFormatFromLong(store.getCreated());
         this.updated = new StringUtil().dateFormatFromLong(store.getUpdated());
-        if (store.getStatus() == 0){
-            this.status = "not activated";
-        }else {
-            this.status = "activated";
-        }
+        this.status = store.getStatus();
         this.accountId = store.getAccount().getId();
         this.typeStore = store.getTypeStore().getName();
     }
@@ -98,11 +95,11 @@ public class StoreDto {
         this.updated = updated;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

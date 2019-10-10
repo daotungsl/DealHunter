@@ -21,7 +21,7 @@ public class StoreAddressDto {
     private String created;
     private String updated;
     @NotNull
-    private String status;
+    private int status;
 
     public StoreAddressDto() {
     }
@@ -34,11 +34,7 @@ public class StoreAddressDto {
         this.description = storeAddress.getDescription();
         this.created = new StringUtil().dateFormatFromLong(storeAddress.getCreated());
         this.updated = new StringUtil().dateFormatFromLong(storeAddress.getUpdated());
-        if (storeAddress.getStatus() == 0){
-            this.status = "not activated";
-        }else {
-            this.status = "activated";
-        }
+        this.status = storeAddress.getStatus();
     }
 
     public String getStore() {
@@ -97,11 +93,11 @@ public class StoreAddressDto {
         this.updated = updated;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 }
