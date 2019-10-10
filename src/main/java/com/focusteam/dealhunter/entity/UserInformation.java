@@ -18,7 +18,9 @@ public class UserInformation {
 
     @Size(min = 255, max = 20000)
     private String avatar;
+
     private String address;
+
     private String salt;
     @NotNull
     private long created;
