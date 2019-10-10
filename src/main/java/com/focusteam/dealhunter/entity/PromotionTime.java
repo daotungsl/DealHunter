@@ -1,5 +1,7 @@
 package com.focusteam.dealhunter.entity;
 
+import com.focusteam.dealhunter.dto.groupVoucherDto.VoucherCreateDto;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -9,15 +11,24 @@ public class PromotionTime {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @NotNull
-    private long start_time;
+    private String startTime;
     @NotNull
-    private long end_time;
+    private String endTime;
     @NotNull
-    private String day_week;
+    private String dayWeek;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "voucher_id", referencedColumnName = "id", nullable = false)
     private Voucher voucher;
+
+    public PromotionTime() {
+    }
+
+    public PromotionTime(VoucherCreateDto voucherCreateDto) {
+        this.startTime = voucherCreateDto.getStartTime();
+        this.endTime = voucherCreateDto.getEndTime();
+        this.dayWeek = voucherCreateDto.getDayWeek();
+    }
 
     public long getId() {
         return id;
@@ -27,28 +38,28 @@ public class PromotionTime {
         this.id = id;
     }
 
-    public long getStart_time() {
-        return start_time;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setStart_time(long start_time) {
-        this.start_time = start_time;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
-    public long getEnd_time() {
-        return end_time;
+    public String getEndTime() {
+        return endTime;
     }
 
-    public void setEnd_time(long end_time) {
-        this.end_time = end_time;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
-    public String getDay_week() {
-        return day_week;
+    public String getDayWeek() {
+        return dayWeek;
     }
 
-    public void setDay_week(String day_week) {
-        this.day_week = day_week;
+    public void setDayWeek(String dayWeek) {
+        this.dayWeek = dayWeek;
     }
 
     public Voucher getVoucher() {
@@ -62,9 +73,9 @@ public class PromotionTime {
 
     public static final class PromotionTimeBuilder {
         private long id;
-        private long start_time;
-        private long end_time;
-        private String day_week;
+        private String startTime;
+        private String endTime;
+        private String dayWeek;
         private Voucher voucher;
 
         private PromotionTimeBuilder() {
@@ -79,18 +90,18 @@ public class PromotionTime {
             return this;
         }
 
-        public PromotionTimeBuilder withStart_time(long start_time) {
-            this.start_time = start_time;
+        public PromotionTimeBuilder withStartTime(String startTime) {
+            this.startTime = startTime;
             return this;
         }
 
-        public PromotionTimeBuilder withEnd_time(long end_time) {
-            this.end_time = end_time;
+        public PromotionTimeBuilder withEndTime(String endTime) {
+            this.endTime = endTime;
             return this;
         }
 
-        public PromotionTimeBuilder withDay_week(String day_week) {
-            this.day_week = day_week;
+        public PromotionTimeBuilder withDayWeek(String dayWeek) {
+            this.dayWeek = dayWeek;
             return this;
         }
 
@@ -102,9 +113,9 @@ public class PromotionTime {
         public PromotionTime build() {
             PromotionTime promotionTime = new PromotionTime();
             promotionTime.setId(id);
-            promotionTime.setStart_time(start_time);
-            promotionTime.setEnd_time(end_time);
-            promotionTime.setDay_week(day_week);
+            promotionTime.setStartTime(startTime);
+            promotionTime.setEndTime(endTime);
+            promotionTime.setDayWeek(dayWeek);
             promotionTime.setVoucher(voucher);
             return promotionTime;
         }

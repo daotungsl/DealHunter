@@ -15,6 +15,7 @@ import javax.validation.Valid;
 public interface TypeStoreService {
     public ResponseEntity<Object> create(@Valid @RequestBody TypeStoreCreateDto typeStoreCreateDto, BindingResult bindingResult, HttpServletRequest request);
     public ResponseEntity<Object> getOne(@PathVariable long id);
+    public ResponseEntity<Object> getOneByNameUA(@PathVariable String name);
     public ResponseEntity<Object> getAll();
     public ResponseEntity<Object> update(@PathVariable long id, @Valid @RequestBody TypeStoreUpdate typeStoreUpdate, BindingResult bindingResult, HttpServletRequest request);
     public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request);

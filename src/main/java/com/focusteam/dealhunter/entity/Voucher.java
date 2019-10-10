@@ -1,9 +1,13 @@
 package com.focusteam.dealhunter.entity;
 
+import com.focusteam.dealhunter.dto.groupVoucherDto.VoucherCreateDto;
+import com.focusteam.dealhunter.util.StringUtil;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.util.Calendar;
 import java.util.Set;
 
 @Entity
@@ -16,23 +20,32 @@ public class Voucher {
     @Size(min = 15, max = 200000)
     private String description;
 
+    private String nameUnAccent;
+
     @NotNull
-    @Size(min = 255, max = 200000)
+    @Size(min = 50, max = 200000)
     private String image;
+
     private String codeSale;
     @NotNull
     private int percent;
     @NotNull
-    private int max_slot;
+    private int maxSlot;
+
+    private int slotLeft;
+
     @NotNull
     private long created;
     @NotNull
-    private long expired;
+    private long startDay;
+    @NotNull
+    private long expiredDay;
+
     private long updated;
     @NotNull
     private int status;
 
-    @OneToOne(mappedBy = "voucher")
+    @OneToOne(mappedBy = "voucher", cascade = CascadeType.ALL)
     private PromotionTime promotionTime;
 
     @ManyToOne
@@ -43,7 +56,40 @@ public class Voucher {
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
+    public Voucher() {
+    }
 
+    public Voucher(VoucherCreateDto voucherCreateDto) {
+        this.name = voucherCreateDto.getName();
+        this.description = voucherCreateDto.getDescription();
+        this.image = voucherCreateDto.getImage();
+        this.codeSale = new StringUtil().codeSale(voucherCreateDto.getPercent());
+        this.nameUnAccent = new StringUtil().unAccent(voucherCreateDto.getName() + " " + this.codeSale);
+        this.percent = voucherCreateDto.getPercent();
+        this.maxSlot = voucherCreateDto.getMaxSlot();
+        this.slotLeft = voucherCreateDto.getMaxSlot();
+        this.startDay = voucherCreateDto.getStartDay();
+        this.created = Calendar.getInstance().getTimeInMillis();
+        this.expiredDay = voucherCreateDto.getExpiredDay();
+        this.updated = this.created;
+        this.status = 0;
+
+        PromotionTime promotionTime = new PromotionTime();
+        promotionTime.setStartTime(voucherCreateDto.getStartTime());
+        promotionTime.setEndTime(voucherCreateDto.getEndTime());
+        promotionTime.setDayWeek(voucherCreateDto.getDayWeek());
+
+        promotionTime.setVoucher(this);
+        this.promotionTime = promotionTime;
+    }
+
+    public String getNameUnAccent() {
+        return nameUnAccent;
+    }
+
+    public void setNameUnAccent(String nameUnAccent) {
+        this.nameUnAccent = nameUnAccent;
+    }
 
     public long getId() {
         return id;
@@ -93,12 +139,12 @@ public class Voucher {
         this.percent = percent;
     }
 
-    public int getMax_slot() {
-        return max_slot;
+    public int getMaxSlot() {
+        return maxSlot;
     }
 
-    public void setMax_slot(int max_slot) {
-        this.max_slot = max_slot;
+    public void setMaxSlot(int maxSlot) {
+        this.maxSlot = maxSlot;
     }
 
     public long getCreated() {
@@ -109,12 +155,20 @@ public class Voucher {
         this.created = created;
     }
 
-    public long getExpired() {
-        return expired;
+    public long getStartDay() {
+        return startDay;
     }
 
-    public void setExpired(long expired) {
-        this.expired = expired;
+    public void setStartDay(long startDay) {
+        this.startDay = startDay;
+    }
+
+    public long getExpiredDay() {
+        return expiredDay;
+    }
+
+    public void setExpiredDay(long expiredDay) {
+        this.expiredDay = expiredDay;
     }
 
     public long getUpdated() {
@@ -157,6 +211,14 @@ public class Voucher {
         this.store = store;
     }
 
+    public int getSlotLeft() {
+        return slotLeft;
+    }
+
+    public void setSlotLeft(int slotLeft) {
+        this.slotLeft = slotLeft;
+    }
+
 
     public static final class VoucherBuilder {
         private long id;
@@ -165,9 +227,11 @@ public class Voucher {
         private String image;
         private String codeSale;
         private int percent;
-        private int max_slot;
+        private int maxSlot;
+        private int slotLeft;
         private long created;
-        private long expired;
+        private long startDay;
+        private long expiredDay;
         private long updated;
         private int status;
         private PromotionTime promotionTime;
@@ -211,8 +275,13 @@ public class Voucher {
             return this;
         }
 
-        public VoucherBuilder withMax_slot(int max_slot) {
-            this.max_slot = max_slot;
+        public VoucherBuilder withMaxSlot(int maxSlot) {
+            this.maxSlot = maxSlot;
+            return this;
+        }
+
+        public VoucherBuilder withSlotLeft(int slotLeft) {
+            this.slotLeft = slotLeft;
             return this;
         }
 
@@ -221,8 +290,13 @@ public class Voucher {
             return this;
         }
 
-        public VoucherBuilder withExpired(long expired) {
-            this.expired = expired;
+        public VoucherBuilder withStartDay(long startDay) {
+            this.startDay = startDay;
+            return this;
+        }
+
+        public VoucherBuilder withExpiredDay(long expiredDay) {
+            this.expiredDay = expiredDay;
             return this;
         }
 
@@ -259,9 +333,11 @@ public class Voucher {
             voucher.setImage(image);
             voucher.setCodeSale(codeSale);
             voucher.setPercent(percent);
-            voucher.setMax_slot(max_slot);
+            voucher.setMaxSlot(maxSlot);
+            voucher.setSlotLeft(slotLeft);
             voucher.setCreated(created);
-            voucher.setExpired(expired);
+            voucher.setStartDay(startDay);
+            voucher.setExpiredDay(expiredDay);
             voucher.setUpdated(updated);
             voucher.setStatus(status);
             voucher.setPromotionTime(promotionTime);

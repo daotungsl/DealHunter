@@ -115,6 +115,26 @@ public class DefaultTypeVoucherService implements TypeVoucherService {
     }
 
     @Override
+    public ResponseEntity<Object> getOneByNameUA(String name) {
+        Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findByNameUnAccent(name);
+        if (typeVoucherOptional.isPresent()){
+            TypeVoucher typeVoucher1 = typeVoucherOptional.get();
+            return new ResponseEntity<>(new RESTResponse.Success()
+                    .setStatus(HttpStatus.OK.value())
+                    .setData(new TypeVoucherDto(typeVoucher1))
+                    .setMessage("Type voucher with id = " + name + " !").build(), HttpStatus.OK);
+        }else {
+            hashMap.clear();
+            hashMap.put("ID", "No type voucher found with this id = " + name + " !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @Override
     public ResponseEntity<Object> getAll() {
         List<TypeVoucher> typeVouchers = typeVoucherRepository.findAll();
         if (!typeVouchers.isEmpty()){

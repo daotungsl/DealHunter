@@ -15,11 +15,9 @@ public class StoreAddressCreate {
     private String description;
 
     @NotNull
-    @Digits(integer = 1, fraction = 0)
     private long cityId;
 
     @NotNull
-    @Digits(integer = 1, fraction = 0)
     private long storeId;
 
 

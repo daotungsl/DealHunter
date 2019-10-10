@@ -13,6 +13,7 @@ import javax.validation.Valid;
 public interface TypeVoucherService {
     public ResponseEntity<Object> create(@Valid @RequestBody TypeVoucherCreateDto typeVoucherCreateDto, BindingResult bindingResult, HttpServletRequest request);
     public ResponseEntity<Object> getOne(@PathVariable long id);
+    public ResponseEntity<Object> getOneByNameUA(@PathVariable String name);
     public ResponseEntity<Object> getAll();
     public ResponseEntity<Object> update(@PathVariable long id, @Valid @RequestBody TypeVoucherUpdate typeVoucherUpdate, BindingResult bindingResult, HttpServletRequest request);
     public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request);

@@ -170,6 +170,45 @@ public class DefaultStoreService implements StoreServices {
     }
 
     @Override
+    public ResponseEntity<Object> getOneByNameUA(String name) {
+        Optional<Store> storeOptional = storeRepository.findByNameUnAccent(name);
+        if (storeOptional.isPresent()){
+            Store store = storeOptional.get();
+            if (store.getStoreAddresses() != null){
+                List<StoreAddress> storeAddressList = new ArrayList<StoreAddress>(store.getStoreAddresses());
+                List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
+                for (StoreAddress s: storeAddressList
+                ) {
+                    storeAddressDtoList.add(new StoreAddressDto(s));
+                }
+                StoreDto storeDto = new StoreDto(store);
+                storeDto.setStoreAddresses(storeAddressDtoList);
+
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(storeDto)
+                        .setMessage("Store with id = " + name + " !").build(), HttpStatus.OK);
+            }else {
+                StoreDto storeDto = new StoreDto(store);
+                storeDto.setStoreAddresses(null);
+
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(storeDto)
+                        .setMessage("Store with id = " + name + " !").build(), HttpStatus.OK);
+            }
+        }else {
+            hashMap.clear();
+            hashMap.put("ID", "No store found with this id = " + name + " !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @Override
     public ResponseEntity<Object> getAll() {
         List<Store> stores = storeRepository.findAll();
         if (!stores.isEmpty()){

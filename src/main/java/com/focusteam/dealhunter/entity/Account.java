@@ -11,6 +11,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @NotNull
+    @Column(unique = true)
     private String username;
     @NotNull
     private String password;

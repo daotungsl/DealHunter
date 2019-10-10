@@ -9,6 +9,7 @@ import java.util.List;
 public class StoreDto {
     private long id;
     private String name;
+    private String nameUnAccent;
     private String email;
     private String phone;
     private String image;
@@ -29,6 +30,7 @@ public class StoreDto {
     public StoreDto(Store store) {
         this.id = store.getId();
         this.name = store.getName();
+        this.nameUnAccent = store.getNameUnAccent();
         this.email = store.getEmail();
         this.phone = store.getPhone();
         this.image = store.getImages();
@@ -37,6 +39,14 @@ public class StoreDto {
         this.status = store.getStatus();
         this.accountId = store.getAccount().getId();
         this.typeStore = store.getTypeStore().getName();
+    }
+
+    public String getNameUnAccent() {
+        return nameUnAccent;
+    }
+
+    public void setNameUnAccent(String nameUnAccent) {
+        this.nameUnAccent = nameUnAccent;
     }
 
     public long getId() {

@@ -1,6 +1,7 @@
 package com.focusteam.dealhunter.entity;
 
 import com.focusteam.dealhunter.dto.groupTypeVoucherDto.TypeVoucherCreateDto;
+import com.focusteam.dealhunter.util.StringUtil;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,7 +15,10 @@ public class TypeVoucher {
     private long id;
     @NotNull
     private String name;
-    @Size(min = 15, max = 2000)
+
+    private String nameUnAccent;
+
+    @Size(min = 10, max = 2000)
     private String description;
     @NotNull
     private long created;
@@ -27,6 +31,7 @@ public class TypeVoucher {
 
     public TypeVoucher(TypeVoucherCreateDto typeVoucherCreateDto) {
         this.name = typeVoucherCreateDto.getName();
+        this.nameUnAccent = new StringUtil().unAccent(typeVoucherCreateDto.getName());
         this.description = typeVoucherCreateDto.getDescription();
         this.created = System.currentTimeMillis();
         this.updated = System.currentTimeMillis();
@@ -35,6 +40,14 @@ public class TypeVoucher {
 
     @OneToMany(mappedBy = "typeVoucher", cascade = CascadeType.ALL)
     private Set<Voucher> vouchers;
+
+    public String getNameUnAccent() {
+        return nameUnAccent;
+    }
+
+    public void setNameUnAccent(String nameUnAccent) {
+        this.nameUnAccent = nameUnAccent;
+    }
 
     public long getId() {
         return id;

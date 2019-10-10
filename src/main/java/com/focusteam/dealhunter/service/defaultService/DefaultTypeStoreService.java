@@ -111,6 +111,26 @@ public class DefaultTypeStoreService implements TypeStoreService {
     }
 
     @Override
+    public ResponseEntity<Object> getOneByNameUA(String name) {
+        Optional<TypeStore> typeStoreOptional = typeStoreRepository.findByNameUnAccent(name);
+        if (typeStoreOptional.isPresent()){
+            TypeStore typeStore = typeStoreOptional.get();
+            return new ResponseEntity<>(new RESTResponse.Success()
+                    .setStatus(HttpStatus.OK.value())
+                    .setData(new TypeStoreDto(typeStore))
+                    .setMessage("Type store with id = " + name + " !").build(), HttpStatus.OK);
+        }else {
+            hashMap.clear();
+            hashMap.put("ID", "No type store found with this id = " + name + " !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @Override
     public ResponseEntity<Object> getAll() {
         List<TypeStore> typeStores = typeStoreRepository.findAll();
         if (!typeStores.isEmpty()){
