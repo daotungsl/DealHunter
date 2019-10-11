@@ -1,6 +1,6 @@
 package com.focusteam.dealhunter.authentication;
 
-import com.focusteam.dealhunter.service.iml.AccountService;
+import com.focusteam.dealhunter.service.iml.AccountServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
@@ -15,7 +15,7 @@ import java.util.Optional;
 public class AuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
     @Autowired
-    AccountService accountService;
+    AccountServices accountServices;
 
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) throws AuthenticationException {
@@ -28,7 +28,7 @@ public class AuthenticationProvider extends AbstractUserDetailsAuthenticationPro
         return (UserDetails) Optional
                 .ofNullable(token)
                 .map(String::valueOf)
-                .flatMap(accountService::findByToken)
+                .flatMap(accountServices::findByToken)
                 .orElseThrow(() -> new UsernameNotFoundException("Cannot find user with authentication token=" + token));
     }
 }

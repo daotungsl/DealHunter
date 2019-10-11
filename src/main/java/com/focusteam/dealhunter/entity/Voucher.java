@@ -1,6 +1,7 @@
 package com.focusteam.dealhunter.entity;
 
 import com.focusteam.dealhunter.dto.groupVoucherDto.VoucherCreateDto;
+import com.focusteam.dealhunter.dto.groupVoucherDto.VoucherUpdate;
 import com.focusteam.dealhunter.util.StringUtil;
 
 import javax.persistence.*;
@@ -78,6 +79,30 @@ public class Voucher {
         promotionTime.setStartTime(voucherCreateDto.getStartTime());
         promotionTime.setEndTime(voucherCreateDto.getEndTime());
         promotionTime.setDayWeek(voucherCreateDto.getDayWeek());
+
+        promotionTime.setVoucher(this);
+        this.promotionTime = promotionTime;
+    }
+
+    public Voucher(VoucherUpdate voucherUpdate) {
+        this.name = voucherUpdate.getName();
+        this.description = voucherUpdate.getDescription();
+        this.image = voucherUpdate.getImage();
+        this.codeSale = new StringUtil().codeSale(voucherUpdate.getPercent());
+        this.nameUnAccent = new StringUtil().unAccent(voucherUpdate.getName() + " " + this.codeSale);
+        this.percent = voucherUpdate.getPercent();
+        this.maxSlot = voucherUpdate.getMaxSlot();
+        this.slotLeft = voucherUpdate.getMaxSlot();
+        this.startDay = voucherUpdate.getStartDay();
+        this.created = Calendar.getInstance().getTimeInMillis();
+        this.expiredDay = voucherUpdate.getExpiredDay();
+        this.updated = this.created;
+        this.status = 0;
+
+        PromotionTime promotionTime = new PromotionTime();
+        promotionTime.setStartTime(voucherUpdate.getStartTime());
+        promotionTime.setEndTime(voucherUpdate.getEndTime());
+        promotionTime.setDayWeek(voucherUpdate.getDayWeek());
 
         promotionTime.setVoucher(this);
         this.promotionTime = promotionTime;

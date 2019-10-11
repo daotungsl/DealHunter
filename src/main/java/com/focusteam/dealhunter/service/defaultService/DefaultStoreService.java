@@ -1,12 +1,12 @@
 package com.focusteam.dealhunter.service.defaultService;
 
-import com.focusteam.dealhunter.dto.groupCityDto.CityDto;
 import com.focusteam.dealhunter.dto.groupStoreDto.*;
 import com.focusteam.dealhunter.entity.*;
 import com.focusteam.dealhunter.repository.*;
 import com.focusteam.dealhunter.rest.RESTResponse;
-import com.focusteam.dealhunter.service.iml.AccountService;
+import com.focusteam.dealhunter.service.iml.AccountServices;
 import com.focusteam.dealhunter.service.iml.StoreServices;
+import com.focusteam.dealhunter.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +18,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
 
-@Service("storeService")
+@Service("storeServices")
 public class DefaultStoreService implements StoreServices {
     private HashMap<String, String> hashMap = new HashMap<>();
     @Autowired
-    AccountService accountService;
+    AccountServices accountServices;
 
     @Autowired
     StoreRepository storeRepository;
@@ -47,6 +47,7 @@ public class DefaultStoreService implements StoreServices {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         Optional<TypeStore> typeStoreOptional = typeStoreRepository.findById(storeCreateDto.getTypeStoreId());
         Optional<City> cityOptional = cityRepository.findById(storeCreateDto.getCityId());
+        Optional<Store> storeOptional = storeRepository.findByName(storeCreateDto.getName(), storeCreateDto.getEmail(), storeCreateDto.getPhone());
         if (accountOptional.isPresent() && accountOptional.get().getId() == storeCreateDto.getAccountId()){
             Account account = accountOptional.get();
             if (account.getTypeAccount() == 0){
@@ -78,7 +79,33 @@ public class DefaultStoreService implements StoreServices {
                             .setStatus(HttpStatus.FORBIDDEN.value())
                             .setData("")
                             .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
-                }else if (!typeStoreOptional.isPresent()){
+                } else if (storeOptional.isPresent()) {
+                    if (storeOptional.get().getName().equalsIgnoreCase(storeCreateDto.getName())){
+                        hashMap.clear();
+                        hashMap.put("Name", "This store name has been used to register in another store");
+                        return new ResponseEntity<>(new RESTResponse.Error()
+                                .addErrors(hashMap)
+                                .setStatus(HttpStatus.FORBIDDEN.value())
+                                .setData("")
+                                .setMessage("Store name error !").build(), HttpStatus.FORBIDDEN);
+                    } else if (storeOptional.get().getEmail().equalsIgnoreCase(storeCreateDto.getEmail())) {
+                        hashMap.clear();
+                        hashMap.put("Email", "This email has been used to register in another store");
+                        return new ResponseEntity<>(new RESTResponse.Error()
+                                .addErrors(hashMap)
+                                .setStatus(HttpStatus.FORBIDDEN.value())
+                                .setData("")
+                                .setMessage("Store email error !").build(), HttpStatus.FORBIDDEN);
+                    } else {
+                        hashMap.clear();
+                        hashMap.put("Phone", "This phone has been used to register in another store");
+                        return new ResponseEntity<>(new RESTResponse.Error()
+                                .addErrors(hashMap)
+                                .setStatus(HttpStatus.FORBIDDEN.value())
+                                .setData("")
+                                .setMessage("Store phone error !").build(), HttpStatus.FORBIDDEN);
+                    }
+                } else if (!typeStoreOptional.isPresent()) {
                     hashMap.clear();
                     hashMap.put("ID", "No type store found with this id = " + storeCreateDto.getTypeStoreId() + " !");
                     return new ResponseEntity<>(new RESTResponse.Error()
@@ -86,7 +113,7 @@ public class DefaultStoreService implements StoreServices {
                             .setStatus(HttpStatus.FORBIDDEN.value())
                             .setData("")
                             .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
-                }else if (!(account.getStore() == null)){
+                } else if (!(account.getStore() == null)) {
                     hashMap.clear();
                     hashMap.put("Store", "An account can't create more than one store");
                     return new ResponseEntity<>(new RESTResponse.Error()
@@ -297,7 +324,15 @@ public class DefaultStoreService implements StoreServices {
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
-        }else {
+        } else if (!storeOptional.get().getName().equals(storeUpdate.getName())) {
+            hashMap.clear();
+            hashMap.put("Name", "Can't change store name !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Name error !").build(), HttpStatus.FORBIDDEN);
+        } else {
             Store store = storeOptional.get();
             store.setName(storeUpdate.getName());
             store.setEmail(storeUpdate.getEmail());
@@ -310,7 +345,100 @@ public class DefaultStoreService implements StoreServices {
 
             List<StoreAddress> storeAddressList = new ArrayList<StoreAddress>(storeOptional.get().getStoreAddresses());
             List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
-            for (StoreAddress s: storeAddressList
+            for (StoreAddress s : storeAddressList
+            ) {
+                storeAddressDtoList.add(new StoreAddressDto(s));
+            }
+            StoreDto storeDto = new StoreDto(store);
+
+            storeDto.setStoreAddresses(storeAddressDtoList);
+
+            return new ResponseEntity<>(new RESTResponse.Success()
+                    .setStatus(HttpStatus.OK.value())
+                    .setData(storeDto)
+                    .setMessage("Update store data success !").build(), HttpStatus.OK);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> updateByNameUA(String name, @Valid StoreUpdate storeUpdate, BindingResult bindingResult, HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        Optional<Store> storeOptional = storeRepository.findById(storeUpdate.getId());
+        Optional<TypeStore> typeStoreOptional = typeStoreRepository.findById(storeUpdate.getTypeStoreId());
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (!accountOptional.get().getStore().getNameUnAccent().equals(name) || accountOptional.get().getTypeAccount() == 0){
+//            hashMap.clear();
+//            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (!name.equals(new StringUtil().unAccent(storeUpdate.getName()))){
+            hashMap.clear();
+            hashMap.put("ID", "The id in path variable does not match the id in the data update !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Data error !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (bindingResult.hasErrors()){
+            hashMap.clear();
+            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+            for (FieldError f: fieldErrors
+            ) {
+                hashMap.put(f.getField(), f.getDefaultMessage());
+            }
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Store data has errors !").build(), HttpStatus.FORBIDDEN);
+        }else if (!storeOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("ID", "No store found with this id !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+        }else if (!typeStoreOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("ID", "No type store found with this id = " + storeUpdate.getTypeStoreId() + " !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+        } else if (!storeOptional.get().getName().equals(storeUpdate.getName())) {
+            hashMap.clear();
+            hashMap.put("Name", "Can't change store name !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Name error !").build(), HttpStatus.FORBIDDEN);
+        } else {
+            Store store = storeOptional.get();
+            store.setName(storeUpdate.getName());
+            store.setEmail(storeUpdate.getEmail());
+            store.setPhone(storeUpdate.getPhone());
+            store.setImages(storeUpdate.getImages());
+            store.setStatus(storeUpdate.getStatus());
+            store.setAccount(accountOptional.get());
+            store.setTypeStore(typeStoreOptional.get());
+            storeRepository.save(store);
+
+            List<StoreAddress> storeAddressList = new ArrayList<StoreAddress>(storeOptional.get().getStoreAddresses());
+            List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
+            for (StoreAddress s : storeAddressList
             ) {
                 storeAddressDtoList.add(new StoreAddressDto(s));
             }

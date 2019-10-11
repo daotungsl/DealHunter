@@ -1,7 +1,7 @@
 package com.focusteam.dealhunter.entity;
 
-import com.focusteam.dealhunter.dto.groupNamDto.StoreDto;
 import com.focusteam.dealhunter.dto.groupStoreDto.StoreCreateDto;
+import com.focusteam.dealhunter.dto.groupStoreDto.StoreDto;
 import com.focusteam.dealhunter.dto.groupStoreDto.StoreUpdate;
 import com.focusteam.dealhunter.util.StringUtil;
 

@@ -3,14 +3,12 @@ package com.focusteam.dealhunter.service.defaultService;
 import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreCreateDto;
 import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreDto;
 import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreUpdate;
-import com.focusteam.dealhunter.dto.groupTypeVoucherDto.TypeVoucherDto;
 import com.focusteam.dealhunter.entity.Account;
 import com.focusteam.dealhunter.entity.TypeStore;
-import com.focusteam.dealhunter.entity.TypeVoucher;
 import com.focusteam.dealhunter.repository.AccountRepository;
 import com.focusteam.dealhunter.repository.TypeStoreRepository;
 import com.focusteam.dealhunter.rest.RESTResponse;
-import com.focusteam.dealhunter.service.iml.TypeStoreService;
+import com.focusteam.dealhunter.service.iml.TypeStoreServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
 
-@Service("typeStoreService")
-public class DefaultTypeStoreService implements TypeStoreService {
+@Service("typeStoreServices")
+public class DefaultTypeStoreServices implements TypeStoreServices {
     private HashMap<String, String> hashMap = new HashMap<>();
 
     @Autowired

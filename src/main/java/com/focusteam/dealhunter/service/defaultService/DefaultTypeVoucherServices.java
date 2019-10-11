@@ -9,7 +9,7 @@ import com.focusteam.dealhunter.repository.AccountRepository;
 import com.focusteam.dealhunter.repository.CredentialRepository;
 import com.focusteam.dealhunter.repository.TypeVoucherRepository;
 import com.focusteam.dealhunter.rest.RESTResponse;
-import com.focusteam.dealhunter.service.iml.TypeVoucherService;
+import com.focusteam.dealhunter.service.iml.TypeVoucherServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
 
-@Service("typeVoucherService")
-public class DefaultTypeVoucherService implements TypeVoucherService {
+@Service("typeVoucherServices")
+public class DefaultTypeVoucherServices implements TypeVoucherServices {
     private HashMap<String, String> hashMap = new HashMap<>();
 
     @Autowired

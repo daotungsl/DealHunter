@@ -2,7 +2,7 @@ package com.focusteam.dealhunter.controller;
 
 import com.focusteam.dealhunter.dto.groupAccountDto.UserInformationDto;
 import com.focusteam.dealhunter.repository.AccountRepository;
-import com.focusteam.dealhunter.service.iml.AccountService;
+import com.focusteam.dealhunter.service.iml.AccountServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -14,7 +14,7 @@ import javax.validation.Valid;
 @RestController
 public class UserController {
     @Autowired
-    AccountService accountService;
+    AccountServices accountServices;
     @Autowired
     AccountRepository accountRepository;
 
@@ -22,6 +22,6 @@ public class UserController {
     //@PutMapping("/api/account/user/update")
     @RequestMapping(value = "/api/account/user/update", method = RequestMethod.PUT)
     public ResponseEntity<Object> userUpdate(@RequestBody @Valid UserInformationDto userInformationDto, BindingResult bindingResult, HttpServletRequest request){
-        return accountService.updateInformation(userInformationDto, bindingResult, request);
+        return accountServices.updateInformation(userInformationDto, bindingResult, request);
     }
 }
