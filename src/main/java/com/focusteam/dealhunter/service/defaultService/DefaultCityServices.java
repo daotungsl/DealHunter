@@ -3,14 +3,12 @@ package com.focusteam.dealhunter.service.defaultService;
 import com.focusteam.dealhunter.dto.groupCityDto.CityCreateDto;
 import com.focusteam.dealhunter.dto.groupCityDto.CityDto;
 import com.focusteam.dealhunter.dto.groupCityDto.CityUpdate;
-import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreDto;
 import com.focusteam.dealhunter.entity.Account;
 import com.focusteam.dealhunter.entity.City;
-import com.focusteam.dealhunter.entity.TypeStore;
 import com.focusteam.dealhunter.repository.AccountRepository;
 import com.focusteam.dealhunter.repository.CityRepository;
 import com.focusteam.dealhunter.rest.RESTResponse;
-import com.focusteam.dealhunter.service.iml.CityService;
+import com.focusteam.dealhunter.service.iml.CityServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
 
-@Service("cityService")
-public class DefaultCityService implements CityService {
+@Service("cityServices")
+public class DefaultCityServices implements CityServices {
     private HashMap<String, String> hashMap = new HashMap<>();
     @Autowired
     CityRepository cityRepository;

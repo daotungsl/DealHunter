@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-public interface VoucherService {
+public interface VoucherServices {
     public ResponseEntity<Object> create(@Valid @RequestBody VoucherCreateDto voucherCreateDto, BindingResult result, HttpServletRequest request);
     public ResponseEntity<Object> getOne(@PathVariable long id);
     public ResponseEntity<Object> getOneByNameUA(@PathVariable String name);
+    public ResponseEntity<Object> getOneByStoreNameUA(@PathVariable String sNameUA, @PathVariable String vNameUA);
     public ResponseEntity<Object> getAll();
     public ResponseEntity<Object> getAllByStore(@PathVariable String name);
     public ResponseEntity<Object> getAllByTypeVoucher(@PathVariable String name);

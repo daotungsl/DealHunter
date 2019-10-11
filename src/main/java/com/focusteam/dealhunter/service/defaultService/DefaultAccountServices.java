@@ -9,7 +9,7 @@ import com.focusteam.dealhunter.repository.CredentialRepository;
 import com.focusteam.dealhunter.repository.UserInformationRepository;
 import com.focusteam.dealhunter.rest.RESTLogin;
 import com.focusteam.dealhunter.rest.RESTResponse;
-import com.focusteam.dealhunter.service.iml.AccountService;
+import com.focusteam.dealhunter.service.iml.AccountServices;
 import com.focusteam.dealhunter.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.commons.lang3.StringUtils;
@@ -26,8 +26,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
 
-@Service("accountService")
-public class DefaultAccountService implements AccountService {
+@Service("accountServices")
+public class DefaultAccountServices implements AccountServices {
     private HashMap<String, String> hashMap = new HashMap<>();
 
     @Autowired

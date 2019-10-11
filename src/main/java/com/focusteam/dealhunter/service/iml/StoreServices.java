@@ -18,6 +18,7 @@ public interface StoreServices {
     public ResponseEntity<Object> getOneByNameUA(@PathVariable String name);
     public ResponseEntity<Object> getAll();
     public ResponseEntity<Object> update(@PathVariable long id, @Valid @RequestBody StoreUpdate storeUpdate, BindingResult bindingResult, HttpServletRequest request);
+    public ResponseEntity<Object> updateByNameUA(@PathVariable String name, @Valid @RequestBody StoreUpdate storeUpdate, BindingResult bindingResult, HttpServletRequest request);
     public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request);
 
 

@@ -4,6 +4,7 @@ import com.focusteam.dealhunter.dto.groupAccountDto.AccountDto;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
 public class Account {
@@ -29,6 +30,9 @@ public class Account {
 
     @OneToOne(mappedBy = "account")
     private Store store;
+
+    @OneToMany(mappedBy = "account")
+    private Set<Transaction> transactions;
 
     public Account() {
     }
@@ -70,6 +74,14 @@ public class Account {
         //userInformation.setSalt(new StringUtil().randomString());
         userInformation.setAccount(this);
         this.userInformation = userInformation;
+    }
+
+    public Set<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
     public long getId() {

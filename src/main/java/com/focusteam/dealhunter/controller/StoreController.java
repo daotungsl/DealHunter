@@ -45,13 +45,19 @@ public class StoreController {
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/api/stores/store/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/stores/store/-/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Object> update(@PathVariable long id, @Valid @RequestBody StoreUpdate storeUpdate, BindingResult bindingResult, HttpServletRequest request){
         return storeServices.update(id, storeUpdate, bindingResult, request);
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/api/stores/store/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/stores/store/{name}", method = RequestMethod.PUT)
+    public ResponseEntity<Object> updateByNameUA(@PathVariable String name, @Valid @RequestBody StoreUpdate storeUpdate, BindingResult bindingResult, HttpServletRequest request){
+        return storeServices.updateByNameUA(name, storeUpdate, bindingResult, request);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/api/admin/stores/store/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request){
         return storeServices.delete(id, request);
     }
@@ -83,7 +89,7 @@ public class StoreController {
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/api/stores/store/address/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/admin/stores/store/address/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteSA(@PathVariable long id, HttpServletRequest request){
         return storeServices.deleteSA(id, request);
     }
