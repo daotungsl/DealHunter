@@ -4,6 +4,7 @@ import com.focusteam.dealhunter.dto.groupCityDto.CityDto;
 import com.focusteam.dealhunter.dto.groupVoucherDto.VoucherCreateDto;
 import com.focusteam.dealhunter.dto.groupVoucherDto.VoucherDto;
 import com.focusteam.dealhunter.dto.groupVoucherDto.VoucherUpdate;
+import com.focusteam.dealhunter.dto.groupVoucherDto.Vouchers;
 import com.focusteam.dealhunter.entity.*;
 import com.focusteam.dealhunter.repository.*;
 import com.focusteam.dealhunter.rest.RESTResponse;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import javax.persistence.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
@@ -313,4 +315,5 @@ public class DefaultVoucherService implements VoucherService {
             }
             return null;
     }
+
 }

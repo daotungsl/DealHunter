@@ -2,12 +2,14 @@ package com.focusteam.dealhunter.dto.groupAccountDto;
 
 import com.focusteam.dealhunter.entity.Account;
 
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 public class AccountDto {
     @Size(min = 10, max = 15)
+    @Digits(integer = 10, fraction = 15)
     private String phone;
 
     @Email
