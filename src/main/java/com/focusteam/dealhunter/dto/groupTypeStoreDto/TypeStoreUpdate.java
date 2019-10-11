@@ -13,7 +13,7 @@ public class TypeStoreUpdate {
     @Size(min = 10, max = 2000)
     private String description;
 
-    @NotBlank
+
     @Digits(integer = 1, fraction = 0)
     private int status;
 

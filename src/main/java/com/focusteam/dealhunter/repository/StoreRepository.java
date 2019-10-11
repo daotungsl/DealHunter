@@ -1,5 +1,6 @@
 package com.focusteam.dealhunter.repository;
 
+import com.focusteam.dealhunter.dto.groupVoucherDto.Vouchers;
 import com.focusteam.dealhunter.entity.Store;
 import com.focusteam.dealhunter.entity.Voucher;
 import org.hibernate.validator.constraints.URL;
@@ -17,7 +18,4 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 
     @Query("SELECT s FROM Store s WHERE s.nameUnAccent = ?1")
     Optional<Store> findByNameUnAccent(String name);
-
-    @Query("SELECT v FROM Store s INNER JOIN s.vouchers v WHERE s.nameUnAccent = ?1")
-    List<Optional<Voucher>> findVoucherByStoreNameUA(String name);
 }

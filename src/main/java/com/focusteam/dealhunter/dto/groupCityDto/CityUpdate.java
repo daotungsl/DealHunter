@@ -1,9 +1,6 @@
 package com.focusteam.dealhunter.dto.groupCityDto;
 
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class CityUpdate {
     @NotEmpty
@@ -13,7 +10,7 @@ public class CityUpdate {
     @Size(min = 10, max = 2000)
     private String description;
 
-    @NotBlank
+    @NotNull
     @Digits(integer = 1, fraction = 0)
     private int status;
 

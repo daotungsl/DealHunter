@@ -16,7 +16,7 @@ public class UserInformation {
     @NotNull
     private String phone;
 
-    @Size(min = 255, max = 20000)
+    @Size(min = 50, max = 20000)
     private String avatar;
 
     private String address;

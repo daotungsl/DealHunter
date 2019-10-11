@@ -24,7 +24,7 @@ public class TypeStoreDto {
     private String created;
     private String updated;
 
-    @NotBlank
+
     @Digits(integer = 1, fraction = 0)
     private int status;
 
