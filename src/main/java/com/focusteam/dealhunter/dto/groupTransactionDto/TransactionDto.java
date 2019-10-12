@@ -21,13 +21,13 @@ public class TransactionDto {
     public TransactionDto() {
     }
 
-    public TransactionDto(Transaction transaction, StoreAddress storeAddress) {
+    public TransactionDto(Transaction transaction) {
         this.id = transaction.getId();
         this.guestName = transaction.getAccount().getUserInformation().getFullName();
         this.guestPhone = transaction.getAccount().getUserInformation().getPhone();
         this.guestEmail = transaction.getAccount().getUserInformation().getEmail();
         this.storeName = transaction.getStore().getName();
-        this.storeAddress = storeAddress.getAddress();
+        this.storeAddress = transaction.getStoreAddress().getAddress();
         this.time = transaction.getTime();
         this.day = transaction.getDay();
         this.adults = transaction.getAdults() + " người lớn";
