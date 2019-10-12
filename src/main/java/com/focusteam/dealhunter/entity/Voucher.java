@@ -57,6 +57,9 @@ public class Voucher {
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
+    @OneToMany(mappedBy = "voucher")
+    private Set<Transaction> transactions;
+
     public Voucher() {
     }
 
@@ -106,6 +109,14 @@ public class Voucher {
 
         promotionTime.setVoucher(this);
         this.promotionTime = promotionTime;
+    }
+
+    public Set<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
     public String getNameUnAccent() {

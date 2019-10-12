@@ -19,7 +19,7 @@ import javax.validation.Valid;
 import java.util.*;
 
 @Service("storeServices")
-public class DefaultStoreService implements StoreServices {
+public class DefaultStoreServices implements StoreServices {
     private HashMap<String, String> hashMap = new HashMap<>();
     @Autowired
     AccountServices accountServices;
