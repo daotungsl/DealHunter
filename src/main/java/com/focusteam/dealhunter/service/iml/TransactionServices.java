@@ -16,8 +16,8 @@ public interface TransactionServices {
     public ResponseEntity<Object> getOneById(@PathVariable long id, HttpServletRequest request);
     public ResponseEntity<Object> getAll(HttpServletRequest request);
     public ResponseEntity<Object> getAllWithOneAccount(@PathVariable String email, HttpServletRequest request);
-    public ResponseEntity<Object> getAllByStore(@PathVariable String sName, HttpServletRequest request);
-    public ResponseEntity<Object> getAllByStoreAddress(@PathVariable long id, HttpServletRequest request);
+    public ResponseEntity<Object> getAllByStore(@PathVariable String name, HttpServletRequest request);
+    public ResponseEntity<Object> getAllByStoreAddress(@PathVariable long id,@PathVariable String name, HttpServletRequest request);
 
     public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request);
 }

@@ -21,4 +21,5 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 
     @Query("SELECT s FROM Store s WHERE s.name = ?1 OR s.email = ?2 OR  s.phone = ?3")
     Optional<Store> findByName(String name, String email, String phone);
+
 }
