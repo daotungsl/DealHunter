@@ -12,4 +12,5 @@ public interface AdminServices {
     public ResponseEntity<Object> statusVoucher();
 
     public ResponseEntity<Object> statusTransaction();
+
 }

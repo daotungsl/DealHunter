@@ -1,9 +1,13 @@
 package com.focusteam.dealhunter.entity;
 
+import com.focusteam.dealhunter.dto.groupTransactionDto.TransactionCreateDto;
+
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+import java.util.Calendar;
 
 @Entity
 public class Transaction {
@@ -15,7 +19,12 @@ public class Transaction {
     @NotNull
     private String day;
 
-    @Size(min = 15, max = 20000)
+    @NotNull
+    private int adults;
+
+    private int children;
+
+    @Size(min = 0, max = 20000)
     private String description;
     @NotNull
     private long created;
@@ -35,6 +44,47 @@ public class Transaction {
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
+    @ManyToOne
+    @JoinColumn(name = "voucher_id", nullable = false)
+    private Voucher voucher;
+
+    public Transaction() {
+    }
+
+    public Transaction(TransactionCreateDto transactionCreateDto) {
+        this.adults = transactionCreateDto.getAdults();
+        this.children = transactionCreateDto.getChildren();
+        this.time = transactionCreateDto.getTime();
+        this.day = transactionCreateDto.getDay();
+        this.description = transactionCreateDto.getDescription();
+        this.created = Calendar.getInstance().getTimeInMillis();
+        this.updated = this.created;
+        this.status = 0;
+    }
+
+    public Voucher getVoucher() {
+        return voucher;
+    }
+
+    public void setVoucher(Voucher voucher) {
+        this.voucher = voucher;
+    }
+
+    public int getAdults() {
+        return adults;
+    }
+
+    public void setAdults(int adults) {
+        this.adults = adults;
+    }
+
+    public int getChildren() {
+        return children;
+    }
+
+    public void setChildren(int children) {
+        this.children = children;
+    }
 
     public long getId() {
         return id;
