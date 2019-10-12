@@ -1,4 +1,4 @@
-package com.focusteam.dealhunter.service.iml;
+package com.focusteam.dealhunter.service.impl;
 
 import com.focusteam.dealhunter.dto.groupStoreDto.StoreAddressCreate;
 import com.focusteam.dealhunter.dto.groupStoreDto.StoreAddressUpdate;

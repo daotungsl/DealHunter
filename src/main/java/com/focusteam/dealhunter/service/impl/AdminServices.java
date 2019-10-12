@@ -1,4 +1,4 @@
-package com.focusteam.dealhunter.service.iml;
+package com.focusteam.dealhunter.service.impl;
 
 import org.springframework.http.ResponseEntity;
 

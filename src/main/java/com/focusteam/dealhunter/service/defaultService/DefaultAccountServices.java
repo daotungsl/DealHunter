@@ -9,10 +9,13 @@ import com.focusteam.dealhunter.repository.CredentialRepository;
 import com.focusteam.dealhunter.repository.UserInformationRepository;
 import com.focusteam.dealhunter.rest.RESTLogin;
 import com.focusteam.dealhunter.rest.RESTResponse;
-import com.focusteam.dealhunter.service.iml.AccountServices;
+import com.focusteam.dealhunter.service.impl.AccountServices;
+import com.focusteam.dealhunter.service.impl.EmailServices;
 import com.focusteam.dealhunter.util.StringUtil;
+import jdk.nashorn.internal.runtime.regexp.joni.constants.OPCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -24,11 +27,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
 
 @Service("accountServices")
 public class DefaultAccountServices implements AccountServices {
     private HashMap<String, String> hashMap = new HashMap<>();
+    @Autowired
+    Environment environment;
 
     @Autowired
     AccountRepository accountRepository;
@@ -38,6 +45,9 @@ public class DefaultAccountServices implements AccountServices {
 
     @Autowired
     UserInformationRepository userInformationRepository;
+
+    @Autowired
+    private EmailServices emailServices;
 
     @Override
     public ResponseEntity<Object> login(@RequestBody AccountLoginDto accountLoginDto, HttpServletRequest request) {
@@ -60,7 +70,6 @@ public class DefaultAccountServices implements AccountServices {
                 AccountInformationDto accountInformationDto = new AccountInformationDto(account2);
                 CredentialDto credentialDto = new CredentialDto(credential);
                 RESTLogin restLogin = new RESTLogin(accountInformationDto, credentialDto);
-
 
                 return new ResponseEntity<>(new RESTResponse.Success()
                         .setStatus(HttpStatus.ACCEPTED.value())
@@ -112,6 +121,11 @@ public class DefaultAccountServices implements AccountServices {
                 acc.getUserInformation().setSalt(salt);
                 acc.setPassword(new StringUtil().encryptMD5(accountDto.getPassword()) + new StringUtil().encryptMD5(salt));
                 accountRepository.save(acc);
+
+                String callBack = "http://" + InetAddress.getLoopbackAddress().getHostName() + ":" + environment.getProperty("server.port") +"/unauthentic/account/"+ accountDto.getEmail() + "/confirm/1/1";
+
+                emailServices.sendMessageWithAttachment(accountDto.getEmail(), "Xác nhận email", accountDto.getEmail(), callBack);
+
                 return new ResponseEntity<>(new RESTResponse.Success()
                         .setStatus(HttpStatus.CREATED.value())
                         .setData(new AccountLoginDto(accountDto.getEmail(), accountDto.getPassword(), request.getHeader("user-agent")))
@@ -133,6 +147,67 @@ public class DefaultAccountServices implements AccountServices {
                 .setData("")
                 .setMessage("Register data has errors !").build(), HttpStatus.FORBIDDEN);
     }
+
+    @Override
+    public ResponseEntity<Object> storeRegister(@RequestBody @Valid AccountStoreDto accountStoreDto, BindingResult bindingResult, HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByUsername(accountStoreDto.getEmail());
+        Optional<UserInformation> userInformationOptional = userInformationRepository.findByPhone(accountStoreDto.getPhone());
+        if (bindingResult.hasErrors()){
+            hashMap.clear();
+            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+            for (FieldError f: fieldErrors
+            ) {
+                hashMap.put(f.getField(), f.getDefaultMessage());
+            }
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData(StringUtils.EMPTY)
+                    .setMessage("Register data has errors !").build(), HttpStatus.FORBIDDEN);
+        } else if (!accountStoreDto.getPassword().equals(accountStoreDto.getRepassword())){
+            hashMap.clear();
+            hashMap.put("Re-Password", "The re-password does not match the password !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData(StringUtils.EMPTY)
+                    .setMessage("Register data has errors !").build(), HttpStatus.FORBIDDEN);
+        }else if (accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Username", "This username has exist !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Register data has errors !").build(), HttpStatus.FORBIDDEN);
+        } else if (userInformationOptional.isPresent()) {
+            hashMap.clear();
+            hashMap.put("Phone", "A phone number can only register one account");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Register data has errors !").build(), HttpStatus.FORBIDDEN);
+        }else {
+            Account account = new Account(accountStoreDto);
+            String salt = new StringUtil().randomString();
+            account.getUserInformation().setSalt(salt);
+            account.setPassword(new StringUtil().encryptMD5(accountStoreDto.getPassword()) + new StringUtil().encryptMD5(salt));
+            accountRepository.save(account);
+
+
+
+            String callBack = "http://localhost:8080/unauthentic/account/"+ accountStoreDto.getEmail() + "/confirm/1/0";
+
+            emailServices.sendMessageWithAttachment(accountStoreDto.getEmail(), "Xác nhận email", accountStoreDto.getFullName(), callBack);
+
+            return new ResponseEntity<>(new RESTResponse.Success()
+                    .setStatus(HttpStatus.CREATED.value())
+                    .setData(new AccountLoginDto(accountStoreDto.getEmail(), accountStoreDto.getPassword(), request.getHeader("user-agent")))
+                    .setMessage("Store account register success !").build(), HttpStatus.CREATED);
+        }
+    }
+
 
     @Override
     public Optional findByToken(String token) {
@@ -257,6 +332,49 @@ public class DefaultAccountServices implements AccountServices {
         }
     }
 
+    @Override
+    public HttpStatus confirmEmail(String email, int confirm, int status) {
+        Optional<Account> accountOptional = accountRepository.findByUsername(email);
+        if (accountOptional.isPresent()){
+            Account account = accountOptional.get();
+            account.setConfirmEmail(confirm);
+            account.setStatus(status);
+            accountRepository.save(account);
+            return HttpStatus.OK;
+        }else {
+            return HttpStatus.BAD_REQUEST;
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> sendMailConfirm(String email, HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Update data has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (!accountOptional.get().getUsername().equalsIgnoreCase(email)){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Update data has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else {
+            String callBack = "http://" + InetAddress.getLoopbackAddress().getHostName() + ":" + environment.getProperty("server.port") + "/unauthentic/account/" + email + "/confirm/1/1";
+            emailServices.sendMessageWithAttachment(email, "Xác nhận email", email, callBack);
+            return new ResponseEntity<>(new RESTResponse.Success()
+                    .setStatus(HttpStatus.OK.value())
+                    .setData("Email has been confirmed")
+                    .setMessage("Success !").build(), HttpStatus.OK);
+        }
+    }
+
     private void saveAccountCredential(Account account, Credential credential, HttpServletRequest request){
         credential.setAccessToken("AAWEB-" + UUID.randomUUID().toString().toUpperCase());
         credential.setRefreshToken("RFWEB-" + UUID.randomUUID().toString().toUpperCase());
@@ -273,6 +391,4 @@ public class DefaultAccountServices implements AccountServices {
         accountRepository.save(account);
         //credentialRepository.save(credential);
     }
-
-
 }

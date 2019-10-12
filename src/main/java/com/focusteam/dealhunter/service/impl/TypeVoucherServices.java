@@ -1,7 +1,5 @@
-package com.focusteam.dealhunter.service.iml;
+package com.focusteam.dealhunter.service.impl;
 
-import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreCreateDto;
-import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreUpdate;
 import com.focusteam.dealhunter.dto.groupTypeVoucherDto.TypeVoucherCreateDto;
 import com.focusteam.dealhunter.dto.groupTypeVoucherDto.TypeVoucherUpdate;
 import org.springframework.http.ResponseEntity;
@@ -12,11 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-public interface TypeStoreServices {
-    public ResponseEntity<Object> create(@Valid @RequestBody TypeStoreCreateDto typeStoreCreateDto, BindingResult bindingResult, HttpServletRequest request);
+public interface TypeVoucherServices {
+    public ResponseEntity<Object> create(@Valid @RequestBody TypeVoucherCreateDto typeVoucherCreateDto, BindingResult bindingResult, HttpServletRequest request);
     public ResponseEntity<Object> getOne(@PathVariable long id);
     public ResponseEntity<Object> getOneByNameUA(@PathVariable String name);
     public ResponseEntity<Object> getAll();
-    public ResponseEntity<Object> update(@PathVariable long id, @Valid @RequestBody TypeStoreUpdate typeStoreUpdate, BindingResult bindingResult, HttpServletRequest request);
+    public ResponseEntity<Object> update(@PathVariable long id, @Valid @RequestBody TypeVoucherUpdate typeVoucherUpdate, BindingResult bindingResult, HttpServletRequest request);
     public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request);
 }

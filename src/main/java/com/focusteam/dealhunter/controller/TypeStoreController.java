@@ -2,7 +2,7 @@ package com.focusteam.dealhunter.controller;
 
 import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreCreateDto;
 import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreUpdate;
-import com.focusteam.dealhunter.service.iml.TypeStoreServices;
+import com.focusteam.dealhunter.service.impl.TypeStoreServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;

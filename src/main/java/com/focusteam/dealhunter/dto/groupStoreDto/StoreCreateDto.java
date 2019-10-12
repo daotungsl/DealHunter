@@ -6,7 +6,7 @@ import javax.validation.constraints.*;
 
 public class StoreCreateDto {
     @NotEmpty
-    @Size(min = 10, max = 50)
+    @Size(min = 50, max = 50)
     private String name;
 
     @Email
@@ -31,7 +31,7 @@ public class StoreCreateDto {
     private long typeStoreId;
 
     @NotEmpty
-    @Size(min = 50, max = 255)
+    @Size(min = 10, max = 255)
     private String address;
 
     @NotEmpty

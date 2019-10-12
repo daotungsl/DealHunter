@@ -1,9 +1,7 @@
-package com.focusteam.dealhunter.service.iml;
+package com.focusteam.dealhunter.service.impl;
 
 import com.focusteam.dealhunter.dto.groupCityDto.CityCreateDto;
 import com.focusteam.dealhunter.dto.groupCityDto.CityUpdate;
-import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreCreateDto;
-import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreUpdate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
