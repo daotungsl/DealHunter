@@ -49,7 +49,7 @@ public class AccountController {
     }
 
     @CrossOrigin
-    @RequestMapping(value = "/unauthentic/account/{email}/send-confirm", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/account/{email}/send-confirm", method = RequestMethod.GET)
     public ResponseEntity<Object> sendConfirmEmail(@PathVariable String email, HttpServletRequest request){
         return accountServices.sendMailConfirm(email, request);
     }
