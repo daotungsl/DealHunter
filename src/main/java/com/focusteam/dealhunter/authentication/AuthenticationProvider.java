@@ -1,6 +1,6 @@
 package com.focusteam.dealhunter.authentication;
 
-import com.focusteam.dealhunter.service.iml.AccountServices;
+import com.focusteam.dealhunter.service.impl.AccountServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;

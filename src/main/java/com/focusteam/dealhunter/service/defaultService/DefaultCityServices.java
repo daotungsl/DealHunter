@@ -8,7 +8,7 @@ import com.focusteam.dealhunter.entity.City;
 import com.focusteam.dealhunter.repository.AccountRepository;
 import com.focusteam.dealhunter.repository.CityRepository;
 import com.focusteam.dealhunter.rest.RESTResponse;
-import com.focusteam.dealhunter.service.iml.CityServices;
+import com.focusteam.dealhunter.service.impl.CityServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

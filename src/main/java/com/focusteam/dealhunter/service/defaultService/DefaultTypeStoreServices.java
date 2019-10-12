@@ -8,7 +8,7 @@ import com.focusteam.dealhunter.entity.TypeStore;
 import com.focusteam.dealhunter.repository.AccountRepository;
 import com.focusteam.dealhunter.repository.TypeStoreRepository;
 import com.focusteam.dealhunter.rest.RESTResponse;
-import com.focusteam.dealhunter.service.iml.TypeStoreServices;
+import com.focusteam.dealhunter.service.impl.TypeStoreServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -4,7 +4,7 @@ import com.focusteam.dealhunter.dto.groupStoreDto.StoreAddressCreate;
 import com.focusteam.dealhunter.dto.groupStoreDto.StoreAddressUpdate;
 import com.focusteam.dealhunter.dto.groupStoreDto.StoreCreateDto;
 import com.focusteam.dealhunter.dto.groupStoreDto.StoreUpdate;
-import com.focusteam.dealhunter.service.iml.StoreServices;
+import com.focusteam.dealhunter.service.impl.StoreServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;

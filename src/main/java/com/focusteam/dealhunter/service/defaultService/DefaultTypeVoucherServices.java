@@ -9,7 +9,7 @@ import com.focusteam.dealhunter.repository.AccountRepository;
 import com.focusteam.dealhunter.repository.CredentialRepository;
 import com.focusteam.dealhunter.repository.TypeVoucherRepository;
 import com.focusteam.dealhunter.rest.RESTResponse;
-import com.focusteam.dealhunter.service.iml.TypeVoucherServices;
+import com.focusteam.dealhunter.service.impl.TypeVoucherServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

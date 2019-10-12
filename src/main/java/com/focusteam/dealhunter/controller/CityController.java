@@ -2,7 +2,7 @@ package com.focusteam.dealhunter.controller;
 
 import com.focusteam.dealhunter.dto.groupCityDto.CityCreateDto;
 import com.focusteam.dealhunter.dto.groupCityDto.CityUpdate;
-import com.focusteam.dealhunter.service.iml.CityServices;
+import com.focusteam.dealhunter.service.impl.CityServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;

@@ -1,6 +1,7 @@
 package com.focusteam.dealhunter.entity;
 
 import com.focusteam.dealhunter.dto.groupAccountDto.AccountDto;
+import com.focusteam.dealhunter.dto.groupAccountDto.AccountStoreDto;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,6 +20,8 @@ public class Account {
     @NotNull
     private int typeAccount;
     private String token;
+    @NotNull
+    private int confirmEmail;
     @NotNull
     private int status;
 
@@ -64,8 +67,9 @@ public class Account {
     public Account(AccountDto accountDto) {
         this.username = accountDto.getEmail();
         this.password = accountDto.getPassword();
-        this.typeAccount = 1;
-        this.status = 1;
+        this.typeAccount = 0;
+        this.confirmEmail = 0;
+        this.status = 0;
         UserInformation userInformation = new UserInformation();
         userInformation.setCreated(System.currentTimeMillis());
         userInformation.setUpdated(System.currentTimeMillis());
@@ -74,6 +78,36 @@ public class Account {
         //userInformation.setSalt(new StringUtil().randomString());
         userInformation.setAccount(this);
         this.userInformation = userInformation;
+    }
+
+    public Account(AccountStoreDto accountStoreDto) {
+        this.username = accountStoreDto.getEmail();
+        this.password = accountStoreDto.getPassword();
+        this.typeAccount = 1;
+        this.confirmEmail = 0;
+        this.status = 0;
+
+        UserInformation userInformation = new UserInformation();
+        userInformation.setEmail(accountStoreDto.getEmail());
+        userInformation.setPhone(accountStoreDto.getPhone());
+        userInformation.setFullName(accountStoreDto.getFullName());
+        userInformation.setGender(accountStoreDto.getGender());
+        userInformation.setBirthday(accountStoreDto.getBirthday());
+        userInformation.setAvatar(accountStoreDto.getAvatar());
+        userInformation.setAddress(accountStoreDto.getAddress());
+        userInformation.setCreated(System.currentTimeMillis());
+        userInformation.setUpdated(System.currentTimeMillis());
+        userInformation.setAccount(this);
+
+        this.userInformation = userInformation;
+    }
+
+    public int getConfirmEmail() {
+        return confirmEmail;
+    }
+
+    public void setConfirmEmail(int confirmEmail) {
+        this.confirmEmail = confirmEmail;
     }
 
     public Set<Transaction> getTransactions() {
