@@ -10,8 +10,8 @@ public class StoreAddressCreate {
     @Size(min = 50, max = 255)
     private String address;
 
-    @NotEmpty
-    @Size(min = 20, max = 2000)
+
+    @Size(min = 50, max = 2000)
     private String description;
 
     @NotNull

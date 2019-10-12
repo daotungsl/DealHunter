@@ -10,7 +10,7 @@ public class StoreAddressUpdate {
     private long id;
 
     @NotEmpty
-    @Size(min = 50, max = 255)
+    @Size(min = 10, max = 255)
     private String address;
 
     @NotEmpty
