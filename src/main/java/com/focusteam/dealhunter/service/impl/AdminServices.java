@@ -21,4 +21,9 @@ public interface AdminServices {
 
     public ResponseEntity<Object> getAllAccountByType(@PathVariable int type, HttpServletRequest request);
 
+    public ResponseEntity<Object> statusTypeStore(@PathVariable long id, @PathVariable int status, HttpServletRequest request);
+
+    public ResponseEntity<Object> statusTypeVoucher(@PathVariable long id, @PathVariable int status, HttpServletRequest request);
+
+    public ResponseEntity<Object> statusCity(@PathVariable long id, @PathVariable int status, HttpServletRequest request);
 }

@@ -33,22 +33,4 @@ public class TypeVoucherController {
     public ResponseEntity<Object> getOneByNameUA(@PathVariable String name){
         return typeVoucherServices.getOneByNameUA(name);
     }
-
-    @CrossOrigin
-    @RequestMapping(value = "/api/admin/type-vouchers/type-voucher", method = RequestMethod.POST)
-    public ResponseEntity<Object> create(@Valid @RequestBody TypeVoucherCreateDto typeVoucherCreateDto, BindingResult bindingResult, HttpServletRequest request){
-        return typeVoucherServices.create(typeVoucherCreateDto, bindingResult, request);
-    }
-
-    @CrossOrigin
-    @RequestMapping(value = "/api/admin/type-vouchers/type-voucher/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Object> update(@PathVariable long id , @Valid @RequestBody TypeVoucherUpdate typeVoucherUpdate, BindingResult bindingResult, HttpServletRequest request){
-        return typeVoucherServices.update(id, typeVoucherUpdate, bindingResult, request);
-    }
-
-    @CrossOrigin
-    @RequestMapping(value = "/api/admin/type-vouchers/type-voucher/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request){
-        return typeVoucherServices.delete(id, request);
-    }
 }

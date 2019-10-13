@@ -33,22 +33,4 @@ public class CityController {
     public ResponseEntity<Object> getOneByNameUA(@PathVariable String name){
         return cityServices.getOneByNameUA(name);
     }
-
-    @CrossOrigin
-    @RequestMapping(value = "/api/admin/cities/city", method = RequestMethod.POST)
-    public ResponseEntity<Object> create(@Valid @RequestBody CityCreateDto cityCreateDto, BindingResult bindingResult, HttpServletRequest request){
-        return cityServices.create(cityCreateDto, bindingResult, request);
-    }
-
-    @CrossOrigin
-    @RequestMapping(value = "/api/admin/cities/city/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Object> update(@PathVariable long id , @Valid @RequestBody CityUpdate cityUpdate, BindingResult bindingResult, HttpServletRequest request){
-        return cityServices.update(id, cityUpdate, bindingResult, request);
-    }
-
-    @CrossOrigin
-    @RequestMapping(value = "/api/admin/cities/city/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request){
-        return cityServices.delete(id, request);
-    }
 }
