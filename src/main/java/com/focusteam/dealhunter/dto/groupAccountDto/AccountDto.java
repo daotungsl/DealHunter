@@ -10,20 +10,25 @@ public class AccountDto {
     @Size(min = 5, max = 50)
     private String fullName;
 
+    @NotNull
+    @NotEmpty
     @Size(min = 10, max = 15)
     @Digits(integer = 10, fraction = 15)
     private String phone;
 
     @Email
+    @NotNull
     @NotEmpty
     @Size(min = 15, max = 50)
     private String email;
 
     @NotEmpty
+    @NotNull
     @Size(min = 6, max = 200)
     private String password;
 
     @NotEmpty
+    @NotNull
     @Size(min = 6, max = 200)
     private String repassword;
 
