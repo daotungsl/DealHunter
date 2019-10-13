@@ -10,6 +10,9 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    @Query("SELECT COUNT (t) FROM  Transaction t WHERE t.store_id = ?1 GROUP BY t.day")
-    List<Integer> countByStoreId(long id);
+//    @Query("SELECT COUNT (t) FROM  Transaction t WHERE t.store_id = ?1 GROUP BY t.day")
+//
+//    @Query("")
+//
+//    List<Integer> countByStoreId(long id);
 }
