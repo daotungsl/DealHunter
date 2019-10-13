@@ -2,12 +2,14 @@ package com.focusteam.dealhunter.dto.groupAccountDto;
 
 import com.focusteam.dealhunter.entity.Account;
 
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 public class AccountDto {
+    @NotNull
+    @NotEmpty
+    @Size(min = 5, max = 50)
+    private String fullName;
+
     @Size(min = 10, max = 15)
     @Digits(integer = 10, fraction = 15)
     private String phone;
@@ -39,6 +41,14 @@ public class AccountDto {
         this.email = account.getUsername();
         this.phone = account.getUserInformation().getPhone();
         this.password = account.getPassword();
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getPhone() {

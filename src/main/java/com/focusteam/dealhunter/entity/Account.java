@@ -73,6 +73,7 @@ public class Account {
         UserInformation userInformation = new UserInformation();
         userInformation.setCreated(System.currentTimeMillis());
         userInformation.setUpdated(System.currentTimeMillis());
+        userInformation.setFullName(accountDto.getFullName());
         userInformation.setEmail(accountDto.getEmail());
         userInformation.setPhone(accountDto.getPhone());
         //userInformation.setSalt(new StringUtil().randomString());
