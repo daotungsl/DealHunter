@@ -15,4 +15,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 //    @Query("")
 //
 //    List<Integer> countByStoreId(long id);
+
+    @Query("SELECT COUNT (t) FROM Transaction t INNER JOIN t.store s WHERE s.id = ?1 group by t.day")
+    List<Integer> countByStore(long id);
 }

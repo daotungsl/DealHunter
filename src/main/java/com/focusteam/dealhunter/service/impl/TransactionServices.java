@@ -19,5 +19,5 @@ public interface TransactionServices {
 
     public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request);
 
-    //public ResponseEntity<Object> countByStore(@PathVariable long id, HttpServletRequest request);
+    public ResponseEntity<Object> countByStore(@PathVariable long id, HttpServletRequest request);
 }

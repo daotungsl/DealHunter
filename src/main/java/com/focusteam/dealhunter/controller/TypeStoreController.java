@@ -33,22 +33,4 @@ public class TypeStoreController {
     public ResponseEntity<Object> getOneByNameUA(@PathVariable String name){
         return typeStoreServices.getOneByNameUA(name);
     }
-
-    @CrossOrigin
-    @RequestMapping(value = "/api/admin/type-stores/type-store", method = RequestMethod.POST)
-    public ResponseEntity<Object> create(@Valid @RequestBody TypeStoreCreateDto typeStoreCreateDto, BindingResult bindingResult, HttpServletRequest request){
-        return typeStoreServices.create(typeStoreCreateDto, bindingResult, request);
-    }
-
-    @CrossOrigin
-    @RequestMapping(value = "/api/admin/type-store/type-store/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Object> update(@PathVariable long id , @Valid @RequestBody TypeStoreUpdate typeStoreUpdate, BindingResult bindingResult, HttpServletRequest request){
-        return typeStoreServices.update(id, typeStoreUpdate, bindingResult, request);
-    }
-
-    @CrossOrigin
-    @RequestMapping(value = "/api/admin/type-stores/type-store/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request){
-        return typeStoreServices.delete(id, request);
-    }
 }

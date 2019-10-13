@@ -2,9 +2,12 @@ package com.focusteam.dealhunter.service.defaultService;
 
 import com.focusteam.dealhunter.dto.groupAccountDto.AccountInformationDto;
 import com.focusteam.dealhunter.dto.groupAccountDto.UserInformationDto;
+import com.focusteam.dealhunter.dto.groupCityDto.CityDto;
 import com.focusteam.dealhunter.dto.groupStoreDto.StoreAddressDto;
 import com.focusteam.dealhunter.dto.groupStoreDto.StoreDto;
 import com.focusteam.dealhunter.dto.groupTransactionDto.TransactionDto;
+import com.focusteam.dealhunter.dto.groupTypeStoreDto.TypeStoreDto;
+import com.focusteam.dealhunter.dto.groupTypeVoucherDto.TypeVoucherDto;
 import com.focusteam.dealhunter.dto.groupVoucherDto.VoucherDto;
 import com.focusteam.dealhunter.entity.*;
 import com.focusteam.dealhunter.repository.*;
@@ -40,6 +43,15 @@ public class DefaultAdminService implements AdminServices {
 
     @Autowired
     TransactionRepository transactionRepository;
+
+    @Autowired
+    TypeStoreRepository typeStoreRepository;
+
+    @Autowired
+    TypeVoucherRepository typeVoucherRepository;
+
+    @Autowired
+    CityRepository cityRepository;
 
     @Override
     public ResponseEntity<Object> statusAccount(long id, int status, HttpServletRequest request) {
@@ -396,6 +408,156 @@ public class DefaultAdminService implements AdminServices {
                         .setStatus(HttpStatus.NOT_FOUND.value())
                         .setData("")
                         .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+            }
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> statusTypeStore(long id, int status, HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (status <0 || status >2) {
+            hashMap.clear();
+            hashMap.put("Status", "status is invalid! (0, 1, 2)");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Status has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else {
+            Optional<TypeStore> typeStoreOptional = typeStoreRepository.findById(id);
+            if (!typeStoreOptional.isPresent()){
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .setStatus(HttpStatus.NOT_FOUND.value())
+                        .setData(StringUtils.EMPTY)
+                        .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+            }else if (typeStoreOptional.get().getStatus() == status){
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .setStatus(HttpStatus.NOT_FOUND.value())
+                        .setData(StringUtils.EMPTY)
+                        .setMessage("The status has not changed because this status has been changed !").build(), HttpStatus.NOT_FOUND);
+            }else {
+                TypeStore typeStore = typeStoreOptional.get();
+                typeStore.setStatus(status);
+                typeStoreRepository.save(typeStore);
+
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(new TypeStoreDto(typeStore))
+                        .setMessage("Success!").build(), HttpStatus.OK);
+            }
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> statusTypeVoucher(long id, int status, HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (status <0 || status >2) {
+            hashMap.clear();
+            hashMap.put("Status", "status is invalid! (0, 1, 2)");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Status has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else {
+            Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findById(id);
+            if (!typeVoucherOptional.isPresent()){
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .setStatus(HttpStatus.NOT_FOUND.value())
+                        .setData(StringUtils.EMPTY)
+                        .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+            }else if (typeVoucherOptional.get().getStatus() == status){
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .setStatus(HttpStatus.NOT_FOUND.value())
+                        .setData(StringUtils.EMPTY)
+                        .setMessage("The status has not changed because this status has been changed !").build(), HttpStatus.NOT_FOUND);
+            }else {
+                TypeVoucher typeVoucher = typeVoucherOptional.get();
+                typeVoucher.setStatus(status);
+                typeVoucherRepository.save(typeVoucher);
+
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(new TypeVoucherDto(typeVoucher))
+                        .setMessage("Success!").build(), HttpStatus.OK);
+            }
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> statusCity(long id, int status, HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (status <0 || status >2) {
+            hashMap.clear();
+            hashMap.put("Status", "status is invalid! (0, 1, 2)");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Status has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else {
+            Optional<City> cityOptional = cityRepository.findById(id);
+            if (!cityOptional.isPresent()){
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .setStatus(HttpStatus.NOT_FOUND.value())
+                        .setData(StringUtils.EMPTY)
+                        .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+            }else if (cityOptional.get().getStatus() == status){
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .setStatus(HttpStatus.NOT_FOUND.value())
+                        .setData(StringUtils.EMPTY)
+                        .setMessage("The status has not changed because this status has been changed !").build(), HttpStatus.NOT_FOUND);
+            }else {
+                City city = cityOptional.get();
+                city.setStatus(status);
+                cityRepository.save(city);
+
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(new CityDto(city))
+                        .setMessage("Success!").build(), HttpStatus.OK);
             }
         }
     }

@@ -57,9 +57,9 @@ public class TransactionController {
         return transactionServices.delete(id, request);
     }
 
-//    @CrossOrigin
-//    @RequestMapping(value = "/api/stores/{id}/transactions", method = RequestMethod.GET)
-//    public ResponseEntity<Object> countByStore(@PathVariable long id, HttpServletRequest request){
-//        return transactionServices.countByStore(id , request);
-//    }
+    @CrossOrigin
+    @RequestMapping(value = "/api/stores/transactions/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Object> countByStore(@PathVariable long id, HttpServletRequest request){
+        return transactionServices.countByStore(id , request);
+    }
 }

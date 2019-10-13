@@ -422,40 +422,40 @@ public class DefaultTransactionServices implements TransactionServices {
         }
     }
 
-//    @Override
-//    public ResponseEntity<Object> countByStore(long id, HttpServletRequest request) {
-//        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
-//        Optional<Store> storeOptional = storeRepository.findById(id);
-//        if (!accountOptional.isPresent()){
-//            hashMap.clear();
-//            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
-//            return new ResponseEntity<>(new RESTResponse.Error()
-//                    .addErrors(hashMap)
-//                    .setStatus(HttpStatus.UNAUTHORIZED.value())
-//                    .setData("")
-//                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
-//        }else if (!storeOptional.isPresent()){
-//            hashMap.clear();
-//            hashMap.put("ID", "No store found with this id = " + id + " !");
-//            return new ResponseEntity<>(new RESTResponse.Error()
-//                    .addErrors(hashMap)
-//                    .setStatus(HttpStatus.FORBIDDEN.value())
-//                    .setData("")
-//                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
-//        } else if (accountOptional.get().getTypeAccount() == 0 || accountOptional.get().getStore().getId() != storeOptional.get().getId()) {
-//            hashMap.clear();
-//            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
-//            return new ResponseEntity<>(new RESTResponse.Error()
-//                    .addErrors(hashMap)
-//                    .setStatus(HttpStatus.UNAUTHORIZED.value())
-//                    .setData("")
-//                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
-//        }else {
-//            List<Integer> data = transactionRepository.countByStoreId(id);
-//            return new ResponseEntity<>(new RESTResponse.Success()
-//                    .setStatus(HttpStatus.OK.value())
-//                    .setData(data)
-//                    .setMessage("Success!").build(), HttpStatus.OK);
-//        }
-//    }
+    @Override
+    public ResponseEntity<Object> countByStore(long id, HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        Optional<Store> storeOptional = storeRepository.findById(id);
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (!storeOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("ID", "No store found with this id = " + id + " !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+        } else if (accountOptional.get().getTypeAccount() == 0 || accountOptional.get().getStore().getId() != storeOptional.get().getId()) {
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else {
+            List<Integer> data = transactionRepository.countByStore(id);
+            return new ResponseEntity<>(new RESTResponse.Success()
+                    .setStatus(HttpStatus.OK.value())
+                    .setData(data)
+                    .setMessage("Success!").build(), HttpStatus.OK);
+        }
+    }
 }
