@@ -164,7 +164,7 @@ public class DefaultAccountServices implements AccountServices {
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData(StringUtils.EMPTY)
                     .setMessage("Register data has errors !").build(), HttpStatus.FORBIDDEN);
-        } else if (!accountStoreDto.getPassword().equals(accountStoreDto.getRepassword())){
+        }else if (!accountStoreDto.getPassword().equals(accountStoreDto.getRepassword())){
             hashMap.clear();
             hashMap.put("Re-Password", "The re-password does not match the password !");
             return new ResponseEntity<>(new RESTResponse.Error()

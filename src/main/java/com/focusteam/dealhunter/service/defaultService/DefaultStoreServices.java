@@ -58,11 +58,31 @@ public class DefaultStoreServices implements StoreServices {
                         .setStatus(HttpStatus.UNAUTHORIZED.value())
                         .setData("")
                         .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
-            }else {
-                if (bindingResult.hasErrors()){
+            } else if (account.getConfirmEmail() == 0) {
+                hashMap.clear();
+                hashMap.put("Email", "You need to confirm your email first !");
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .addErrors(hashMap)
+                        .setStatus(HttpStatus.UNAUTHORIZED.value())
+                        .setData("")
+                        .setMessage("Email has errors !").build(), HttpStatus.UNAUTHORIZED);
+            } else if (account.getUserInformation().getFullName() == null
+                        || account.getUserInformation().getAvatar() == null
+                        || account.getUserInformation().getAddress() == null
+                        || account.getUserInformation().getBirthday() == null
+                        || account.getUserInformation().getGender() < 0) {
+                hashMap.clear();
+                hashMap.put("Information", "You must fill out your information before creating a store !");
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .addErrors(hashMap)
+                        .setStatus(HttpStatus.UNAUTHORIZED.value())
+                        .setData("")
+                        .setMessage("Information has errors !").build(), HttpStatus.UNAUTHORIZED);
+            } else {
+                if (bindingResult.hasErrors()) {
                     hashMap.clear();
                     List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-                    for (FieldError f: fieldErrors
+                    for (FieldError f : fieldErrors
                     ) {
                         hashMap.put(f.getField(), f.getDefaultMessage());
                     }
@@ -71,7 +91,7 @@ public class DefaultStoreServices implements StoreServices {
                             .setStatus(HttpStatus.FORBIDDEN.value())
                             .setData("")
                             .setMessage("Store data has errors !").build(), HttpStatus.FORBIDDEN);
-                }else if ( !cityOptional.isPresent()){
+                } else if (!cityOptional.isPresent()) {
                     hashMap.clear();
                     hashMap.put("ID", "No city found with this id = " + storeCreateDto.getCityId() + " !");
                     return new ResponseEntity<>(new RESTResponse.Error()
@@ -80,7 +100,7 @@ public class DefaultStoreServices implements StoreServices {
                             .setData("")
                             .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
                 } else if (storeOptional.isPresent()) {
-                    if (storeOptional.get().getName().equalsIgnoreCase(storeCreateDto.getName())){
+                    if (storeOptional.get().getName().equalsIgnoreCase(storeCreateDto.getName())) {
                         hashMap.clear();
                         hashMap.put("Name", "This store name has been used to register in another store");
                         return new ResponseEntity<>(new RESTResponse.Error()

@@ -96,6 +96,7 @@ public class DefaultVoucherServices implements VoucherServices {
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         }else {
             Voucher voucher = new Voucher(voucherCreateDto);
+            voucher.setIcon(storeOptional.get().getImages());
             voucher.setStore(storeOptional.get());
             voucher.setTypeVoucher(typeVoucherOptional.get());
 

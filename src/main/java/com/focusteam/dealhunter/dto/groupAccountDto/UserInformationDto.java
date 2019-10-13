@@ -13,7 +13,9 @@ public class UserInformationDto {
     @Size(min = 5, max = 50)
     private String fullName;
 
-
+    @Digits(integer = 1, fraction = 0)
+    @Min(0)
+    @Max(2)
     private int gender;
 
     @NotBlank

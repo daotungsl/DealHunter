@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -23,4 +24,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query("SELECT a FROM Account a WHERE a.token = ?1")
     Optional<Account> findByTokenAccount (String token);
 
+    @Query("SELECT a FROM Account a WHERE a.typeAccount = ?1 ORDER BY a.id ASC ")
+    List<Account> countAccountByType(int type);
 }
