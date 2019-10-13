@@ -28,6 +28,8 @@ public class AccountStoreDto {
 
     @NotNull
     @Digits(integer = 1, fraction = 0)
+    @Min(0)
+    @Max(2)
     private int gender;
 
     @NotBlank

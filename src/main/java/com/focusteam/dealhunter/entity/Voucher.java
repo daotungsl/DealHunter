@@ -24,7 +24,11 @@ public class Voucher {
     private String nameUnAccent;
 
     @NotNull
-    @Size(min = 50, max = 200000)
+    @Size(min = 10, max = 20000)
+    private String icon;
+
+
+    @Size(min = 10, max = 200000)
     private String image;
 
     private String codeSale;
@@ -33,6 +37,7 @@ public class Voucher {
     @NotNull
     private int maxSlot;
 
+    @NotNull
     private int slotLeft;
 
     @NotNull
@@ -109,6 +114,14 @@ public class Voucher {
 
         promotionTime.setVoucher(this);
         this.promotionTime = promotionTime;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public Set<Transaction> getTransactions() {

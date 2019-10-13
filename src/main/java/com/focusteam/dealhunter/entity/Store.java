@@ -26,7 +26,7 @@ public class Store {
     private String phone;
 
     @NotNull
-    @Size(min = 50, max = 20000)
+    @Size(min = 10, max = 20000)
     private String images;
     @NotNull
     private long created;

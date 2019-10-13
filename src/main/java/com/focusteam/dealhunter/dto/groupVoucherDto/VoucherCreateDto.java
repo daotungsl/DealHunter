@@ -15,7 +15,7 @@ public class VoucherCreateDto {
 
     @NotBlank
     @NotEmpty
-    @Size(min = 50, max = 20000)
+    @Size(min = 10, max = 20000)
     private String image;
 
     @NotNull

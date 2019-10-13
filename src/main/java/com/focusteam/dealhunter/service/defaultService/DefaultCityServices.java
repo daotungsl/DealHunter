@@ -32,11 +32,9 @@ public class DefaultCityServices implements CityServices {
     @Override
     public ResponseEntity<Object> create(@Valid CityCreateDto cityCreateDto, BindingResult bindingResult, HttpServletRequest request) {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
-
         if (accountOptional.isPresent()){
             Account account = accountOptional.get();
             if (account.getTypeAccount() == 1 || account.getTypeAccount() == 0){
-
                 hashMap.clear();
                 hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
                 return new ResponseEntity<>(new RESTResponse.Error()
