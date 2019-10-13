@@ -18,4 +18,6 @@ public interface TransactionServices {
     public ResponseEntity<Object> getAllByStoreAddress(@PathVariable long id,@PathVariable String name, HttpServletRequest request);
 
     public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request);
+
+    public ResponseEntity<Object> countByStore(@PathVariable long id, HttpServletRequest request);
 }

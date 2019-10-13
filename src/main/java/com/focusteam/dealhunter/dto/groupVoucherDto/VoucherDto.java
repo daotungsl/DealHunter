@@ -9,6 +9,7 @@ public class VoucherDto {
     private String name;
 
     private String store;
+    private String icon;
 
     private String typeVoucher;
 
@@ -39,6 +40,7 @@ public class VoucherDto {
         this.name = voucher.getName();
 
         this.store = voucher.getStore().getName();
+        this.icon = voucher.getStore().getImages();
 
         this.typeVoucher = voucher.getTypeVoucher().getName();
 
@@ -57,6 +59,14 @@ public class VoucherDto {
         this.created = new StringUtil().dateFormatFromLong(voucher.getCreated());
         this.updated = new StringUtil().dateFormatFromLong(voucher.getUpdated());
         this.status = voucher.getStatus();
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public String getStore() {
