@@ -73,6 +73,14 @@ public class DefaultTransactionServices implements TransactionServices {
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Account has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else if (accountOptional.get().getStatus() != 1) {
+            hashMap.clear();
+            hashMap.put("Email", "You need to confirm your email first !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Email has errors !").build(), HttpStatus.UNAUTHORIZED);
         } else if (!storeOptional.isPresent()) {
             hashMap.clear();
             hashMap.put("ID", "No store found with this id !");
@@ -89,7 +97,7 @@ public class DefaultTransactionServices implements TransactionServices {
                     .setStatus(HttpStatus.NOT_FOUND.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
-        } else if (! voucherOptional.isPresent()) {
+        } else if (!voucherOptional.isPresent()) {
             hashMap.clear();
             hashMap.put("ID", "No voucher found with this id = " + transactionCreateDto.getVoucherId() + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
