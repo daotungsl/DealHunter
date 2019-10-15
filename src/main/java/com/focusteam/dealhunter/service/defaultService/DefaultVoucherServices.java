@@ -1,5 +1,6 @@
 package com.focusteam.dealhunter.service.defaultService;
 
+import com.focusteam.dealhunter.dto.groupStoreDto.StoreAddressDto;
 import com.focusteam.dealhunter.dto.groupVoucherDto.VoucherCreateDto;
 import com.focusteam.dealhunter.dto.groupVoucherDto.VoucherDto;
 import com.focusteam.dealhunter.dto.groupVoucherDto.VoucherUpdate;
@@ -114,10 +115,29 @@ public class DefaultVoucherServices implements VoucherServices {
         Optional<Voucher> voucherOptional = voucherRepository.findByIdAndStatus(id);
         if (voucherOptional.isPresent()){
             Voucher voucher = voucherOptional.get();
-            return new ResponseEntity<>(new RESTResponse.Success()
-                    .setStatus(HttpStatus.OK.value())
-                    .setData(new VoucherDto(voucher))
-                    .setMessage("Voucher with id = " + id + " !").build(), HttpStatus.OK);
+            if (voucher.getStore().getStoreAddresses() != null){
+                List<StoreAddress> storeAddressList = new ArrayList<StoreAddress>(voucher.getStore().getStoreAddresses());
+                List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
+                for (StoreAddress s: storeAddressList
+                ) {
+                    storeAddressDtoList.add(new StoreAddressDto(s));
+                }
+                VoucherDto voucherDto = new VoucherDto(voucher);
+                voucherDto.setStoreAddress(storeAddressDtoList);
+
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(voucherDto)
+                        .setMessage("Voucher with id = " + id + " !").build(), HttpStatus.OK);
+            }else {
+                VoucherDto voucherDto = new VoucherDto(voucher);
+                voucherDto.setStoreAddress(null);
+
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(voucherDto)
+                        .setMessage("Voucher with id = " + id + " !").build(), HttpStatus.OK);
+            }
         }else {
             hashMap.clear();
             hashMap.put("ID", "No voucher found with this id = " + id + " !");
@@ -134,10 +154,29 @@ public class DefaultVoucherServices implements VoucherServices {
         Optional<Voucher> voucherOptional = voucherRepository.findByNameUAAndStatus(name);
         if (voucherOptional.isPresent()){
             Voucher voucher = voucherOptional.get();
-            return new ResponseEntity<>(new RESTResponse.Success()
-                    .setStatus(HttpStatus.OK.value())
-                    .setData(new VoucherDto(voucher))
-                    .setMessage("Voucher with nameUA = " + name + " !").build(), HttpStatus.OK);
+            if (voucher.getStore().getStoreAddresses() != null){
+                List<StoreAddress> storeAddressList = new ArrayList<StoreAddress>(voucher.getStore().getStoreAddresses());
+                List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
+                for (StoreAddress s: storeAddressList
+                ) {
+                    storeAddressDtoList.add(new StoreAddressDto(s));
+                }
+                VoucherDto voucherDto = new VoucherDto(voucher);
+                voucherDto.setStoreAddress(storeAddressDtoList);
+
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(voucherDto)
+                        .setMessage("Voucher with name ua = " + name + " !").build(), HttpStatus.OK);
+            }else {
+                VoucherDto voucherDto = new VoucherDto(voucher);
+                voucherDto.setStoreAddress(null);
+
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(voucherDto)
+                        .setMessage("Voucher with name ua = " + name + " !").build(), HttpStatus.OK);
+            }
         }else {
             hashMap.clear();
             hashMap.put("ID", "No voucher found with this nameUA = " + name + " !");
@@ -168,7 +207,20 @@ public class DefaultVoucherServices implements VoucherServices {
                 for (Voucher voucher: vouchers
                 ) {
                     if (voucher.getNameUnAccent().equalsIgnoreCase(vNameUA)){
-                        voucherDto = new VoucherDto(voucher);
+                        if (voucher.getStore().getStoreAddresses() != null){
+                            List<StoreAddress> storeAddressList = new ArrayList<StoreAddress>(voucher.getStore().getStoreAddresses());
+                            List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
+                            for (StoreAddress s: storeAddressList
+                            ) {
+                                storeAddressDtoList.add(new StoreAddressDto(s));
+                            }
+                            voucherDto = new VoucherDto(voucher);
+                            voucherDto.setStoreAddress(storeAddressDtoList);
+                        }else {
+                            voucherDto = new VoucherDto(voucher);
+                            voucherDto.setStoreAddress(null);
+                        }
+                        //voucherDto = new VoucherDto(voucher);
                         //voucherDtos.add(voucherDto);
                     } else {
                         vouchers.remove(voucher);
@@ -198,8 +250,21 @@ public class DefaultVoucherServices implements VoucherServices {
             VoucherDto voucherDto = null;
             for (Voucher voucher: vouchers
             ) {
-                voucherDto = new VoucherDto(voucher);
-                voucherDtos.add(voucherDto);
+                if (voucher.getStore().getStoreAddresses() != null){
+                    List<StoreAddress> storeAddressList = new ArrayList<StoreAddress>(voucher.getStore().getStoreAddresses());
+                    List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
+                    for (StoreAddress s: storeAddressList
+                    ) {
+                        storeAddressDtoList.add(new StoreAddressDto(s));
+                    }
+                    voucherDto = new VoucherDto(voucher);
+                    voucherDto.setStoreAddress(storeAddressDtoList);
+                    voucherDtos.add(voucherDto);
+                }else {
+                    voucherDto = new VoucherDto(voucher);
+                    voucherDto.setStoreAddress(null);
+                    voucherDtos.add(voucherDto);
+                }
             }
             return new ResponseEntity<>(new RESTResponse.Success()
                     .setStatus(HttpStatus.OK.value())
@@ -233,8 +298,21 @@ public class DefaultVoucherServices implements VoucherServices {
                 VoucherDto voucherDto = null;
                 for (Voucher voucher: vouchers
                 ) {
-                    voucherDto = new VoucherDto(voucher);
-                    voucherDtos.add(voucherDto);
+                    if (voucher.getStore().getStoreAddresses() != null){
+                        List<StoreAddress> storeAddressList = new ArrayList<StoreAddress>(voucher.getStore().getStoreAddresses());
+                        List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
+                        for (StoreAddress s: storeAddressList
+                        ) {
+                            storeAddressDtoList.add(new StoreAddressDto(s));
+                        }
+                        voucherDto = new VoucherDto(voucher);
+                        voucherDto.setStoreAddress(storeAddressDtoList);
+                        voucherDtos.add(voucherDto);
+                    }else {
+                        voucherDto = new VoucherDto(voucher);
+                        voucherDto.setStoreAddress(null);
+                        voucherDtos.add(voucherDto);
+                    }
                 }
                 return new ResponseEntity<>(new RESTResponse.Success()
                         .setStatus(HttpStatus.OK.value())
@@ -270,8 +348,21 @@ public class DefaultVoucherServices implements VoucherServices {
                 VoucherDto voucherDto = null;
                 for (Voucher voucher: vouchers
                 ) {
-                    voucherDto = new VoucherDto(voucher);
-                    voucherDtos.add(voucherDto);
+                    if (voucher.getStore().getStoreAddresses() != null){
+                        List<StoreAddress> storeAddressList = new ArrayList<StoreAddress>(voucher.getStore().getStoreAddresses());
+                        List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
+                        for (StoreAddress s: storeAddressList
+                        ) {
+                            storeAddressDtoList.add(new StoreAddressDto(s));
+                        }
+                        voucherDto = new VoucherDto(voucher);
+                        voucherDto.setStoreAddress(storeAddressDtoList);
+                        voucherDtos.add(voucherDto);
+                    }else {
+                        voucherDto = new VoucherDto(voucher);
+                        voucherDto.setStoreAddress(null);
+                        voucherDtos.add(voucherDto);
+                    }
                 }
                 return new ResponseEntity<>(new RESTResponse.Success()
                         .setStatus(HttpStatus.OK.value())
@@ -312,7 +403,7 @@ public class DefaultVoucherServices implements VoucherServices {
             for (Long id : hashSet){
                 Optional<Store> storeOptional = storeRepository.findById(id);
                 if (storeOptional.isPresent()){
-                    voucherDtos = getVoucherByStore(storeOptional.get(), voucherDtos);
+                    voucherDtos = getVoucherByStore(storeOptional.get());
                 }else {
                     hashMap.clear();
                     hashMap.put("Voucher", "No voucher found !");
@@ -473,14 +564,28 @@ public class DefaultVoucherServices implements VoucherServices {
         }
     }
 
-    private List<VoucherDto> getVoucherByStore(Store store, List<VoucherDto> voucherDtos){
+    private List<VoucherDto> getVoucherByStore(Store store){
+            List<VoucherDto> voucherDtos = new ArrayList<>();
             List<Voucher> vouchers = new ArrayList<>(store.getVouchers());
             if (!vouchers.isEmpty()){
                 VoucherDto voucherDto = null;
                 for (Voucher voucher: vouchers
                 ) {
-                    voucherDto = new VoucherDto(voucher);
-                    voucherDtos.add(voucherDto);
+                    if (voucher.getStore().getStoreAddresses() != null){
+                        List<StoreAddress> storeAddressList = new ArrayList<StoreAddress>(voucher.getStore().getStoreAddresses());
+                        List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
+                        for (StoreAddress s: storeAddressList
+                        ) {
+                            storeAddressDtoList.add(new StoreAddressDto(s));
+                        }
+                        voucherDto = new VoucherDto(voucher);
+                        voucherDto.setStoreAddress(storeAddressDtoList);
+                        voucherDtos.add(voucherDto);
+                    }else {
+                        voucherDto = new VoucherDto(voucher);
+                        voucherDto.setStoreAddress(null);
+                        voucherDtos.add(voucherDto);
+                    }
                 }
                 return voucherDtos;
             }

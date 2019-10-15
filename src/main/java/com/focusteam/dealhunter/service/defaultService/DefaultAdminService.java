@@ -1,6 +1,7 @@
 package com.focusteam.dealhunter.service.defaultService;
 
 import com.focusteam.dealhunter.dto.groupAccountDto.AccountInformationDto;
+import com.focusteam.dealhunter.dto.groupAccountDto.CredentialDto;
 import com.focusteam.dealhunter.dto.groupAccountDto.UserInformationDto;
 import com.focusteam.dealhunter.dto.groupCityDto.CityDto;
 import com.focusteam.dealhunter.dto.groupStoreDto.StoreAddressDto;
@@ -11,6 +12,7 @@ import com.focusteam.dealhunter.dto.groupTypeVoucherDto.TypeVoucherDto;
 import com.focusteam.dealhunter.dto.groupVoucherDto.VoucherDto;
 import com.focusteam.dealhunter.entity.*;
 import com.focusteam.dealhunter.repository.*;
+import com.focusteam.dealhunter.rest.RESTLogin;
 import com.focusteam.dealhunter.rest.RESTResponse;
 import com.focusteam.dealhunter.service.impl.AdminServices;
 import org.apache.commons.lang3.StringUtils;
@@ -321,98 +323,6 @@ public class DefaultAdminService implements AdminServices {
     }
 
     @Override
-    public ResponseEntity<Object> getAllAccount(HttpServletRequest request) {
-        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
-        if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
-            return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
-                    .setStatus(HttpStatus.UNAUTHORIZED.value())
-                    .setData("")
-                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
-        }else if (accountOptional.get().getTypeAccount() != 2){
-            return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
-                    .setStatus(HttpStatus.UNAUTHORIZED.value())
-                    .setData("")
-                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
-        }else {
-            List<Account> accounts = accountRepository.findAll();
-            if (!accounts.isEmpty()){
-                List<AccountInformationDto> accountInformationDtos = new ArrayList<>();
-                AccountInformationDto accountInformationDto = null;
-                for (Account account : accounts){
-                    accountInformationDto = new AccountInformationDto(account);
-                    accountInformationDtos.add(accountInformationDto);
-                }
-                return new ResponseEntity<>(new RESTResponse.Success()
-                        .setStatus(HttpStatus.OK.value())
-                        .setData(accountInformationDtos)
-                        .setMessage("Success!").build(), HttpStatus.OK);
-            }else {
-                hashMap.clear();
-                hashMap.put("Account", "No account found !");
-                return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
-                        .setStatus(HttpStatus.NOT_FOUND.value())
-                        .setData("")
-                        .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
-            }
-        }
-    }
-
-    @Override
-    public ResponseEntity<Object> getAllAccountByType(int type, HttpServletRequest request) {
-        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
-        if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
-            return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
-                    .setStatus(HttpStatus.UNAUTHORIZED.value())
-                    .setData("")
-                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
-        }else if (accountOptional.get().getTypeAccount() != 2){
-            return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
-                    .setStatus(HttpStatus.UNAUTHORIZED.value())
-                    .setData("")
-                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
-        }else if (type <0 || type >2) {
-            hashMap.clear();
-            hashMap.put("Type-Account", "Type-Account is invalid! (0, 1, 2)");
-            return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
-                    .setStatus(HttpStatus.UNAUTHORIZED.value())
-                    .setData("")
-                    .setMessage("Type-Account has errors !").build(), HttpStatus.UNAUTHORIZED);
-        }else {
-            List<Account> accounts = accountRepository.countAccountByType(type);
-            if (!accounts.isEmpty()){
-                List<AccountInformationDto> accountInformationDtos = new ArrayList<>();
-                AccountInformationDto accountInformationDto = null;
-                for (Account account : accounts){
-                    accountInformationDto = new AccountInformationDto(account);
-                    accountInformationDtos.add(accountInformationDto);
-                }
-                return new ResponseEntity<>(new RESTResponse.Success()
-                        .setStatus(HttpStatus.OK.value())
-                        .setData(accountInformationDtos)
-                        .setMessage("Success!").build(), HttpStatus.OK);
-            }else {
-                hashMap.clear();
-                hashMap.put("Account", "No account found !");
-                return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
-                        .setStatus(HttpStatus.NOT_FOUND.value())
-                        .setData("")
-                        .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
-            }
-        }
-    }
-
-    @Override
     public ResponseEntity<Object> statusTypeStore(long id, int status, HttpServletRequest request) {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         if (!accountOptional.isPresent()){
@@ -561,4 +471,568 @@ public class DefaultAdminService implements AdminServices {
             }
         }
     }
+
+    // GET ALL
+    @Override
+    public ResponseEntity<Object> getAllAccount(HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else {
+            List<Account> accounts = accountRepository.findAll();
+            if (!accounts.isEmpty()){
+                List<AccountInformationDto> accountInformationDtos = new ArrayList<>();
+                AccountInformationDto accountInformationDto = null;
+                for (Account account : accounts){
+                    accountInformationDto = new AccountInformationDto(account);
+                    accountInformationDtos.add(accountInformationDto);
+                }
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(accountInformationDtos)
+                        .setMessage("Success!").build(), HttpStatus.OK);
+            }else {
+                hashMap.clear();
+                hashMap.put("Account", "No account found !");
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .addErrors(hashMap)
+                        .setStatus(HttpStatus.NOT_FOUND.value())
+                        .setData("")
+                        .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+            }
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> getAllAccountByType(int type, HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (type <0 || type >2) {
+            hashMap.clear();
+            hashMap.put("Type-Account", "Type-Account is invalid! (0, 1, 2)");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Type-Account has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else {
+            List<Account> accounts = accountRepository.countAccountByType(type);
+            if (!accounts.isEmpty()){
+                List<AccountInformationDto> accountInformationDtos = new ArrayList<>();
+                AccountInformationDto accountInformationDto = null;
+                for (Account account : accounts){
+                    accountInformationDto = new AccountInformationDto(account);
+                    accountInformationDtos.add(accountInformationDto);
+                }
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(accountInformationDtos)
+                        .setMessage("Success!").build(), HttpStatus.OK);
+            }else {
+                hashMap.clear();
+                hashMap.put("Account", "No account found !");
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .addErrors(hashMap)
+                        .setStatus(HttpStatus.NOT_FOUND.value())
+                        .setData("")
+                        .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+            }
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> getAllStore(HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else {
+            List<Store> stores = storeRepository.findAll();
+
+            if (!stores.isEmpty()){
+                List<StoreDto> storeDtoList = new ArrayList<>();
+                StoreDto storeDto = null;
+                for (Store store : stores){
+                    List<StoreAddress> storeAddressList = new ArrayList<StoreAddress>(store.getStoreAddresses());
+                    List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
+                    for (StoreAddress s: storeAddressList
+                    ) {
+                        storeAddressDtoList.add(new StoreAddressDto(s));
+                    }
+                    storeDto = new StoreDto(store);
+                    storeDto.setStoreAddresses(storeAddressDtoList);
+
+                    storeDtoList.add(storeDto);
+                }
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(storeDtoList)
+                        .setMessage("Success!").build(), HttpStatus.OK);
+            }else {
+                hashMap.clear();
+                hashMap.put("Store", "No acstorecount found !");
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .addErrors(hashMap)
+                        .setStatus(HttpStatus.NOT_FOUND.value())
+                        .setData("")
+                        .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+            }
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> getAllTypeStore(HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else {
+            List<TypeStore> typeStores = typeStoreRepository.findAll();
+            if (!typeStores.isEmpty()){
+                List<TypeStoreDto> typeStoreDtos = new ArrayList<>();
+                TypeStoreDto typeStoreDto = null;
+                for (TypeStore typeStore: typeStores
+                ) {
+                    typeStoreDto = new TypeStoreDto(typeStore);
+                    typeStoreDtos.add(typeStoreDto);
+                }
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(typeStoreDtos)
+                        .setMessage("Success!").build(), HttpStatus.OK);
+            }else {
+                hashMap.clear();
+                hashMap.put("Type-Store", "No type store found !");
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .addErrors(hashMap)
+                        .setStatus(HttpStatus.NOT_FOUND.value())
+                        .setData("")
+                        .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+            }
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> getAllTypeVoucher(HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else {
+            List<TypeVoucher> typeVouchers = typeVoucherRepository.findAll();
+            if (!typeVouchers.isEmpty()){
+                List<TypeVoucherDto> typeVoucherDtos = new ArrayList<>();
+                TypeVoucherDto typeVoucherDto = null;
+                for (TypeVoucher typeVoucher: typeVouchers
+                ) {
+                    typeVoucherDto = new TypeVoucherDto(typeVoucher);
+                    typeVoucherDtos.add(typeVoucherDto);
+                }
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(typeVoucherDtos)
+                        .setMessage("Success!").build(), HttpStatus.OK);
+            }else {
+                hashMap.clear();
+                hashMap.put("Type-Voucher", "No type voucher found !");
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .addErrors(hashMap)
+                        .setStatus(HttpStatus.NOT_FOUND.value())
+                        .setData("")
+                        .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+            }
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> getAllStoreAddress(HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else {
+            List<StoreAddress> storeAddresses = storeAddressRepository.findAll();
+            if (!storeAddresses.isEmpty()){
+                List<StoreAddressDto> storeAddressDtos = new ArrayList<>();
+                StoreAddressDto storeAddressDto = null;
+                for (StoreAddress storeAddress: storeAddresses
+                ) {
+                    storeAddressDto = new StoreAddressDto(storeAddress);
+                    storeAddressDtos.add(storeAddressDto);
+                }
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(storeAddressDtos)
+                        .setMessage("Success!").build(), HttpStatus.OK);
+            }else {
+                hashMap.clear();
+                hashMap.put("Store_Address", "No store address found !");
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .addErrors(hashMap)
+                        .setStatus(HttpStatus.NOT_FOUND.value())
+                        .setData("")
+                        .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+            }
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> getAllTransaction(HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else if (accountOptional.get().getTypeAccount() != 2){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else {
+            List<Transaction> transactions = transactionRepository.findAll();
+            if (!transactions.isEmpty()){
+                List<TransactionDto> transactionDtos = new ArrayList<>();
+                TransactionDto transactionDto = null;
+                for (Transaction transaction: transactions
+                ) {
+                    transactionDto = new TransactionDto(transaction);
+                    transactionDtos.add(transactionDto);
+                }
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(transactionDtos)
+                        .setMessage("Success!").build(), HttpStatus.OK);
+            }else {
+                hashMap.clear();
+                hashMap.put("Transaction", "No transaction found !");
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .addErrors(hashMap)
+                        .setStatus(HttpStatus.NOT_FOUND.value())
+                        .setData("")
+                        .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+            }
+        }
+    }
+
+
+    // GET ONE
+    @Override
+    public ResponseEntity<Object> getOneAccount(long id, HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        Optional<Account> accountOptional2 = accountRepository.findById(id);
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (!accountOptional2.isPresent()){
+            hashMap.clear();
+            hashMap.put("Account", "Not found account with id = " + id + " !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .setStatus(HttpStatus.NOT_FOUND.value())
+                    .setData(StringUtils.EMPTY)
+                    .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+        }else {
+            Account account = accountOptional2.get();
+            AccountInformationDto accountInformationDto = new AccountInformationDto(account);
+            CredentialDto credentialDto = new CredentialDto(account.getCredential());
+            RESTLogin restLogin = new RESTLogin(accountInformationDto, credentialDto);
+            return new ResponseEntity<>(new RESTResponse.Success()
+                    .setStatus(HttpStatus.OK.value())
+                    .setData(restLogin)
+                    .setMessage("Found !").build(), HttpStatus.OK);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> getOneStore(long id, HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        Optional<Store> storeOptional = storeRepository.findById(id);
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else if (!storeOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("ID", "No store found with this id = " + id + " !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else {
+            Store store = storeOptional.get();
+            if (store.getStoreAddresses() != null){
+                List<StoreAddress> storeAddressList = new ArrayList<StoreAddress>(store.getStoreAddresses());
+                List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
+                for (StoreAddress s: storeAddressList
+                ) {
+                    storeAddressDtoList.add(new StoreAddressDto(s));
+                }
+                StoreDto storeDto = new StoreDto(store);
+                storeDto.setStoreAddresses(storeAddressDtoList);
+
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(storeDto)
+                        .setMessage("Store with id = " + id + " !").build(), HttpStatus.OK);
+            }else {
+                StoreDto storeDto = new StoreDto(store);
+                storeDto.setStoreAddresses(null);
+
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(storeDto)
+                        .setMessage("Store with id = " + id + " !").build(), HttpStatus.OK);
+            }
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> getOneTypeVoucher(long id, HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findById(id);
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else if (!typeVoucherOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("ID", "No type voucher found with this id = " + id + " !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else {
+            TypeVoucher typeVoucher1 = typeVoucherOptional.get();
+            return new ResponseEntity<>(new RESTResponse.Success()
+                    .setStatus(HttpStatus.OK.value())
+                    .setData(new TypeVoucherDto(typeVoucher1))
+                    .setMessage("Type voucher with id = " + id + " !").build(), HttpStatus.OK);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> getOneTypeStore(long id, HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        Optional<TypeStore> typeStoreOptional = typeStoreRepository.findById(id);
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else if (!typeStoreOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("ID", "No type store  found with this id = " + id + " !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else {
+            TypeStore typeStore = typeStoreOptional.get();
+            return new ResponseEntity<>(new RESTResponse.Success()
+                    .setStatus(HttpStatus.OK.value())
+                    .setData(new TypeStoreDto(typeStore))
+                    .setMessage("Type store with id = " + id + " !").build(), HttpStatus.OK);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> getOneStoreAddress(long id, HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        Optional<StoreAddress> storeAddressOptional = storeAddressRepository.findById(id);
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else if (!storeAddressOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("ID", "No store address found with this id = " + id + " !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else {
+            StoreAddress storeAddress = storeAddressOptional.get();
+            return new ResponseEntity<>(new RESTResponse.Success()
+                    .setStatus(HttpStatus.OK.value())
+                    .setData(new StoreAddressDto(storeAddress))
+                    .setMessage("Store address with id = " + id + " !").build(), HttpStatus.OK);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> getOneTransaction(long id, HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        Optional<Transaction> transactionOptional = transactionRepository.findById(id);
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else if (!transactionOptional.isPresent()) {
+            hashMap.clear();
+            hashMap.put("ID", "No transaction found with this id !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else {
+            Transaction transaction = transactionOptional.get();
+            return new ResponseEntity<>(new RESTResponse.Success()
+                    .setStatus(HttpStatus.OK.value())
+                    .setData(new TransactionDto(transaction))
+                    .setMessage("Transaction with id = " + id + " !").build(), HttpStatus.OK);
+        }
+    }
+
 }
