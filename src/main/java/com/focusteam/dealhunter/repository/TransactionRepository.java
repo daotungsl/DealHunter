@@ -2,8 +2,10 @@ package com.focusteam.dealhunter.repository;
 
 import com.focusteam.dealhunter.entity.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,4 +23,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @Query("SELECT COUNT (t) FROM  Transaction t INNER JOIN t.store s WHERE s.id = ?1 AND t.dayLong BETWEEN ?2 AND ?3 GROUP BY t.day")
     List<Integer> countByStoreFromTo(long id, long from, long to);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE Transaction t SET t.status = ?1 WHERE t.id = ?2" , nativeQuery = true)
+    int updateTransaction(int status, long id);
 }
