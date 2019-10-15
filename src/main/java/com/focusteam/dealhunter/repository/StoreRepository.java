@@ -22,4 +22,12 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     @Query("SELECT s FROM Store s WHERE s.name = ?1 OR s.email = ?2 OR  s.phone = ?3")
     Optional<Store> findByName(String name, String email, String phone);
 
+    @Query("SELECT s FROM Store s WHERE s.nameUnAccent = ?1 AND s.status = 1")
+    Optional<Store> findByNameUnAccentAndStatus(String name);
+
+    @Query("SELECT s FROM Store s WHERE s.id = ?1 AND s.status = 1")
+    Optional<Store> findByIdAndStatus(long id);
+
+    @Query("SELECT s FROM Store s WHERE s.status = 1")
+    List<Store> getAllByStatus();
 }

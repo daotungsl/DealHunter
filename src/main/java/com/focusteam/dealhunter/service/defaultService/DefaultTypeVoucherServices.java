@@ -96,7 +96,7 @@ public class DefaultTypeVoucherServices implements TypeVoucherServices {
 
     @Override
     public ResponseEntity<Object> getOne(@PathVariable long id) {
-        Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findById(id);
+        Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findByIdAndStatus(id);
         if (typeVoucherOptional.isPresent()){
             TypeVoucher typeVoucher1 = typeVoucherOptional.get();
             return new ResponseEntity<>(new RESTResponse.Success()
@@ -116,7 +116,7 @@ public class DefaultTypeVoucherServices implements TypeVoucherServices {
 
     @Override
     public ResponseEntity<Object> getOneByNameUA(String name) {
-        Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findByNameUnAccent(name);
+        Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findByNameUnAccentAndStatus(name);
         if (typeVoucherOptional.isPresent()){
             TypeVoucher typeVoucher1 = typeVoucherOptional.get();
             return new ResponseEntity<>(new RESTResponse.Success()
@@ -136,7 +136,7 @@ public class DefaultTypeVoucherServices implements TypeVoucherServices {
 
     @Override
     public ResponseEntity<Object> getAll() {
-        List<TypeVoucher> typeVouchers = typeVoucherRepository.findAll();
+        List<TypeVoucher> typeVouchers = typeVoucherRepository.getAllByStatus();
         if (!typeVouchers.isEmpty()){
             List<TypeVoucherDto> typeVoucherDtos = new ArrayList<>();
             TypeVoucherDto typeVoucherDto = null;

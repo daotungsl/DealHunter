@@ -47,7 +47,7 @@ public class StringUtil {
 
     public String dateFormatFromLong(long time){
         Date date = new Date(time);
-        Format format = new SimpleDateFormat("HH:mm:ss dd MM yyyy");
+        Format format = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
         return format.format(date);
     }
 

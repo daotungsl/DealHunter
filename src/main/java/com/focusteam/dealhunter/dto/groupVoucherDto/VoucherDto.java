@@ -1,15 +1,21 @@
 package com.focusteam.dealhunter.dto.groupVoucherDto;
 
+import com.focusteam.dealhunter.dto.groupStoreDto.StoreAddressDto;
 import com.focusteam.dealhunter.entity.Voucher;
 import com.focusteam.dealhunter.util.StringUtil;
+
+import java.util.List;
 
 public class VoucherDto {
     private long id;
 
     private String name;
 
+    private long storeId;
     private String store;
     private String icon;
+
+    List<StoreAddressDto> storeAddress;
 
     private String typeVoucher;
 
@@ -39,6 +45,7 @@ public class VoucherDto {
         this.id = voucher.getId();
         this.name = voucher.getName();
 
+        this.storeId = voucher.getStore().getId();
         this.store = voucher.getStore().getName();
         this.icon = voucher.getStore().getImages();
 
@@ -59,6 +66,22 @@ public class VoucherDto {
         this.created = new StringUtil().dateFormatFromLong(voucher.getCreated());
         this.updated = new StringUtil().dateFormatFromLong(voucher.getUpdated());
         this.status = voucher.getStatus();
+    }
+
+    public List<StoreAddressDto> getStoreAddress() {
+        return storeAddress;
+    }
+
+    public void setStoreAddress(List<StoreAddressDto> storeAddress) {
+        this.storeAddress = storeAddress;
+    }
+
+    public long getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(long storeId) {
+        this.storeId = storeId;
     }
 
     public String getIcon() {

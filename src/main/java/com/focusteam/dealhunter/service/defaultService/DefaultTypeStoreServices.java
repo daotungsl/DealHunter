@@ -90,7 +90,7 @@ public class DefaultTypeStoreServices implements TypeStoreServices {
 
     @Override
     public ResponseEntity<Object> getOne(long id) {
-        Optional<TypeStore> typeStoreOptional = typeStoreRepository.findById(id);
+        Optional<TypeStore> typeStoreOptional = typeStoreRepository.findByIdAndStatus(id);
         if (typeStoreOptional.isPresent()){
             TypeStore typeStore = typeStoreOptional.get();
             return new ResponseEntity<>(new RESTResponse.Success()
@@ -110,7 +110,7 @@ public class DefaultTypeStoreServices implements TypeStoreServices {
 
     @Override
     public ResponseEntity<Object> getOneByNameUA(String name) {
-        Optional<TypeStore> typeStoreOptional = typeStoreRepository.findByNameUnAccent(name);
+        Optional<TypeStore> typeStoreOptional = typeStoreRepository.findByNameUnAccentAndStatus(name);
         if (typeStoreOptional.isPresent()){
             TypeStore typeStore = typeStoreOptional.get();
             return new ResponseEntity<>(new RESTResponse.Success()
@@ -130,7 +130,7 @@ public class DefaultTypeStoreServices implements TypeStoreServices {
 
     @Override
     public ResponseEntity<Object> getAll() {
-        List<TypeStore> typeStores = typeStoreRepository.findAll();
+        List<TypeStore> typeStores = typeStoreRepository.getAllByStatus();
         if (!typeStores.isEmpty()){
             List<TypeStoreDto> typeStoreDtos = new ArrayList<>();
             TypeStoreDto typeStoreDto = null;

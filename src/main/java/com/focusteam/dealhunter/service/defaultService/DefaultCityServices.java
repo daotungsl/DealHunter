@@ -92,7 +92,7 @@ public class DefaultCityServices implements CityServices {
 
     @Override
     public ResponseEntity<Object> getOne(long id) {
-        Optional<City> cityOptional = cityRepository.findById(id);
+        Optional<City> cityOptional = cityRepository.findByIdAndStatus(id);
         if (cityOptional.isPresent()){
             City city = cityOptional.get();
             return new ResponseEntity<>(new RESTResponse.Success()
@@ -112,7 +112,7 @@ public class DefaultCityServices implements CityServices {
 
     @Override
     public ResponseEntity<Object> getOneByNameUA(String name) {
-        Optional<City> cityOptional = cityRepository.findByNameUnAccent(name);
+        Optional<City> cityOptional = cityRepository.findByNameUnAccentAndStatus(name);
         if (cityOptional.isPresent()){
             City city = cityOptional.get();
             return new ResponseEntity<>(new RESTResponse.Success()
@@ -132,7 +132,7 @@ public class DefaultCityServices implements CityServices {
 
     @Override
     public ResponseEntity<Object> getAll() {
-        List<City> cities = cityRepository.findAll();
+        List<City> cities = cityRepository.getAllByStatus();
         if (!cities.isEmpty()){
             List<CityDto> cityDtos = new ArrayList<>();
             CityDto cityDto = null;

@@ -201,7 +201,7 @@ public class DefaultStoreServices implements StoreServices {
 
     @Override
     public ResponseEntity<Object> getOne(long id) {
-        Optional<Store> storeOptional = storeRepository.findById(id);
+        Optional<Store> storeOptional = storeRepository.findByIdAndStatus(id);
         if (storeOptional.isPresent()){
             Store store = storeOptional.get();
             if (store.getStoreAddresses() != null){
@@ -240,7 +240,7 @@ public class DefaultStoreServices implements StoreServices {
 
     @Override
     public ResponseEntity<Object> getOneByNameUA(String name) {
-        Optional<Store> storeOptional = storeRepository.findByNameUnAccent(name);
+        Optional<Store> storeOptional = storeRepository.findByNameUnAccentAndStatus(name);
         if (storeOptional.isPresent()){
             Store store = storeOptional.get();
             if (store.getStoreAddresses() != null){
@@ -279,7 +279,7 @@ public class DefaultStoreServices implements StoreServices {
 
     @Override
     public ResponseEntity<Object> getAll() {
-        List<Store> stores = storeRepository.findAll();
+        List<Store> stores = storeRepository.getAllByStatus();
         if (!stores.isEmpty()){
             List<StoreDto> storeDtoList = new ArrayList<>();
             StoreDto storeDto = null;
@@ -610,7 +610,7 @@ public class DefaultStoreServices implements StoreServices {
 
     @Override
     public ResponseEntity<Object> getOneSA(long id) {
-        Optional<StoreAddress> storeAddressOptional = storeAddressRepository.findById(id);
+        Optional<StoreAddress> storeAddressOptional = storeAddressRepository.findByIdAndStatus(id);
         if (storeAddressOptional.isPresent()){
             StoreAddress storeAddress = storeAddressOptional.get();
             return new ResponseEntity<>(new RESTResponse.Success()
@@ -630,7 +630,7 @@ public class DefaultStoreServices implements StoreServices {
 
     @Override
     public ResponseEntity<Object> getAllSA() {
-        List<StoreAddress> storeAddresses = storeAddressRepository.findAll();
+        List<StoreAddress> storeAddresses = storeAddressRepository.getAllByStatus();
         if (!storeAddresses.isEmpty()){
             List<StoreAddressDto> storeAddressDtos = new ArrayList<>();
             StoreAddressDto storeAddressDto = null;
