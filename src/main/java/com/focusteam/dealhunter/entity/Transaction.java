@@ -1,6 +1,7 @@
 package com.focusteam.dealhunter.entity;
 
 import com.focusteam.dealhunter.dto.groupTransactionDto.TransactionCreateDto;
+import com.focusteam.dealhunter.util.StringUtil;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -18,6 +19,8 @@ public class Transaction {
     private String time;
     @NotNull
     private String day;
+
+    private long dayLong;
 
     @NotNull
     private int adults;
@@ -56,10 +59,19 @@ public class Transaction {
         this.children = transactionCreateDto.getChildren();
         this.time = transactionCreateDto.getTime();
         this.day = transactionCreateDto.getDay();
+        this.dayLong = new StringUtil().stringToLong(this.day);
         this.description = transactionCreateDto.getDescription();
         this.created = Calendar.getInstance().getTimeInMillis();
         this.updated = this.created;
         this.status = 0;
+    }
+
+    public long getDayLong() {
+        return dayLong;
+    }
+
+    public void setDayLong(long dayLong) {
+        this.dayLong = dayLong;
     }
 
     public Voucher getVoucher() {

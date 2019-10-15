@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.text.Format;
 import java.text.Normalizer;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,7 +45,6 @@ public class StringUtil {
         return code.toUpperCase();
     }
 
-
     public String dateFormatFromLong(long time){
         Date date = new Date(time);
         Format format = new SimpleDateFormat("HH:mm:ss dd MM yyyy");
@@ -70,5 +70,66 @@ public class StringUtil {
                 .replace(" ", "-")
                 .toLowerCase();
         return name;
+    }
+
+    public String longToString(long time){
+        Date date = new Date(time);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR);
+    }
+
+    public long stringToLong(String day){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatter3 = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat formatter4 = new SimpleDateFormat("dd MM yyyy");
+        long dayLong = 0;
+        if (day.charAt(2) != day.charAt(5)){
+            day = day.replace(day.charAt(2), '-').replace(day.charAt(5), '-');
+            try {
+                dayLong = formatter2.parse(day).getTime();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return dayLong;
+        }else {
+            switch (day.charAt(2)){
+                case '/' : {
+                    try {
+                        dayLong = formatter.parse(day).getTime();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                } case '-' : {
+                    try {
+                        dayLong = formatter2.parse(day).getTime();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                } case '.' : {
+                    try {
+                        dayLong = formatter3.parse(day).getTime();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                } case ' ' : {
+                    try {
+                        dayLong = formatter4.parse(day).getTime();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                } default:{
+                    day = day.replace(day.charAt(2), '/').replace(day.charAt(5), '/');
+                    stringToLong(day);
+                    break;
+                }
+            }
+        }
+        return dayLong;
     }
 }

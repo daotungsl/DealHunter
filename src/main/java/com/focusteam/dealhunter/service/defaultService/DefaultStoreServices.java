@@ -44,13 +44,20 @@ public class DefaultStoreServices implements StoreServices {
 
     @Override
     public ResponseEntity<Object> create(@Valid StoreCreateDto storeCreateDto, BindingResult bindingResult, HttpServletRequest request) {
+        System.out.println("1 Create store processing !");
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        System.out.println("2 Get account done !");
         Optional<TypeStore> typeStoreOptional = typeStoreRepository.findById(storeCreateDto.getTypeStoreId());
+        System.out.println("3 type store done !");
         Optional<City> cityOptional = cityRepository.findById(storeCreateDto.getCityId());
+        System.out.println("4 Get city done !");
         Optional<Store> storeOptional = storeRepository.findByName(storeCreateDto.getName(), storeCreateDto.getEmail(), storeCreateDto.getPhone());
+        System.out.println("5 et Store done !");
         if (accountOptional.isPresent() && accountOptional.get().getId() == storeCreateDto.getAccountId()){
+            System.out.println("6 Account exist !");
             Account account = accountOptional.get();
             if (account.getTypeAccount() == 0){
+                System.out.println("7 Type account = guest !");
                 hashMap.clear();
                 hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
                 return new ResponseEntity<>(new RESTResponse.Error()
@@ -59,6 +66,7 @@ public class DefaultStoreServices implements StoreServices {
                         .setData("")
                         .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
             } else if (account.getConfirmEmail() == 0) {
+                System.out.println("8 Not confirm email !");
                 hashMap.clear();
                 hashMap.put("Email", "You need to confirm your email first !");
                 return new ResponseEntity<>(new RESTResponse.Error()
@@ -71,6 +79,7 @@ public class DefaultStoreServices implements StoreServices {
                         || account.getUserInformation().getAddress() == null
                         || account.getUserInformation().getBirthday() == null
                         || account.getUserInformation().getGender() < 0) {
+                System.out.println("9 Information Null !");
                 hashMap.clear();
                 hashMap.put("Information", "You must fill out your information before creating a store !");
                 return new ResponseEntity<>(new RESTResponse.Error()
@@ -80,6 +89,7 @@ public class DefaultStoreServices implements StoreServices {
                         .setMessage("Information has errors !").build(), HttpStatus.UNAUTHORIZED);
             } else {
                 if (bindingResult.hasErrors()) {
+                    System.out.println("10 Form error");
                     hashMap.clear();
                     List<FieldError> fieldErrors = bindingResult.getFieldErrors();
                     for (FieldError f : fieldErrors
@@ -92,6 +102,7 @@ public class DefaultStoreServices implements StoreServices {
                             .setData("")
                             .setMessage("Store data has errors !").build(), HttpStatus.FORBIDDEN);
                 } else if (!cityOptional.isPresent()) {
+                    System.out.println("11 City not found !");
                     hashMap.clear();
                     hashMap.put("ID", "No city found with this id = " + storeCreateDto.getCityId() + " !");
                     return new ResponseEntity<>(new RESTResponse.Error()
@@ -100,7 +111,9 @@ public class DefaultStoreServices implements StoreServices {
                             .setData("")
                             .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
                 } else if (storeOptional.isPresent()) {
+                    System.out.println("12 Store exist !");
                     if (storeOptional.get().getName().equalsIgnoreCase(storeCreateDto.getName())) {
+                        System.out.println("13 Name exist");
                         hashMap.clear();
                         hashMap.put("Name", "This store name has been used to register in another store");
                         return new ResponseEntity<>(new RESTResponse.Error()
@@ -109,6 +122,7 @@ public class DefaultStoreServices implements StoreServices {
                                 .setData("")
                                 .setMessage("Store name error !").build(), HttpStatus.FORBIDDEN);
                     } else if (storeOptional.get().getEmail().equalsIgnoreCase(storeCreateDto.getEmail())) {
+                        System.out.println("14 Email exist");
                         hashMap.clear();
                         hashMap.put("Email", "This email has been used to register in another store");
                         return new ResponseEntity<>(new RESTResponse.Error()
@@ -117,6 +131,7 @@ public class DefaultStoreServices implements StoreServices {
                                 .setData("")
                                 .setMessage("Store email error !").build(), HttpStatus.FORBIDDEN);
                     } else {
+                        System.out.println("15 phone exist");
                         hashMap.clear();
                         hashMap.put("Phone", "This phone has been used to register in another store");
                         return new ResponseEntity<>(new RESTResponse.Error()
@@ -126,6 +141,7 @@ public class DefaultStoreServices implements StoreServices {
                                 .setMessage("Store phone error !").build(), HttpStatus.FORBIDDEN);
                     }
                 } else if (!typeStoreOptional.isPresent()) {
+                    System.out.println("16 type store not exist");
                     hashMap.clear();
                     hashMap.put("ID", "No type store found with this id = " + storeCreateDto.getTypeStoreId() + " !");
                     return new ResponseEntity<>(new RESTResponse.Error()
@@ -133,7 +149,8 @@ public class DefaultStoreServices implements StoreServices {
                             .setStatus(HttpStatus.FORBIDDEN.value())
                             .setData("")
                             .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
-                } else if (!(account.getStore() == null)) {
+                } else if (account.getStore() != null) {
+                    System.out.println("17 Account has a store");
                     hashMap.clear();
                     hashMap.put("Store", "An account can't create more than one store");
                     return new ResponseEntity<>(new RESTResponse.Error()
@@ -142,6 +159,7 @@ public class DefaultStoreServices implements StoreServices {
                             .setData("")
                             .setMessage("Create Error !").build(), HttpStatus.FORBIDDEN);
                 } else {
+                    System.out.println("18 Store done");
                     Store store = new Store(storeCreateDto);
                     store.setAccount(account);
                     store.setTypeStore(typeStoreOptional.get());
@@ -151,14 +169,18 @@ public class DefaultStoreServices implements StoreServices {
                     storeAddress.setStore(store);
 
                     storeRepository.save(store);
+                    System.out.println("19 Save store done");
 
                     storeAddressRepository.save(storeAddress);
+                    System.out.println("20 save store address done");
 
                     List<StoreAddressDto> list = new ArrayList<>();
                     list.add(new StoreAddressDto(storeAddress));
 
                     StoreDto storeDto = new StoreDto(store);
                     storeDto.setStoreAddresses(list);
+
+                    System.out.println("21 Return done !");
 
                     return new ResponseEntity<>(new RESTResponse.Success()
                             .setStatus(HttpStatus.CREATED.value())

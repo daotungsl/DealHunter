@@ -40,7 +40,7 @@ public class AccountStoreDto {
 
     @NotBlank
     @NotNull
-    @NotEmpty
+
     @Size(min = 50, max = 20000)
     private String avatar;
 

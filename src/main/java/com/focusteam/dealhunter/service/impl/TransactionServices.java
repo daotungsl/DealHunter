@@ -1,6 +1,7 @@
 package com.focusteam.dealhunter.service.impl;
 
 import com.focusteam.dealhunter.dto.groupTransactionDto.TransactionCreateDto;
+import com.google.gson.internal.$Gson$Preconditions;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,4 +21,8 @@ public interface TransactionServices {
     public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request);
 
     public ResponseEntity<Object> countByStore(@PathVariable long id, HttpServletRequest request);
+
+    ResponseEntity<Object> countByStoreFromTo(@PathVariable long id, @PathVariable long from, @PathVariable long to, HttpServletRequest request);
+
+    ResponseEntity<Object> countByStoreFromToDayString(@PathVariable long id, @PathVariable String from, @PathVariable String to, HttpServletRequest request);
 }
