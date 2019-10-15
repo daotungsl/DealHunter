@@ -7,11 +7,11 @@ import javax.validation.constraints.Size;
 
 public class StoreAddressCreate {
     @NotEmpty
-    @Size(min = 50, max = 255)
+    @Size(min = 5, max = 255)
     private String address;
 
 
-    @Size(min = 50, max = 2000)
+    @Size(min = 5, max = 2000)
     private String description;
 
     @NotNull
