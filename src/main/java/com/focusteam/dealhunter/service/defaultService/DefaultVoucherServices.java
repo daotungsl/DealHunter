@@ -120,7 +120,9 @@ public class DefaultVoucherServices implements VoucherServices {
                 List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
                 for (StoreAddress s: storeAddressList
                 ) {
-                    storeAddressDtoList.add(new StoreAddressDto(s));
+                    if (s.getStatus() == 1){
+                        storeAddressDtoList.add(new StoreAddressDto(s));
+                    }
                 }
                 VoucherDto voucherDto = new VoucherDto(voucher);
                 voucherDto.setStoreAddress(storeAddressDtoList);
@@ -159,7 +161,9 @@ public class DefaultVoucherServices implements VoucherServices {
                 List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
                 for (StoreAddress s: storeAddressList
                 ) {
-                    storeAddressDtoList.add(new StoreAddressDto(s));
+                    if (s.getStatus() == 1){
+                        storeAddressDtoList.add(new StoreAddressDto(s));
+                    }
                 }
                 VoucherDto voucherDto = new VoucherDto(voucher);
                 voucherDto.setStoreAddress(storeAddressDtoList);
@@ -212,7 +216,9 @@ public class DefaultVoucherServices implements VoucherServices {
                             List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
                             for (StoreAddress s: storeAddressList
                             ) {
-                                storeAddressDtoList.add(new StoreAddressDto(s));
+                                if (s.getStatus() == 1){
+                                    storeAddressDtoList.add(new StoreAddressDto(s));
+                                }
                             }
                             voucherDto = new VoucherDto(voucher);
                             voucherDto.setStoreAddress(storeAddressDtoList);
@@ -255,10 +261,13 @@ public class DefaultVoucherServices implements VoucherServices {
                     List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
                     for (StoreAddress s: storeAddressList
                     ) {
-                        storeAddressDtoList.add(new StoreAddressDto(s));
+                        if (s.getStatus() == 1){
+                            storeAddressDtoList.add(new StoreAddressDto(s));
+                        }
                     }
                     voucherDto = new VoucherDto(voucher);
                     voucherDto.setStoreAddress(storeAddressDtoList);
+
                     voucherDtos.add(voucherDto);
                 }else {
                     voucherDto = new VoucherDto(voucher);
@@ -303,7 +312,9 @@ public class DefaultVoucherServices implements VoucherServices {
                         List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
                         for (StoreAddress s: storeAddressList
                         ) {
-                            storeAddressDtoList.add(new StoreAddressDto(s));
+                            if (s.getStatus() == 1){
+                                storeAddressDtoList.add(new StoreAddressDto(s));
+                            }
                         }
                         voucherDto = new VoucherDto(voucher);
                         voucherDto.setStoreAddress(storeAddressDtoList);
@@ -353,7 +364,9 @@ public class DefaultVoucherServices implements VoucherServices {
                         List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
                         for (StoreAddress s: storeAddressList
                         ) {
-                            storeAddressDtoList.add(new StoreAddressDto(s));
+                            if (s.getStatus() == 1){
+                                storeAddressDtoList.add(new StoreAddressDto(s));
+                            }
                         }
                         voucherDto = new VoucherDto(voucher);
                         voucherDto.setStoreAddress(storeAddressDtoList);
@@ -576,7 +589,9 @@ public class DefaultVoucherServices implements VoucherServices {
                         List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
                         for (StoreAddress s: storeAddressList
                         ) {
-                            storeAddressDtoList.add(new StoreAddressDto(s));
+                            if (s.getStatus() == 1){
+                                storeAddressDtoList.add(new StoreAddressDto(s));
+                            }
                         }
                         voucherDto = new VoucherDto(voucher);
                         voucherDto.setStoreAddress(storeAddressDtoList);
