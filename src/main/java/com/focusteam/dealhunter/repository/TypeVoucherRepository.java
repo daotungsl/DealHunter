@@ -2,8 +2,10 @@ package com.focusteam.dealhunter.repository;
 
 import com.focusteam.dealhunter.entity.TypeVoucher;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,4 +29,9 @@ public interface TypeVoucherRepository extends JpaRepository<TypeVoucher, Long> 
 
     @Query("SELECT  t FROM TypeVoucher t WHERE t.status = 1")
     List<TypeVoucher> getAllByStatus();
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE TypeVoucher tv SET tv.status = ?1 WHERE tv.id = ?2" , nativeQuery = true)
+    int updateTV(int status, long id);
 }

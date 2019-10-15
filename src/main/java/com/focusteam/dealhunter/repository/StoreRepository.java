@@ -5,8 +5,10 @@ import com.focusteam.dealhunter.entity.Store;
 import com.focusteam.dealhunter.entity.Voucher;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,4 +32,9 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 
     @Query("SELECT s FROM Store s WHERE s.status = 1")
     List<Store> getAllByStatus();
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE Store s SET s.status = ?1 WHERE s.id = ?2" , nativeQuery = true)
+    int updateStore(int status, long id);
 }

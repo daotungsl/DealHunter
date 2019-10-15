@@ -36,4 +36,6 @@ public class StoreManagerController {
     public ResponseEntity<Object> countByStoreFromToDay(@PathVariable long id, @PathVariable String from, @PathVariable String to, HttpServletRequest request){
         return transactionServices.countByStoreFromToDayString(id , from, to,request);
     }
+
+
 }

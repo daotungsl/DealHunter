@@ -2,8 +2,10 @@ package com.focusteam.dealhunter.repository;
 
 import com.focusteam.dealhunter.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,4 +28,9 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     @Query("SELECT a FROM Account a WHERE a.typeAccount = ?1 ORDER BY a.id ASC ")
     List<Account> countAccountByType(int type);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE Account a SET a.status = ?1 WHERE a.id = ?2" , nativeQuery = true)
+    int updateAccount(int status, long id);
 }

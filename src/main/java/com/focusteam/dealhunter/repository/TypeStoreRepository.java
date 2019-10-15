@@ -3,8 +3,10 @@ package com.focusteam.dealhunter.repository;
 import com.focusteam.dealhunter.entity.TypeStore;
 import com.focusteam.dealhunter.entity.TypeVoucher;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,4 +30,9 @@ public interface TypeStoreRepository extends JpaRepository<TypeStore, Long> {
 
     @Query("SELECT  ts FROM TypeStore ts WHERE ts.status = 1")
     List<TypeStore> getAllByStatus();
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE TypeStore ts SET ts.status = ?1 WHERE ts.id = ?2" , nativeQuery = true)
+    int updateTS(int status, long id);
 }

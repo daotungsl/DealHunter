@@ -1,5 +1,7 @@
 package com.focusteam.dealhunter.service.defaultService;
 
+import com.focusteam.dealhunter.dto.AdminDto.SetAllStatus;
+import com.focusteam.dealhunter.dto.AdminDto.SetStatus;
 import com.focusteam.dealhunter.dto.groupAccountDto.AccountInformationDto;
 import com.focusteam.dealhunter.dto.groupAccountDto.CredentialDto;
 import com.focusteam.dealhunter.dto.groupAccountDto.UserInformationDto;
@@ -20,8 +22,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -790,6 +796,94 @@ public class DefaultAdminService implements AdminServices {
         }
     }
 
+    @Override
+    public ResponseEntity<Object> getAllCity(HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else {
+            List<City> cities = cityRepository.getAll();
+            if (!cities.isEmpty()){
+                List<CityDto> cityDtos = new ArrayList<>();
+                CityDto cityDto = null;
+                for (City city: cities
+                     ) {
+                    cityDto = new CityDto(city);
+                    cityDtos.add(cityDto);
+                }
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(cityDtos)
+                        .setMessage("Success!").build(), HttpStatus.OK);
+            }else {
+                hashMap.clear();
+                hashMap.put("Cities", "No city found !");
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .addErrors(hashMap)
+                        .setStatus(HttpStatus.NOT_FOUND.value())
+                        .setData("")
+                        .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+            }
+        }
+    }
+
+    @Override
+    public ResponseEntity<Object> getAllVoucher(HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else if (accountOptional.get().getTypeAccount() != 2){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else {
+            List<Voucher> vouchers = voucherRepository.findAll();
+            if (!vouchers.isEmpty()){
+                List<VoucherDto> voucherDtos = new ArrayList<>();
+                VoucherDto voucherDto = null;
+                for (Voucher voucher: vouchers
+                     ) {
+                    voucherDto = new VoucherDto(voucher);
+                    voucherDtos.add(voucherDto);
+                }
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(voucherDtos)
+                        .setMessage("Success!").build(), HttpStatus.OK);
+            }else {
+                hashMap.clear();
+                hashMap.put("Vouchers", "No voucher found !");
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .addErrors(hashMap)
+                        .setStatus(HttpStatus.NOT_FOUND.value())
+                        .setData("")
+                        .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+            }
+        }
+    }
+
 
     // GET ONE
     @Override
@@ -1035,4 +1129,293 @@ public class DefaultAdminService implements AdminServices {
         }
     }
 
+
+    // SET LIST STATUS
+
+    @Override
+    public ResponseEntity<Object> statusListObject(SetAllStatus setAllStatus, HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        if (!accountOptional.isPresent()){
+            hashMap.clear();
+            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else if (!isValidSetStatusList(setAllStatus)) {
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Data has errors !").build(), HttpStatus.UNAUTHORIZED);
+        } else {
+            ResponseEntity<Object> response = null;
+            switch (setAllStatus.getName().toLowerCase()){
+                case "account":{
+                    for (SetStatus s: setAllStatus.getSetStatuses()
+                    ) {
+                        Optional<Account> accountOptional1 = accountRepository.findById(s.getId());
+                        Account account = accountOptional.get();
+                        account.setStatus(s.getStatus());
+
+                        accountRepository.save(account);
+                    }
+                    response =  getAllAccount(request);
+                    break;
+                } case "store" :{
+                    for (SetStatus s: setAllStatus.getSetStatuses()
+                    ) {
+                        Optional<Store> storeOptional = storeRepository.findById(s.getId());
+                        Store store = storeOptional.get();
+                        store.setStatus(s.getStatus());
+
+                        storeRepository.save(store);
+                    }
+                    response = getAllStore(request);
+                    break;
+                }case "storeaddress" :{
+                    for (SetStatus s: setAllStatus.getSetStatuses()
+                    ) {
+                        Optional<StoreAddress> storeAddressOptional = storeAddressRepository.findById(s.getId());
+                        StoreAddress storeAddress = storeAddressOptional.get();
+                        storeAddress.setStatus(s.getStatus());
+
+                        storeAddressRepository.save(storeAddress);
+                    }
+                    response = getAllStoreAddress(request);
+                    break;
+                }case "voucher" :{
+                    for (SetStatus s: setAllStatus.getSetStatuses()
+                    ) {
+                        Optional<Voucher> voucherOptional = voucherRepository.findById(s.getId());
+                        Voucher voucher = voucherOptional.get();
+                        voucher.setStatus(s.getStatus());
+
+                        voucherRepository.save(voucher);
+                    }
+                    response = getAllVoucher(request);
+                    break;
+                }case "transaction" :{
+                    for (SetStatus s: setAllStatus.getSetStatuses()
+                    ) {
+                        Optional<Transaction> transactionOptional = transactionRepository.findById(s.getId());
+                        Transaction transaction = transactionOptional.get();
+                        transaction.setStatus(s.getStatus());
+
+                        transactionRepository.save(transaction);
+                    }
+                    response = getAllTransaction(request);
+                    break;
+                }case "typestore" :{
+                    for (SetStatus s: setAllStatus.getSetStatuses()
+                    ) {
+                        Optional<TypeStore> typeStoreOptional = typeStoreRepository.findById(s.getId());
+                        TypeStore typeStore = typeStoreOptional.get();
+                        typeStore.setStatus(s.getStatus());
+
+                        typeStoreRepository.save(typeStore);
+                    }
+                    response = getAllTypeStore(request);
+                    break;
+                }case "typevoucher" :{
+                    for (SetStatus s: setAllStatus.getSetStatuses()
+                    ) {
+                        Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findById(s.getId());
+                        TypeVoucher typeVoucher = typeVoucherOptional.get();
+                        typeVoucher.setStatus(s.getStatus());
+
+                        typeVoucherRepository.save(typeVoucher);
+                    }
+                    response = getAllTypeVoucher(request);
+                    break;
+                }case "city" :{
+                    for (SetStatus s: setAllStatus.getSetStatuses()
+                    ) {
+                        Optional<City> cityOptional = cityRepository.findById(s.getId());
+                        City city = cityOptional.get();
+                        city.setStatus(s.getStatus());
+
+                        cityRepository.save(city);
+                    }
+                    response = getAllCity(request);
+                    break;
+                } default:{
+                    response = null;
+                    break;
+                }
+            }
+            return response;
+        }
+    }
+
+    public boolean isValidSetStatusList(SetAllStatus setAllStatus){
+        List<Boolean> check = new ArrayList<>();
+        boolean end = true;
+        switch (setAllStatus.getName().toLowerCase()){
+            case "account" : {
+                for (SetStatus setStatus: setAllStatus.getSetStatuses()
+                ) {
+                    Optional<Account> accountOptional = accountRepository.findById(setStatus.getId());
+                    if (!accountOptional.isPresent() || setStatus.getStatus() < 0 || setStatus.getStatus() > 2){
+                        check.add(false);
+                    }else {
+                        check.add(true);
+                    }
+                }
+                for (Boolean b : check){
+                    if (!b){
+                        end = false;
+                        break;
+                    }
+                }
+                break;
+
+            }
+            case "store" : {
+                for (SetStatus setStatus: setAllStatus.getSetStatuses()
+                ) {
+                    Optional<Store> storeOptional = storeRepository.findById(setStatus.getId());
+                    if (!storeOptional.isPresent() || setStatus.getStatus() < 0 || setStatus.getStatus() > 2){
+                        check.add(false);
+                    }else {
+                        check.add(true);
+                    }
+                }
+                for (Boolean b : check){
+                    if (!b){
+                        end = false;
+                        break;
+                    }
+                }
+                break;
+
+            }
+            case "storeaddress" : {
+                for (SetStatus setStatus: setAllStatus.getSetStatuses()
+                ) {
+                    Optional<StoreAddress> storeAddressOptional = storeAddressRepository.findById(setStatus.getId());
+                    if (!storeAddressOptional.isPresent() || setStatus.getStatus() < 0 || setStatus.getStatus() > 2){
+                        check.add(false);
+                    }else {
+                        check.add(true);
+                    }
+                }
+                for (Boolean b : check){
+                    if (!b){
+                        end = false;
+                        break;
+                    }
+                }
+                break;
+
+            }
+            case "voucher" : {
+                for (SetStatus setStatus: setAllStatus.getSetStatuses()
+                ) {
+                    Optional<Voucher> voucherOptional = voucherRepository.findById(setStatus.getId());
+                    if (!voucherOptional.isPresent() || setStatus.getStatus() < 0 || setStatus.getStatus() > 2){
+                        check.add(false);
+                    }else {
+                        check.add(true);
+                    }
+                }
+                for (Boolean b : check){
+                    if (!b){
+                        end = false;
+                        break;
+                    }
+                }
+                break;
+
+            }
+            case "transaction" : {
+                for (SetStatus setStatus: setAllStatus.getSetStatuses()
+                ) {
+                    Optional<Transaction> transactionOptional = transactionRepository.findById(setStatus.getId());
+                    if (!transactionOptional.isPresent() || setStatus.getStatus() < 0 || setStatus.getStatus() > 2){
+                        check.add(false);
+                    }else {
+                        check.add(true);
+                    }
+                }
+                for (Boolean b : check){
+                    if (!b){
+                        end = false;
+                        break;
+                    }
+                }
+                break;
+
+            }
+            case "typestore" : {
+                for (SetStatus setStatus: setAllStatus.getSetStatuses()
+                ) {
+                    Optional<TypeStore> typeStoreOptional = typeStoreRepository.findById(setStatus.getId());
+                    if (!typeStoreOptional.isPresent() || setStatus.getStatus() < 0 || setStatus.getStatus() > 2){
+                        check.add(false);
+                    }else {
+                        check.add(true);
+                    }
+                }
+                for (Boolean b : check){
+                    if (!b){
+                        end = false;
+                        break;
+                    }
+                }
+                break;
+
+            }
+            case "typevoucher" : {
+                for (SetStatus setStatus: setAllStatus.getSetStatuses()
+                ) {
+                    Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findById(setStatus.getId());
+                    if (!typeVoucherOptional.isPresent() || setStatus.getStatus() < 0 || setStatus.getStatus() > 2){
+                        check.add(false);
+                    }else {
+                        check.add(true);
+                    }
+                }
+                for (Boolean b : check){
+                    if (!b){
+                        end = false;
+                        break;
+                    }
+                }
+                break;
+
+            }
+            case "city" : {
+                for (SetStatus setStatus: setAllStatus.getSetStatuses()
+                ) {
+                    Optional<City> cityOptional = cityRepository.findById(setStatus.getId());
+                    if (!cityOptional.isPresent() || setStatus.getStatus() < 0 || setStatus.getStatus() > 2){
+                        check.add(false);
+                    }else {
+                        check.add(true);
+                    }
+                }
+                for (Boolean b : check){
+                    if (!b){
+                        end = false;
+                        break;
+                    }
+                }
+                break;
+
+            }
+            default:{
+                end = false;
+                break;
+            }
+        }
+        return end;
+    }
 }
