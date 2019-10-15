@@ -111,7 +111,7 @@ public class DefaultVoucherServices implements VoucherServices {
 
     @Override
     public ResponseEntity<Object> getOne(long id) {
-        Optional<Voucher> voucherOptional = voucherRepository.findById(id);
+        Optional<Voucher> voucherOptional = voucherRepository.findByIdAndStatus(id);
         if (voucherOptional.isPresent()){
             Voucher voucher = voucherOptional.get();
             return new ResponseEntity<>(new RESTResponse.Success()
@@ -131,7 +131,7 @@ public class DefaultVoucherServices implements VoucherServices {
 
     @Override
     public ResponseEntity<Object> getOneByNameUA(String name) {
-        Optional<Voucher> voucherOptional = voucherRepository.findByNameUA(name);
+        Optional<Voucher> voucherOptional = voucherRepository.findByNameUAAndStatus(name);
         if (voucherOptional.isPresent()){
             Voucher voucher = voucherOptional.get();
             return new ResponseEntity<>(new RESTResponse.Success()
@@ -151,7 +151,7 @@ public class DefaultVoucherServices implements VoucherServices {
 
     @Override
     public ResponseEntity<Object> getOneByStoreNameUA(String sNameUA, String vNameUA) {
-        Optional<Store> storeOptional = storeRepository.findByNameUnAccent(sNameUA);
+        Optional<Store> storeOptional = storeRepository.findByNameUnAccentAndStatus(sNameUA);
         if (!storeOptional.isPresent()){
             hashMap.clear();
             hashMap.put("Name", "No store found with this name = " + sNameUA + " !");
@@ -192,7 +192,7 @@ public class DefaultVoucherServices implements VoucherServices {
 
     @Override
     public ResponseEntity<Object> getAll() {
-        List<Voucher> vouchers = voucherRepository.findAll();
+        List<Voucher> vouchers = voucherRepository.getAllByStatus();
         if (!vouchers.isEmpty()){
             List<VoucherDto> voucherDtos = new ArrayList<>();
             VoucherDto voucherDto = null;
@@ -217,7 +217,7 @@ public class DefaultVoucherServices implements VoucherServices {
 
     @Override
     public ResponseEntity<Object> getAllByStore(String name) {
-        Optional<Store> storeOptional = storeRepository.findByNameUnAccent(name);
+        Optional<Store> storeOptional = storeRepository.findByNameUnAccentAndStatus(name);
         if (!storeOptional.isPresent()){
             hashMap.clear();
             hashMap.put("Name", "No store found with this name = " + name + " !");
@@ -254,7 +254,7 @@ public class DefaultVoucherServices implements VoucherServices {
 
     @Override
     public ResponseEntity<Object> getAllByTypeVoucher(String name) {
-        Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findByNameUnAccent(name);
+        Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findByNameUnAccentAndStatus(name);
         if (!typeVoucherOptional.isPresent()){
             hashMap.clear();
             hashMap.put("Name", "No type voucher found with this name = " + name + " !");
@@ -291,7 +291,7 @@ public class DefaultVoucherServices implements VoucherServices {
 
     @Override
     public ResponseEntity<Object> getAllByCity(String name) {
-        Optional<City> cityOptional = cityRepository.findByNameUnAccent(name);
+        Optional<City> cityOptional = cityRepository.findByNameUnAccentAndStatus(name);
         List<VoucherDto> voucherDtos = new ArrayList<>();
         if (!cityOptional.isPresent()){
             hashMap.clear();
