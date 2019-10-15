@@ -123,8 +123,8 @@ public class DefaultAccountServices implements AccountServices {
                 accountRepository.save(acc);
 
                 String callBack = "http://" + InetAddress.getLoopbackAddress().getHostName() + ":" + environment.getProperty("server.port") +"/unauthentic/account/"+ accountDto.getEmail() + "/confirm/1/1";
-
-                emailServices.sendMessageWithAttachment(accountDto.getEmail(), "Xác nhận email", accountDto.getEmail(), callBack);
+                String messageBody = "Chúng tôi gửi email này ngay sau khi bạn đăng ký tài khoản tại DealHunter. Email này của bạn sẽ được sử dụng trong trường hợp ban quên mật khẩu truy cập tài khoản của mình. Trước tiên bạn cần xác minh email này nhé !";
+                emailServices.sendMessageWithAttachment(accountDto.getEmail(), "Xác nhận email", accountDto.getEmail(), callBack, messageBody);
 
                 return new ResponseEntity<>(new RESTResponse.Success()
                         .setStatus(HttpStatus.CREATED.value())
@@ -198,8 +198,9 @@ public class DefaultAccountServices implements AccountServices {
 
 
             String callBack = "http://localhost:8080/unauthentic/account/"+ accountStoreDto.getEmail() + "/confirm/1/0";
+            String mesageBody = "Chúng tôi gửi email này ngay sau khi bạn đăng ký tài khoản tại DealHunter. Email này của bạn sẽ được sử dụng trong trường hợp ban quên mật khẩu truy cập tài khoản của mình. Trước tiên bạn cần xác minh email này nhé !";
 
-            emailServices.sendMessageWithAttachment(accountStoreDto.getEmail(), "Xác nhận email", accountStoreDto.getFullName(), callBack);
+            emailServices.sendMessageWithAttachment(accountStoreDto.getEmail(), "Xác nhận email", accountStoreDto.getFullName(), callBack, mesageBody);
 
             return new ResponseEntity<>(new RESTResponse.Success()
                     .setStatus(HttpStatus.CREATED.value())
@@ -367,7 +368,8 @@ public class DefaultAccountServices implements AccountServices {
                     .setMessage("Update data has errors !").build(), HttpStatus.UNAUTHORIZED);
         }else {
             String callBack = "http://" + InetAddress.getLoopbackAddress().getHostName() + ":" + environment.getProperty("server.port") + "/unauthentic/account/" + email + "/confirm/1/1";
-            emailServices.sendMessageWithAttachment(email, "Xác nhận email", email, callBack);
+            String messageBody ="Chúng tôi gửi email này ngay sau khi bạn đăng ký tài khoản tại DealHunter. Email này của bạn sẽ được sử dụng trong trường hợp ban quên mật khẩu truy cập tài khoản của mình. Trước tiên bạn cần xác minh email này nhé !";
+            emailServices.sendMessageWithAttachment(email, "Xác nhận email", email, callBack, messageBody);
             return new ResponseEntity<>(new RESTResponse.Success()
                     .setStatus(HttpStatus.OK.value())
                     .setData("Email has been confirmed")
