@@ -141,13 +141,11 @@ public class DefaultVoucherServices implements VoucherServices {
                         .setMessage("Voucher with id = " + id + " !").build(), HttpStatus.OK);
             }
         }else {
-            hashMap.clear();
-            hashMap.put("ID", "No voucher found with this id = " + id + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
                     .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("No voucher found with this id = " + id + " !").build(), HttpStatus.FORBIDDEN);
         }
     }
 
@@ -182,13 +180,11 @@ public class DefaultVoucherServices implements VoucherServices {
                         .setMessage("Voucher with name ua = " + name + " !").build(), HttpStatus.OK);
             }
         }else {
-            hashMap.clear();
-            hashMap.put("ID", "No voucher found with this nameUA = " + name + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
                     .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("No voucher found with this nameUA = " + name + " !").build(), HttpStatus.FORBIDDEN);
         }
     }
 
@@ -196,13 +192,11 @@ public class DefaultVoucherServices implements VoucherServices {
     public ResponseEntity<Object> getOneByStoreNameUA(String sNameUA, String vNameUA) {
         Optional<Store> storeOptional = storeRepository.findByNameUnAccentAndStatus(sNameUA);
         if (!storeOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Name", "No store found with this name = " + sNameUA + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("No store found with this name = " + sNameUA + " !").build(), HttpStatus.FORBIDDEN);
         }else {
             List<Voucher> vouchers = voucherRepository.getAllByStoreNameUA(sNameUA);
             if (!vouchers.isEmpty()){
@@ -237,10 +231,8 @@ public class DefaultVoucherServices implements VoucherServices {
                         .setData(voucherDto)
                         .setMessage("Voucher with name = " + vNameUA + " !").build(), HttpStatus.OK);
             }else {
-                hashMap.clear();
-                hashMap.put("Voucher", "No voucher found !");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
+                        .addErrors(null)
                         .setStatus(HttpStatus.NOT_FOUND.value())
                         .setData("")
                         .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
@@ -280,10 +272,8 @@ public class DefaultVoucherServices implements VoucherServices {
                     .setData(voucherDtos)
                     .setMessage("Success!").build(), HttpStatus.OK);
         }
-        hashMap.clear();
-        hashMap.put("Voucher", "No voucher found !");
         return new ResponseEntity<>(new RESTResponse.Error()
-                .addErrors(hashMap)
+                .addErrors(null)
                 .setStatus(HttpStatus.NOT_FOUND.value())
                 .setData("")
                 .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
@@ -293,13 +283,11 @@ public class DefaultVoucherServices implements VoucherServices {
     public ResponseEntity<Object> getAllByStore(String name) {
         Optional<Store> storeOptional = storeRepository.findByNameUnAccentAndStatus(name);
         if (!storeOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Name", "No store found with this name = " + name + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("No store found with this name = " + name + " !").build(), HttpStatus.FORBIDDEN);
         }else {
             List<Voucher> vouchers = voucherRepository.getAllByStoreNameUA(name);
             if (!vouchers.isEmpty()){
@@ -330,10 +318,8 @@ public class DefaultVoucherServices implements VoucherServices {
                         .setData(voucherDtos)
                         .setMessage("Success!").build(), HttpStatus.OK);
             }else {
-                hashMap.clear();
-                hashMap.put("Voucher", "No voucher found !");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
+                        .addErrors(null)
                         .setStatus(HttpStatus.NOT_FOUND.value())
                         .setData("")
                         .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
@@ -345,13 +331,11 @@ public class DefaultVoucherServices implements VoucherServices {
     public ResponseEntity<Object> getAllByTypeVoucher(String name) {
         Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findByNameUnAccentAndStatus(name);
         if (!typeVoucherOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Name", "No type voucher found with this name = " + name + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("No type voucher found with this name = " + name + " !").build(), HttpStatus.FORBIDDEN);
         }else {
             List<Voucher> vouchers = voucherRepository.getAllByTypeVoucher(name);
             if (!vouchers.isEmpty()){
@@ -382,10 +366,8 @@ public class DefaultVoucherServices implements VoucherServices {
                         .setData(voucherDtos)
                         .setMessage("Success!").build(), HttpStatus.OK);
             }else {
-                hashMap.clear();
-                hashMap.put("Voucher", "No voucher found !");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
+                        .addErrors(null)
                         .setStatus(HttpStatus.NOT_FOUND.value())
                         .setData("")
                         .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
@@ -399,13 +381,11 @@ public class DefaultVoucherServices implements VoucherServices {
         List<VoucherDto> voucherDtos = new ArrayList<>();
         List<List<VoucherDto>> v = new ArrayList<>();
         if (!cityOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("ID", "No city found with this nameUA = " + name + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("No city found with this nameUA = " + name + " !").build(), HttpStatus.FORBIDDEN);
         }else {
             List<StoreAddress> storeAddressList = new ArrayList<>(cityOptional.get().getStoreAddresses());
             for (StoreAddress storeAddress: storeAddressList
@@ -422,10 +402,8 @@ public class DefaultVoucherServices implements VoucherServices {
                         v.add(voucherDtos);
                     }
                 }else {
-                    hashMap.clear();
-                    hashMap.put("Voucher", "No voucher found !");
                     return new ResponseEntity<>(new RESTResponse.Error()
-                            .addErrors(hashMap)
+                            .addErrors(null)
                             .setStatus(HttpStatus.NOT_FOUND.value())
                             .setData("")
                             .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
