@@ -204,7 +204,7 @@ public class DefaultVoucherServices implements VoucherServices {
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         }else {
-            List<Voucher> vouchers = new ArrayList<>(storeOptional.get().getVouchers());
+            List<Voucher> vouchers = voucherRepository.getAllByStoreNameUA(sNameUA);
             if (!vouchers.isEmpty()){
                 //List<VoucherDto> voucherDtos = new ArrayList<>();
                 VoucherDto voucherDto = null;
@@ -301,7 +301,7 @@ public class DefaultVoucherServices implements VoucherServices {
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         }else {
-            List<Voucher> vouchers = new ArrayList<>(storeOptional.get().getVouchers());
+            List<Voucher> vouchers = voucherRepository.getAllByStoreNameUA(name);
             if (!vouchers.isEmpty()){
                 List<VoucherDto> voucherDtos = new ArrayList<>();
                 VoucherDto voucherDto = null;
@@ -353,7 +353,7 @@ public class DefaultVoucherServices implements VoucherServices {
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         }else {
-            List<Voucher> vouchers = new ArrayList<>(typeVoucherOptional.get().getVouchers());
+            List<Voucher> vouchers = voucherRepository.getAllByTypeVoucher(name);
             if (!vouchers.isEmpty()){
                 List<VoucherDto> voucherDtos = new ArrayList<>();
                 VoucherDto voucherDto = null;
@@ -397,6 +397,7 @@ public class DefaultVoucherServices implements VoucherServices {
     public ResponseEntity<Object> getAllByCity(String name) {
         Optional<City> cityOptional = cityRepository.findByNameUnAccentAndStatus(name);
         List<VoucherDto> voucherDtos = new ArrayList<>();
+        List<List<VoucherDto>> v = new ArrayList<>();
         if (!cityOptional.isPresent()){
             hashMap.clear();
             hashMap.put("ID", "No city found with this nameUA = " + name + " !");
@@ -417,6 +418,9 @@ public class DefaultVoucherServices implements VoucherServices {
                 Optional<Store> storeOptional = storeRepository.findById(id);
                 if (storeOptional.isPresent()){
                     voucherDtos = getVoucherByStore(storeOptional.get());
+                    if (voucherDtos != null){
+                        v.add(voucherDtos);
+                    }
                 }else {
                     hashMap.clear();
                     hashMap.put("Voucher", "No voucher found !");
@@ -427,10 +431,9 @@ public class DefaultVoucherServices implements VoucherServices {
                             .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
                 }
             }
-
             return new ResponseEntity<>(new RESTResponse.Success()
                     .setStatus(HttpStatus.OK.value())
-                    .setData(voucherDtos)
+                    .setData(v)
                     .setMessage("Success!").build(), HttpStatus.OK);
         }
     }
@@ -579,11 +582,11 @@ public class DefaultVoucherServices implements VoucherServices {
 
     private List<VoucherDto> getVoucherByStore(Store store){
             List<VoucherDto> voucherDtos = new ArrayList<>();
-            List<Voucher> vouchers = new ArrayList<>(store.getVouchers());
+            List<Voucher> vouchers = voucherRepository.getAllByStoreNameUA(store.getNameUnAccent());
             if (!vouchers.isEmpty()){
-                VoucherDto voucherDto = null;
                 for (Voucher voucher: vouchers
                 ) {
+                    VoucherDto voucherDto;
                     if (voucher.getStore().getStoreAddresses() != null){
                         List<StoreAddress> storeAddressList = new ArrayList<StoreAddress>(voucher.getStore().getStoreAddresses());
                         List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
@@ -603,8 +606,9 @@ public class DefaultVoucherServices implements VoucherServices {
                     }
                 }
                 return voucherDtos;
+            }else {
+                return null;
             }
-            return null;
     }
 
 }
