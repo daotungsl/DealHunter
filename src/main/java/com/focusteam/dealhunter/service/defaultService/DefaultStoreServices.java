@@ -541,10 +541,12 @@ public class DefaultStoreServices implements StoreServices {
 
     @Override
     public ResponseEntity<Object> createSA(@Valid StoreAddressCreate storeAddressCreate, BindingResult bindingResult, HttpServletRequest request) {
+        System.out.println("Create SA Step 1 processing");
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         Optional<Store> storeOptional = storeRepository.findById(storeAddressCreate.getStoreId());
         Optional<City> cityOptional = cityRepository.findById(storeAddressCreate.getCityId());
         if (!accountOptional.isPresent()){
+            System.out.println("Create SA Step 2 UnAuthor");
             hashMap.clear();
             hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
@@ -553,6 +555,7 @@ public class DefaultStoreServices implements StoreServices {
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         } else if (!storeOptional.isPresent()) {
+            System.out.println("Create SA Step 3 No Store");
             hashMap.clear();
             hashMap.put("ID", "No store found with this id !");
             return new ResponseEntity<>(new RESTResponse.Error()
@@ -561,6 +564,7 @@ public class DefaultStoreServices implements StoreServices {
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         } else if (accountOptional.get().getStore().getId() != storeAddressCreate.getStoreId() || accountOptional.get().getTypeAccount() == 0) {
+            System.out.println("Create SA Step 4 UnAuthor");
             hashMap.clear();
             hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
@@ -569,6 +573,7 @@ public class DefaultStoreServices implements StoreServices {
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         } else if (!cityOptional.isPresent()) {
+            System.out.println("Create SA Step 5 No City");
             hashMap.clear();
             hashMap.put("ID", "No city found with this id = " + storeAddressCreate.getCityId() + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
@@ -577,6 +582,7 @@ public class DefaultStoreServices implements StoreServices {
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         }else if (bindingResult.hasErrors()){
+            System.out.println("Create SA Step 6 Object is valid");
             hashMap.clear();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
             for (FieldError f: fieldErrors
@@ -589,12 +595,13 @@ public class DefaultStoreServices implements StoreServices {
                     .setData("")
                     .setMessage("Store address data has errors !").build(), HttpStatus.FORBIDDEN);
         }else {
+            System.out.println("Create SA Step 7 Start Create SA");
             StoreAddress storeAddress = new StoreAddress(storeAddressCreate);
             storeAddress.setCity(cityOptional.get());
             storeAddress.setStore(storeOptional.get());
 
             storeAddressRepository.save(storeAddress);
-
+            System.out.println("Create SA Step 8 Create SA Success");
             return new ResponseEntity<>(new RESTResponse.Success()
                     .setStatus(HttpStatus.CREATED.value())
                     .setData(new StoreAddressDto(storeAddress))
