@@ -67,7 +67,7 @@ public class FileController {
         }
     }
 
-    @CrossOrigin
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     //@PostMapping("/api/file/upload")
     @RequestMapping(value = "/api/file/upload", method = RequestMethod.POST)
     public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
