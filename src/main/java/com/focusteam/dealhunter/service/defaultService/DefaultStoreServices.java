@@ -228,13 +228,11 @@ public class DefaultStoreServices implements StoreServices {
                         .setMessage("Store with id = " + id + " !").build(), HttpStatus.OK);
             }
         }else {
-            hashMap.clear();
-            hashMap.put("ID", "No store found with this id = " + id + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("No store found with this id = " + id + " !").build(), HttpStatus.FORBIDDEN);
         }
     }
 
@@ -267,13 +265,11 @@ public class DefaultStoreServices implements StoreServices {
                         .setMessage("Store with id = " + name + " !").build(), HttpStatus.OK);
             }
         }else {
-            hashMap.clear();
-            hashMap.put("ID", "No store found with this id = " + name + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("No store found with this id = " + name + " !").build(), HttpStatus.FORBIDDEN);
         }
     }
 
@@ -300,13 +296,11 @@ public class DefaultStoreServices implements StoreServices {
                     .setData(storeDtoList)
                     .setMessage("Success!").build(), HttpStatus.OK);
         }
-        hashMap.clear();
-        hashMap.put("Store", "No store found !");
         return new ResponseEntity<>(new RESTResponse.Error()
-                .addErrors(hashMap)
+                .addErrors(null)
                 .setStatus(HttpStatus.NOT_FOUND.value())
                 .setData("")
-                .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+                .setMessage("No store found !").build(), HttpStatus.NOT_FOUND);
     }
 
     @Override
@@ -618,13 +612,11 @@ public class DefaultStoreServices implements StoreServices {
                     .setData(new StoreAddressDto(storeAddress))
                     .setMessage("Store address with id = " + id + " !").build(), HttpStatus.OK);
         }else {
-            hashMap.clear();
-            hashMap.put("ID", "No store address found with this id = " + id + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("No store address found with this id = " + id + " !").build(), HttpStatus.FORBIDDEN);
         }
     }
 
@@ -644,13 +636,11 @@ public class DefaultStoreServices implements StoreServices {
                     .setData(storeAddressDtos)
                     .setMessage("Success!").build(), HttpStatus.OK);
         }else {
-            hashMap.clear();
-            hashMap.put("Store_Address", "No store address found !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.NOT_FOUND.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+                    .setMessage("No store address found !").build(), HttpStatus.NOT_FOUND);
         }
     }
 

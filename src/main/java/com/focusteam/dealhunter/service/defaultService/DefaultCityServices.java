@@ -100,13 +100,11 @@ public class DefaultCityServices implements CityServices {
                     .setData(new CityDto(city))
                     .setMessage("City with id = " + id + " !").build(), HttpStatus.OK);
         }else {
-            hashMap.clear();
-            hashMap.put("ID", "No city found with this id = " + id + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
                     .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("No city found with this id = " + id + " !").build(), HttpStatus.FORBIDDEN);
         }
     }
 
@@ -120,13 +118,11 @@ public class DefaultCityServices implements CityServices {
                     .setData(new CityDto(city))
                     .setMessage("City with id = " + name + " !").build(), HttpStatus.OK);
         }else {
-            hashMap.clear();
-            hashMap.put("ID", "No city found with this nameUA = " + name + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
                     .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("No city found with this nameUA = " + name + " !").build(), HttpStatus.FORBIDDEN);
         }
     }
 
@@ -146,10 +142,8 @@ public class DefaultCityServices implements CityServices {
                     .setData(cityDtos)
                     .setMessage("Success!").build(), HttpStatus.OK);
         }
-        hashMap.clear();
-        hashMap.put("City", "No city found !");
         return new ResponseEntity<>(new RESTResponse.Error()
-                .addErrors(hashMap)
+                .addErrors(null)
                 .setStatus(HttpStatus.NOT_FOUND.value())
                 .setData("")
                 .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);

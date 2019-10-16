@@ -104,13 +104,11 @@ public class DefaultTypeVoucherServices implements TypeVoucherServices {
                     .setData(new TypeVoucherDto(typeVoucher1))
                     .setMessage("Type voucher with id = " + id + " !").build(), HttpStatus.OK);
         }else {
-            hashMap.clear();
-            hashMap.put("ID", "No type voucher found with this id = " + id + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
                     .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("No type voucher found with this id = " + id + " !").build(), HttpStatus.FORBIDDEN);
         }
     }
 
@@ -124,13 +122,11 @@ public class DefaultTypeVoucherServices implements TypeVoucherServices {
                     .setData(new TypeVoucherDto(typeVoucher1))
                     .setMessage("Type voucher with id = " + name + " !").build(), HttpStatus.OK);
         }else {
-            hashMap.clear();
-            hashMap.put("ID", "No type voucher found with this id = " + name + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
                     .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("No type voucher found with this id = " + name + " !").build(), HttpStatus.FORBIDDEN);
         }
     }
 
@@ -150,13 +146,11 @@ public class DefaultTypeVoucherServices implements TypeVoucherServices {
                     .setData(typeVoucherDtos)
                     .setMessage("Success!").build(), HttpStatus.OK);
         }
-        hashMap.clear();
-        hashMap.put("TypeVoucher", "No type voucher found !");
         return new ResponseEntity<>(new RESTResponse.Error()
                 .addErrors(hashMap)
                 .setStatus(HttpStatus.NOT_FOUND.value())
                 .setData("")
-                .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+                .setMessage("No type voucher found !").build(), HttpStatus.NOT_FOUND);
     }
 
     @Override
