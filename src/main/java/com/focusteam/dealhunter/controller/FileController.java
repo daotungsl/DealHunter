@@ -35,6 +35,40 @@ public class FileController {
 
     @CrossOrigin
     //@PostMapping("/api/file/upload")
+    @RequestMapping(value = "/unauthentic/file/upload", method = RequestMethod.POST)
+    public  ResponseEntity<Object> uploadFileUnAuthor(@RequestParam("file") MultipartFile file){
+        if (file != null){
+            System.out.println("Upload step 4 file != null");
+            if (isValidFileType(file)){
+                System.out.println("Upload step 5 file oke");
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(upload(file))
+                        .setMessage("Upload file success !").build(), HttpStatus.OK);
+            }else {
+                System.out.println("Upload step 6 file not valid");
+                hashMap.clear();
+                hashMap.put("File-Type", "File type not support to upload !");
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .addErrors(hashMap)
+                        .setStatus(HttpStatus.FORBIDDEN.value())
+                        .setData(new Media(file.getOriginalFilename(), "Upload Fail : file type " + file.getContentType() + " not support !", file.getContentType(), file.getSize()))
+                        .setMessage("Upload data has errors !").build(), HttpStatus.FORBIDDEN);
+            }
+        }else {
+            System.out.println("Upload step 7 file null");
+            hashMap.clear();
+            hashMap.put("File", "File upload can't null !");
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData(StringUtils.EMPTY)
+                    .setMessage("Upload data has errors !").build(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @CrossOrigin
+    //@PostMapping("/api/file/upload")
     @RequestMapping(value = "/api/file/upload", method = RequestMethod.POST)
     public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         System.out.println("Upload step 1");
