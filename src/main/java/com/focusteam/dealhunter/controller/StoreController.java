@@ -20,7 +20,7 @@ public class StoreController {
 
     // Request - Response Store
 
-    @CrossOrigin
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @RequestMapping(value = "/api/stores/store" , method = RequestMethod.POST)
     public ResponseEntity<Object> create(@Valid @RequestBody StoreCreateDto storeCreateDto, BindingResult bindingResult, HttpServletRequest request){
         return storeServices.create(storeCreateDto, bindingResult, request);
