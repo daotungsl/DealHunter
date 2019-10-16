@@ -104,13 +104,11 @@ public class DefaultAccountServices implements AccountServices {
                     .setMessage("Register data has errors !").build(), HttpStatus.FORBIDDEN);
         }
         if (!accountDto.getPassword().equals(accountDto.getRepassword())){
-            hashMap.clear();
-            hashMap.put("Re-Password", "The re-password does not match the password !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData(StringUtils.EMPTY)
-                    .setMessage("Register data has errors !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("The re-password does not match the password !").build(), HttpStatus.FORBIDDEN);
         }
         Optional<Account> accountOptional = accountRepository.findByUsername(accountDto.getEmail());
         if (!accountOptional.isPresent()){
@@ -122,7 +120,7 @@ public class DefaultAccountServices implements AccountServices {
                 acc.setPassword(new StringUtil().encryptMD5(accountDto.getPassword()) + new StringUtil().encryptMD5(salt));
                 accountRepository.save(acc);
 
-                String callBack = "http://" + InetAddress.getLoopbackAddress().getHostName() + ":" + environment.getProperty("server.port") +"/unauthentic/account/"+ accountDto.getEmail() + "/confirm/1/1";
+                String callBack = "http://13.76.164.246:8080/unauthentic/account/"+ accountDto.getEmail() + "/confirm/1/1";
                 String messageBody = "Chúng tôi gửi email này ngay sau khi bạn đăng ký tài khoản tại DealHunter. Email này của bạn sẽ được sử dụng trong trường hợp ban quên mật khẩu truy cập tài khoản của mình. Trước tiên bạn cần xác minh email này nhé !";
                 emailServices.sendMessageWithAttachment(accountDto.getEmail(), "Xác nhận email", accountDto.getEmail(), callBack, messageBody);
 
@@ -131,21 +129,17 @@ public class DefaultAccountServices implements AccountServices {
                         .setData(new AccountLoginDto(accountDto.getEmail(), accountDto.getPassword(), request.getHeader("user-agent")))
                         .setMessage("Account register success !").build(), HttpStatus.CREATED);
             }
-            hashMap.clear();
-            hashMap.put("Phone", "A phone number can only register one account");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Register data has errors !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("A phone number can only register one account").build(), HttpStatus.FORBIDDEN);
         }
-        hashMap.clear();
-        hashMap.put("Username", "This username has exist !");
         return new ResponseEntity<>(new RESTResponse.Error()
-                .addErrors(hashMap)
+                .addErrors(null)
                 .setStatus(HttpStatus.FORBIDDEN.value())
                 .setData("")
-                .setMessage("Register data has errors !").build(), HttpStatus.FORBIDDEN);
+                .setMessage("This username has exist !").build(), HttpStatus.FORBIDDEN);
     }
 
     @Override
@@ -165,29 +159,23 @@ public class DefaultAccountServices implements AccountServices {
                     .setData(StringUtils.EMPTY)
                     .setMessage("Register data has errors !").build(), HttpStatus.FORBIDDEN);
         }else if (!accountStoreDto.getPassword().equals(accountStoreDto.getRepassword())){
-            hashMap.clear();
-            hashMap.put("Re-Password", "The re-password does not match the password !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData(StringUtils.EMPTY)
-                    .setMessage("Register data has errors !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("The re-password does not match the password !").build(), HttpStatus.FORBIDDEN);
         }else if (accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Username", "This username has exist !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Register data has errors !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("This username has exist !").build(), HttpStatus.FORBIDDEN);
         } else if (userInformationOptional.isPresent()) {
-            hashMap.clear();
-            hashMap.put("Phone", "A phone number can only register one account");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Register data has errors !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("A phone number can only register one account").build(), HttpStatus.FORBIDDEN);
         }else {
             Account account = new Account(accountStoreDto);
             String salt = new StringUtil().randomString();
@@ -197,7 +185,7 @@ public class DefaultAccountServices implements AccountServices {
 
 
 
-            String callBack = "http://localhost:8080/unauthentic/account/"+ accountStoreDto.getEmail() + "/confirm/1/0";
+            String callBack = "http://13.76.164.246:8080/unauthentic/account/"+ accountStoreDto.getEmail() + "/confirm/1/1";
             String mesageBody = "Chúng tôi gửi email này ngay sau khi bạn đăng ký tài khoản tại DealHunter. Email này của bạn sẽ được sử dụng trong trường hợp ban quên mật khẩu truy cập tài khoản của mình. Trước tiên bạn cần xác minh email này nhé !";
 
             emailServices.sendMessageWithAttachment(accountStoreDto.getEmail(), "Xác nhận email", accountStoreDto.getFullName(), callBack, mesageBody);
@@ -281,29 +269,23 @@ public class DefaultAccountServices implements AccountServices {
                             .setData(new UserInformationDto(account))
                             .setMessage("Update user information data success !").build(), HttpStatus.OK);
                 }
-                hashMap.clear();
-                hashMap.put("Phone", "Can't change phone number !");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
+                        .addErrors(null)
                         .setStatus(HttpStatus.FORBIDDEN.value())
                         .setData("")
-                        .setMessage("Update data has errors !").build(), HttpStatus.FORBIDDEN);
+                        .setMessage("Can't change phone number !").build(), HttpStatus.FORBIDDEN);
             }
-            hashMap.clear();
-            hashMap.put("Email", "Can't find account with this email !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.NOT_FOUND.value())
                     .setData("")
-                    .setMessage("Update data has errors !").build(), HttpStatus.NOT_FOUND);
+                    .setMessage("Can't find account with this email !").build(), HttpStatus.NOT_FOUND);
         }else {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
-                    .setMessage("Update data has errors !").build(), HttpStatus.UNAUTHORIZED);
+                    .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -351,21 +333,17 @@ public class DefaultAccountServices implements AccountServices {
     public ResponseEntity<Object> sendMailConfirm(String email, HttpServletRequest request) {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
-                    .setMessage("Update data has errors !").build(), HttpStatus.UNAUTHORIZED);
+                    .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
         }else if (!accountOptional.get().getUsername().equalsIgnoreCase(email)){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
                     .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
-                    .setMessage("Update data has errors !").build(), HttpStatus.UNAUTHORIZED);
+                    .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
         }else {
             String callBack = "http://" + InetAddress.getLoopbackAddress().getHostName() + ":" + environment.getProperty("server.port") + "/unauthentic/account/" + email + "/confirm/1/1";
             String messageBody ="Chúng tôi gửi email này ngay sau khi bạn đăng ký tài khoản tại DealHunter. Email này của bạn sẽ được sử dụng trong trường hợp ban quên mật khẩu truy cập tài khoản của mình. Trước tiên bạn cần xác minh email này nhé !";

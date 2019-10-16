@@ -38,12 +38,6 @@ public class AccountStoreDto {
     @Size(min = 10, max = 50)
     private String birthday;
 
-    @NotBlank
-    @NotNull
-
-    @Size(min = 50, max = 20000)
-    private String avatar;
-
     @NotNull
     @NotEmpty
     @Size(min = 10, max = 100)
@@ -103,14 +97,6 @@ public class AccountStoreDto {
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
     }
 
     public String getAddress() {

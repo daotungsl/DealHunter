@@ -1097,29 +1097,23 @@ public class DefaultAdminService implements AdminServices {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         Optional<Transaction> transactionOptional = transactionRepository.findById(id);
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
-                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+                    .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
         } else if (!transactionOptional.isPresent()) {
-            hashMap.clear();
-            hashMap.put("ID", "No transaction found with this id !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("No transaction found with this id !").build(), HttpStatus.FORBIDDEN);
         }else if (accountOptional.get().getTypeAccount() != 2){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
-                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+                    .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
         } else {
             Transaction transaction = transactionOptional.get();
             return new ResponseEntity<>(new RESTResponse.Success()
@@ -1136,19 +1130,17 @@ public class DefaultAdminService implements AdminServices {
     public ResponseEntity<Object> statusListObject(SetAllStatus setAllStatus, HttpServletRequest request) {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
-                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+                    .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
         }else if (accountOptional.get().getTypeAccount() != 2){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
+                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
-                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+                    .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
         } else if (!isValidSetStatusList(setAllStatus)) {
             return new ResponseEntity<>(new RESTResponse.Error()
                     .addErrors(hashMap)

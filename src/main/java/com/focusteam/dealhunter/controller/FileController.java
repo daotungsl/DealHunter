@@ -37,10 +37,12 @@ public class FileController {
     //@PostMapping("/api/file/upload")
     @RequestMapping(value = "/api/file/upload", method = RequestMethod.POST)
     public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+        System.out.println("Upload step 1");
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         if (accountOptional.isPresent()){
             Account account = accountOptional.get();
             if (account.getTypeAccount() == 0){
+                System.out.println("Upload step 2 un author");
                 hashMap.clear();
                 hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
                 return new ResponseEntity<>(new RESTResponse.Error()
@@ -49,13 +51,17 @@ public class FileController {
                         .setData("")
                         .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
             }else {
+                System.out.println("Upload step 3 author");
                 if (file != null){
+                    System.out.println("Upload step 4 file != null");
                     if (isValidFileType(file)){
+                        System.out.println("Upload step 5 file oke");
                         return new ResponseEntity<>(new RESTResponse.Success()
                                 .setStatus(HttpStatus.OK.value())
                                 .setData(upload(file))
                                 .setMessage("Upload file success !").build(), HttpStatus.OK);
                     }else {
+                        System.out.println("Upload step 6 file not valid");
                         hashMap.clear();
                         hashMap.put("File-Type", "File type not support to upload !");
                         return new ResponseEntity<>(new RESTResponse.Error()
@@ -65,6 +71,7 @@ public class FileController {
                                 .setMessage("Upload data has errors !").build(), HttpStatus.FORBIDDEN);
                     }
                 }else {
+                    System.out.println("Upload step 7 file null");
                     hashMap.clear();
                     hashMap.put("File", "File upload can't null !");
                     return new ResponseEntity<>(new RESTResponse.Error()
@@ -173,12 +180,14 @@ public class FileController {
 
 
     public Media upload(MultipartFile file){
+        System.out.println("Upload step 8 run upload");
         String fileName = fileStorageService.storeFile(file);
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/unauthentic/file/download/")
                 .path(fileName)
                 .toUriString();
+        System.out.println("Upload step 9 upload success");
         return new Media(fileName, fileDownloadUri, "Upload success !",
                 file.getContentType(), file.getSize(), Calendar.getInstance().getTimeInMillis());
     }

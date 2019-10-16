@@ -94,7 +94,6 @@ public class Account {
         userInformation.setFullName(accountStoreDto.getFullName());
         userInformation.setGender(accountStoreDto.getGender());
         userInformation.setBirthday(accountStoreDto.getBirthday());
-        userInformation.setAvatar(accountStoreDto.getAvatar());
         userInformation.setAddress(accountStoreDto.getAddress());
         userInformation.setCreated(System.currentTimeMillis());
         userInformation.setUpdated(System.currentTimeMillis());
