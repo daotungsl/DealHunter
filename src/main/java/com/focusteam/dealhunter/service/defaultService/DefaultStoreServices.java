@@ -69,7 +69,6 @@ public class DefaultStoreServices implements StoreServices {
                         .setData("")
                         .setMessage("You need to confirm your email first !").build(), HttpStatus.UNAUTHORIZED);
             } else if (account.getUserInformation().getFullName() == null
-                        || account.getUserInformation().getAvatar() == null
                         || account.getUserInformation().getAddress() == null
                         || account.getUserInformation().getBirthday() == null
                         || account.getUserInformation().getGender() < 0) {
