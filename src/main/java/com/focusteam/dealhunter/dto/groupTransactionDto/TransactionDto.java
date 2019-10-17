@@ -5,6 +5,7 @@ import com.focusteam.dealhunter.entity.Transaction;
 
 public class TransactionDto {
     private long id;
+    private String codeId;
     private String guestName;
     private String guestPhone;
     private String guestEmail;
@@ -17,12 +18,14 @@ public class TransactionDto {
     private String sale;
     private String code;
     private String description;
+    private int status;
 
     public TransactionDto() {
     }
 
     public TransactionDto(Transaction transaction) {
         this.id = transaction.getId();
+        this.codeId = transaction.getCodeId();
         this.guestName = transaction.getAccount().getUserInformation().getFullName();
         this.guestPhone = transaction.getAccount().getUserInformation().getPhone();
         this.guestEmail = transaction.getAccount().getUserInformation().getEmail();
@@ -35,6 +38,24 @@ public class TransactionDto {
         this.sale = transaction.getVoucher().getPercent() + " %";
         this.code = transaction.getVoucher().getCodeSale();
         this.description = transaction.getDescription();
+        this.status = transaction.getStatus();
+    }
+
+
+    public String getCodeId() {
+        return codeId;
+    }
+
+    public void setCodeId(String codeId) {
+        this.codeId = codeId;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public String getCode() {
