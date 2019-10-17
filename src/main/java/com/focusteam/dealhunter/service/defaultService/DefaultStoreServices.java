@@ -58,32 +58,23 @@ public class DefaultStoreServices implements StoreServices {
             Account account = accountOptional.get();
             if (account.getTypeAccount() == 0){
                 System.out.println("7 Type account = guest !");
-                hashMap.clear();
-                hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
                         .setStatus(HttpStatus.UNAUTHORIZED.value())
                         .setData("")
                         .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
             } else if (account.getConfirmEmail() == 0) {
                 System.out.println("8 Not confirm email !");
-                hashMap.clear();
-                hashMap.put("Email", "You need to confirm your email first !");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
                         .setStatus(HttpStatus.UNAUTHORIZED.value())
                         .setData("")
-                        .setMessage("Email has errors !").build(), HttpStatus.UNAUTHORIZED);
+                        .setMessage("You need to confirm your email first !").build(), HttpStatus.UNAUTHORIZED);
             } else if (account.getUserInformation().getFullName() == null
                         || account.getUserInformation().getAvatar() == null
                         || account.getUserInformation().getAddress() == null
                         || account.getUserInformation().getBirthday() == null
                         || account.getUserInformation().getGender() < 0) {
                 System.out.println("9 Information Null !");
-                hashMap.clear();
-                hashMap.put("Information", "You must fill out your information before creating a store !");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
                         .setStatus(HttpStatus.UNAUTHORIZED.value())
                         .setData("")
                         .setMessage("Information has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -103,10 +94,7 @@ public class DefaultStoreServices implements StoreServices {
                             .setMessage("Store data has errors !").build(), HttpStatus.FORBIDDEN);
                 } else if (!cityOptional.isPresent()) {
                     System.out.println("11 City not found !");
-                    hashMap.clear();
-                    hashMap.put("ID", "No city found with this id = " + storeCreateDto.getCityId() + " !");
                     return new ResponseEntity<>(new RESTResponse.Error()
-                            .addErrors(hashMap)
                             .setStatus(HttpStatus.FORBIDDEN.value())
                             .setData("")
                             .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
@@ -114,47 +102,32 @@ public class DefaultStoreServices implements StoreServices {
                     System.out.println("12 Store exist !");
                     if (storeOptional.get().getName().equalsIgnoreCase(storeCreateDto.getName())) {
                         System.out.println("13 Name exist");
-                        hashMap.clear();
-                        hashMap.put("Name", "This store name has been used to register in another store");
                         return new ResponseEntity<>(new RESTResponse.Error()
-                                .addErrors(hashMap)
                                 .setStatus(HttpStatus.FORBIDDEN.value())
                                 .setData("")
                                 .setMessage("Store name error !").build(), HttpStatus.FORBIDDEN);
                     } else if (storeOptional.get().getEmail().equalsIgnoreCase(storeCreateDto.getEmail())) {
                         System.out.println("14 Email exist");
-                        hashMap.clear();
-                        hashMap.put("Email", "This email has been used to register in another store");
                         return new ResponseEntity<>(new RESTResponse.Error()
-                                .addErrors(hashMap)
                                 .setStatus(HttpStatus.FORBIDDEN.value())
                                 .setData("")
                                 .setMessage("Store email error !").build(), HttpStatus.FORBIDDEN);
                     } else {
                         System.out.println("15 phone exist");
-                        hashMap.clear();
-                        hashMap.put("Phone", "This phone has been used to register in another store");
                         return new ResponseEntity<>(new RESTResponse.Error()
-                                .addErrors(hashMap)
                                 .setStatus(HttpStatus.FORBIDDEN.value())
                                 .setData("")
                                 .setMessage("Store phone error !").build(), HttpStatus.FORBIDDEN);
                     }
                 } else if (!typeStoreOptional.isPresent()) {
                     System.out.println("16 type store not exist");
-                    hashMap.clear();
-                    hashMap.put("ID", "No type store found with this id = " + storeCreateDto.getTypeStoreId() + " !");
                     return new ResponseEntity<>(new RESTResponse.Error()
-                            .addErrors(hashMap)
                             .setStatus(HttpStatus.FORBIDDEN.value())
                             .setData("")
                             .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
                 } else if (account.getStore() != null) {
                     System.out.println("17 Account has a store");
-                    hashMap.clear();
-                    hashMap.put("Store", "An account can't create more than one store");
                     return new ResponseEntity<>(new RESTResponse.Error()
-                            .addErrors(hashMap)
                             .setStatus(HttpStatus.FORBIDDEN.value())
                             .setData("")
                             .setMessage("Create Error !").build(), HttpStatus.FORBIDDEN);
@@ -189,10 +162,7 @@ public class DefaultStoreServices implements StoreServices {
                 }
             }
         }else {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -229,7 +199,6 @@ public class DefaultStoreServices implements StoreServices {
             }
         }else {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No store found with this id = " + id + " !").build(), HttpStatus.FORBIDDEN);
@@ -266,7 +235,6 @@ public class DefaultStoreServices implements StoreServices {
             }
         }else {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No store found with this id = " + name + " !").build(), HttpStatus.FORBIDDEN);
@@ -297,7 +265,6 @@ public class DefaultStoreServices implements StoreServices {
                     .setMessage("Success!").build(), HttpStatus.OK);
         }
         return new ResponseEntity<>(new RESTResponse.Error()
-                .addErrors(null)
                 .setStatus(HttpStatus.NOT_FOUND.value())
                 .setData("")
                 .setMessage("No store found !").build(), HttpStatus.NOT_FOUND);
@@ -309,10 +276,7 @@ public class DefaultStoreServices implements StoreServices {
         Optional<Store> storeOptional = storeRepository.findById(storeUpdate.getId());
         Optional<TypeStore> typeStoreOptional = typeStoreRepository.findById(storeUpdate.getTypeStoreId());
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -320,15 +284,11 @@ public class DefaultStoreServices implements StoreServices {
 //            hashMap.clear();
 //            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         }else if (id != storeUpdate.getId()){
-            hashMap.clear();
-            hashMap.put("ID", "The id in path variable does not match the id in the data update !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Data error !").build(), HttpStatus.UNAUTHORIZED);
@@ -345,29 +305,20 @@ public class DefaultStoreServices implements StoreServices {
                     .setData("")
                     .setMessage("Store data has errors !").build(), HttpStatus.FORBIDDEN);
         }else if (!storeOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("ID", "No store found with this id !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         }else if (!typeStoreOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("ID", "No type store found with this id = " + storeUpdate.getTypeStoreId() + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         } else if (!storeOptional.get().getName().equals(storeUpdate.getName())) {
-            hashMap.clear();
-            hashMap.put("Name", "Can't change store name !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Name error !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("Can't change store name !").build(), HttpStatus.FORBIDDEN);
         } else {
             Store store = storeOptional.get();
             store.setName(storeUpdate.getName());
@@ -402,10 +353,7 @@ public class DefaultStoreServices implements StoreServices {
         Optional<Store> storeOptional = storeRepository.findById(storeUpdate.getId());
         Optional<TypeStore> typeStoreOptional = typeStoreRepository.findById(storeUpdate.getTypeStoreId());
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -413,15 +361,11 @@ public class DefaultStoreServices implements StoreServices {
 //            hashMap.clear();
 //            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         }else if (!name.equals(new StringUtil().unAccent(storeUpdate.getName()))){
-            hashMap.clear();
-            hashMap.put("ID", "The id in path variable does not match the id in the data update !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Data error !").build(), HttpStatus.UNAUTHORIZED);
@@ -438,26 +382,17 @@ public class DefaultStoreServices implements StoreServices {
                     .setData("")
                     .setMessage("Store data has errors !").build(), HttpStatus.FORBIDDEN);
         }else if (!storeOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("ID", "No store found with this id !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         }else if (!typeStoreOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("ID", "No type store found with this id = " + storeUpdate.getTypeStoreId() + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         } else if (!storeOptional.get().getName().equals(storeUpdate.getName())) {
-            hashMap.clear();
-            hashMap.put("Name", "Can't change store name !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Name error !").build(), HttpStatus.FORBIDDEN);
@@ -494,26 +429,17 @@ public class DefaultStoreServices implements StoreServices {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         Optional<Store> storeOptional = storeRepository.findById(id);
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         }else if (accountOptional.get().getStore().getId() != id || accountOptional.get().getTypeAccount() == 0){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         } else if (!storeOptional.isPresent()) {
-            hashMap.clear();
-            hashMap.put("ID", "No store found with this id !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
@@ -547,37 +473,25 @@ public class DefaultStoreServices implements StoreServices {
         Optional<City> cityOptional = cityRepository.findById(storeAddressCreate.getCityId());
         if (!accountOptional.isPresent()){
             System.out.println("Create SA Step 2 UnAuthor");
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         } else if (!storeOptional.isPresent()) {
             System.out.println("Create SA Step 3 No Store");
-            hashMap.clear();
-            hashMap.put("ID", "No store found with this id !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         } else if (accountOptional.get().getStore().getId() != storeAddressCreate.getStoreId() || accountOptional.get().getTypeAccount() == 0) {
             System.out.println("Create SA Step 4 UnAuthor");
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         } else if (!cityOptional.isPresent()) {
             System.out.println("Create SA Step 5 No City");
-            hashMap.clear();
-            hashMap.put("ID", "No city found with this id = " + storeAddressCreate.getCityId() + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
@@ -620,7 +534,6 @@ public class DefaultStoreServices implements StoreServices {
                     .setMessage("Store address with id = " + id + " !").build(), HttpStatus.OK);
         }else {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No store address found with this id = " + id + " !").build(), HttpStatus.FORBIDDEN);
@@ -644,7 +557,6 @@ public class DefaultStoreServices implements StoreServices {
                     .setMessage("Success!").build(), HttpStatus.OK);
         }else {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.NOT_FOUND.value())
                     .setData("")
                     .setMessage("No store address found !").build(), HttpStatus.NOT_FOUND);
@@ -658,10 +570,7 @@ public class DefaultStoreServices implements StoreServices {
         Optional<City> cityOptional = cityRepository.findById(storeAddressUpdate.getCityId());
         Optional<StoreAddress> storeAddressOptional = storeAddressRepository.findById(id);
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -669,39 +578,26 @@ public class DefaultStoreServices implements StoreServices {
 //            hashMap.clear();
 //            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         }else if (id != storeAddressUpdate.getId()){
-            hashMap.clear();
-            hashMap.put("ID", "The id in path variable does not match the id in the data update !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Data error !").build(), HttpStatus.UNAUTHORIZED);
         } else if (!storeAddressOptional.isPresent()) {
-            hashMap.clear();
-            hashMap.put("ID", "No store address found with this id !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         } else if (!storeOptional.isPresent()) {
-            hashMap.clear();
-            hashMap.put("ID", "No store found with this id !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         } else if (!cityOptional.isPresent()) {
-            hashMap.clear();
-            hashMap.put("ID", "No city found with this id = " + storeAddressUpdate.getCityId() + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
@@ -738,26 +634,17 @@ public class DefaultStoreServices implements StoreServices {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         Optional<StoreAddress> storeAddressOptional = storeAddressRepository.findById(id);
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         } else if (!storeAddressOptional.isPresent()) {
-            hashMap.clear();
-            hashMap.put("ID", "No store address found with this id = " + id + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         } else if (accountOptional.get().getStore().getId() != storeAddressOptional.get().getStore().getId() || accountOptional.get().getTypeAccount() == 0) {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);

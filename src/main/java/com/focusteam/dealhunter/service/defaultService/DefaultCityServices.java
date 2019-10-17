@@ -35,10 +35,7 @@ public class DefaultCityServices implements CityServices {
         if (accountOptional.isPresent()){
             Account account = accountOptional.get();
             if (account.getTypeAccount() == 1 || account.getTypeAccount() == 0){
-                hashMap.clear();
-                hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
                         .setStatus(HttpStatus.UNAUTHORIZED.value())
                         .setData("")
                         .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -69,10 +66,7 @@ public class DefaultCityServices implements CityServices {
                                 .setData(new CityDto(city))
                                 .setMessage("Created city success !").build(), HttpStatus.CREATED);
                     }else {
-                        hashMap.clear();
-                        hashMap.put("Name", "This city name has exist !");
                         return new ResponseEntity<>(new RESTResponse.Error()
-                                .addErrors(hashMap)
                                 .setStatus(HttpStatus.FORBIDDEN.value())
                                 .setData("")
                                 .setMessage("City data has errors !").build(), HttpStatus.FORBIDDEN);
@@ -80,10 +74,7 @@ public class DefaultCityServices implements CityServices {
                 }
             }
         }else {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -101,7 +92,6 @@ public class DefaultCityServices implements CityServices {
                     .setMessage("City with id = " + id + " !").build(), HttpStatus.OK);
         }else {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No city found with this id = " + id + " !").build(), HttpStatus.FORBIDDEN);
@@ -119,7 +109,6 @@ public class DefaultCityServices implements CityServices {
                     .setMessage("City with id = " + name + " !").build(), HttpStatus.OK);
         }else {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No city found with this nameUA = " + name + " !").build(), HttpStatus.FORBIDDEN);
@@ -143,7 +132,6 @@ public class DefaultCityServices implements CityServices {
                     .setMessage("Success!").build(), HttpStatus.OK);
         }
         return new ResponseEntity<>(new RESTResponse.Error()
-                .addErrors(null)
                 .setStatus(HttpStatus.NOT_FOUND.value())
                 .setData("")
                 .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
@@ -155,10 +143,7 @@ public class DefaultCityServices implements CityServices {
         if (accountOptional.isPresent()){
             Account account1 = accountOptional.get();
             if (account1.getTypeAccount() == 1 || account1.getTypeAccount() == 0){
-                hashMap.clear();
-                hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
                         .setStatus(HttpStatus.UNAUTHORIZED.value())
                         .setData("")
                         .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -191,10 +176,7 @@ public class DefaultCityServices implements CityServices {
                                 .setData(new CityDto(city))
                                 .setMessage("Update city data success !").build(), HttpStatus.OK);
                     }else {
-                        hashMap.clear();
-                        hashMap.put("ID", "No city found with this id !");
                         return new ResponseEntity<>(new RESTResponse.Error()
-                                .addErrors(hashMap)
                                 .setStatus(HttpStatus.FORBIDDEN.value())
                                 .setData("")
                                 .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
@@ -202,10 +184,7 @@ public class DefaultCityServices implements CityServices {
                 }
             }
         }else {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -218,10 +197,7 @@ public class DefaultCityServices implements CityServices {
         if (accountOptional.isPresent()){
             Account account = accountOptional.get();
             if (account.getTypeAccount() == 1 || account.getTypeAccount() == 0){
-                hashMap.clear();
-                hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
                         .setStatus(HttpStatus.UNAUTHORIZED.value())
                         .setData("")
                         .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -235,20 +211,14 @@ public class DefaultCityServices implements CityServices {
                             .setData(new CityDto(city))
                             .setMessage("Delete city success !").build(), HttpStatus.OK);
                 }else {
-                    hashMap.clear();
-                    hashMap.put("ID", "No city found with this id !");
                     return new ResponseEntity<>(new RESTResponse.Error()
-                            .addErrors(hashMap)
                             .setStatus(HttpStatus.FORBIDDEN.value())
                             .setData("")
                             .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
                 }
             }
         }else {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);

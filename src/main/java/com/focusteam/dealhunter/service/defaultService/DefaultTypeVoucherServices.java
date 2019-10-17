@@ -42,10 +42,7 @@ public class DefaultTypeVoucherServices implements TypeVoucherServices {
         if (accountOptional.isPresent()){
             Account account = accountOptional.get();
             if (account.getTypeAccount() == 1 || account.getTypeAccount() == 0){
-                hashMap.clear();
-                hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
                         .setStatus(HttpStatus.UNAUTHORIZED.value())
                         .setData("")
                         .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -73,21 +70,15 @@ public class DefaultTypeVoucherServices implements TypeVoucherServices {
                                 .setData(new TypeVoucherDto(typeVoucher))
                                 .setMessage("Created type voucher success !").build(), HttpStatus.CREATED);
                     }else {
-                        hashMap.clear();
-                        hashMap.put("Name", "This type voucher name has exist !");
                         return new ResponseEntity<>(new RESTResponse.Error()
-                                .addErrors(hashMap)
                                 .setStatus(HttpStatus.FORBIDDEN.value())
                                 .setData("")
-                                .setMessage("Type voucher data has errors !").build(), HttpStatus.FORBIDDEN);
+                                .setMessage("This type voucher name has exist !").build(), HttpStatus.FORBIDDEN);
                     }
                 }
             }
         }else {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -105,7 +96,6 @@ public class DefaultTypeVoucherServices implements TypeVoucherServices {
                     .setMessage("Type voucher with id = " + id + " !").build(), HttpStatus.OK);
         }else {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No type voucher found with this id = " + id + " !").build(), HttpStatus.FORBIDDEN);
@@ -123,7 +113,6 @@ public class DefaultTypeVoucherServices implements TypeVoucherServices {
                     .setMessage("Type voucher with id = " + name + " !").build(), HttpStatus.OK);
         }else {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No type voucher found with this id = " + name + " !").build(), HttpStatus.FORBIDDEN);
@@ -147,7 +136,6 @@ public class DefaultTypeVoucherServices implements TypeVoucherServices {
                     .setMessage("Success!").build(), HttpStatus.OK);
         }
         return new ResponseEntity<>(new RESTResponse.Error()
-                .addErrors(hashMap)
                 .setStatus(HttpStatus.NOT_FOUND.value())
                 .setData("")
                 .setMessage("No type voucher found !").build(), HttpStatus.NOT_FOUND);
@@ -159,10 +147,7 @@ public class DefaultTypeVoucherServices implements TypeVoucherServices {
         if (accountOptional.isPresent()){
             Account account1 = accountOptional.get();
             if (account1.getTypeAccount() == 1 || account1.getTypeAccount() == 0){
-                hashMap.clear();
-                hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
                         .setStatus(HttpStatus.UNAUTHORIZED.value())
                         .setData("")
                         .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -195,10 +180,7 @@ public class DefaultTypeVoucherServices implements TypeVoucherServices {
                                 .setData(new TypeVoucherDto(typeVoucher1))
                                 .setMessage("Update type voucher data success !").build(), HttpStatus.OK);
                     }else {
-                        hashMap.clear();
-                        hashMap.put("ID", "No type voucher found with this id !");
                         return new ResponseEntity<>(new RESTResponse.Error()
-                                .addErrors(hashMap)
                                 .setStatus(HttpStatus.FORBIDDEN.value())
                                 .setData("")
                                 .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
@@ -206,10 +188,7 @@ public class DefaultTypeVoucherServices implements TypeVoucherServices {
                 }
             }
         }else {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -222,8 +201,6 @@ public class DefaultTypeVoucherServices implements TypeVoucherServices {
         if (accountOptional.isPresent()){
             Account account = accountOptional.get();
             if (account.getTypeAccount() == 1 || account.getTypeAccount() == 0){
-                hashMap.clear();
-                hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
                 return new ResponseEntity<>(new RESTResponse.Error()
                         .addErrors(hashMap)
                         .setStatus(HttpStatus.UNAUTHORIZED.value())
@@ -239,20 +216,14 @@ public class DefaultTypeVoucherServices implements TypeVoucherServices {
                             .setData(new TypeVoucherDto(typeVoucher))
                             .setMessage("Delete type voucher success !").build(), HttpStatus.OK);
                 }else {
-                    hashMap.clear();
-                    hashMap.put("ID", "No type voucher found with this id !");
                     return new ResponseEntity<>(new RESTResponse.Error()
-                            .addErrors(hashMap)
                             .setStatus(HttpStatus.FORBIDDEN.value())
                             .setData("")
                             .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
                 }
             }
         }else {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
