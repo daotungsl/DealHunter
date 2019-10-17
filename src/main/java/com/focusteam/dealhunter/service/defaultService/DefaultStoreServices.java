@@ -5,6 +5,7 @@ import com.focusteam.dealhunter.entity.*;
 import com.focusteam.dealhunter.repository.*;
 import com.focusteam.dealhunter.rest.RESTResponse;
 import com.focusteam.dealhunter.service.impl.AccountServices;
+import com.focusteam.dealhunter.service.impl.EmailServices;
 import com.focusteam.dealhunter.service.impl.StoreServices;
 import com.focusteam.dealhunter.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,10 @@ import java.util.*;
 @Service("storeServices")
 public class DefaultStoreServices implements StoreServices {
     private HashMap<String, String> hashMap = new HashMap<>();
+
+    @Autowired
+    private EmailServices emailServices;
+
     @Autowired
     AccountServices accountServices;
 
@@ -153,6 +158,10 @@ public class DefaultStoreServices implements StoreServices {
                     storeDto.setStoreAddresses(list);
 
                     System.out.println("21 Return done !");
+
+                    String callBack = "";
+                    String messageBody = "<td align=\\\"left\\\" style=\\\"padding:0;Margin:0;\\\"><p style=\\\"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;color:#666666;\\\">Bạn đã đăng ký cửa hàng thành công tại DealHunter. Nhưng chúng tôi cần một chút thời gian để có thể xác nhận thông tin của bạn và sẽ tiến hành kích hoạt cửa hàng của bạn sớm nhất. Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi !</p></td>";
+                    emailServices.sendMessageWithAttachment(store.getAccount().getUsername(), "Thông báo", store.getAccount().getUserInformation().getFullName(), callBack, messageBody);
 
                     return new ResponseEntity<>(new RESTResponse.Success()
                             .setStatus(HttpStatus.CREATED.value())
