@@ -105,7 +105,6 @@ public class DefaultAccountServices implements AccountServices {
         }
         if (!accountDto.getPassword().equals(accountDto.getRepassword())){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData(StringUtils.EMPTY)
                     .setMessage("The re-password does not match the password !").build(), HttpStatus.FORBIDDEN);
@@ -130,13 +129,11 @@ public class DefaultAccountServices implements AccountServices {
                         .setMessage("Account register success !").build(), HttpStatus.CREATED);
             }
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("A phone number can only register one account").build(), HttpStatus.FORBIDDEN);
         }
         return new ResponseEntity<>(new RESTResponse.Error()
-                .addErrors(null)
                 .setStatus(HttpStatus.FORBIDDEN.value())
                 .setData("")
                 .setMessage("This username has exist !").build(), HttpStatus.FORBIDDEN);
