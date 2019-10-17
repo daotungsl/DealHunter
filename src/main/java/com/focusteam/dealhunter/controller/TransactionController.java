@@ -3,6 +3,7 @@ package com.focusteam.dealhunter.controller;
 import com.focusteam.dealhunter.dto.groupTransactionDto.TransactionCreateDto;
 import com.focusteam.dealhunter.service.impl.TransactionServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -55,5 +56,11 @@ public class TransactionController {
     @RequestMapping(value = "/api/admin/transactions/transaction/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request){
         return transactionServices.delete(id, request);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/unauthentic/account/transaction/confirm/{id}/{status}", method = RequestMethod.GET)
+    public HttpStatus confirmTransaction(@PathVariable int id , @PathVariable int status){
+        return transactionServices.confirmTransaction( id ,status);
     }
 }

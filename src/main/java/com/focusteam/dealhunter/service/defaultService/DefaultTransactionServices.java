@@ -6,6 +6,7 @@ import com.focusteam.dealhunter.entity.*;
 import com.focusteam.dealhunter.repository.*;
 import com.focusteam.dealhunter.rest.RESTResponse;
 import com.focusteam.dealhunter.service.impl.AccountServices;
+import com.focusteam.dealhunter.service.impl.EmailServices;
 import com.focusteam.dealhunter.service.impl.TransactionServices;
 import com.focusteam.dealhunter.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ public class DefaultTransactionServices implements TransactionServices {
 
     @Autowired
     VoucherRepository voucherRepository;
+
+    @Autowired
+    private EmailServices emailServices;
 
     //OK
     @Override
@@ -104,10 +108,52 @@ public class DefaultTransactionServices implements TransactionServices {
             voucher.setSlotLeft(voucher.getSlotLeft() - 1);
 
             voucherRepository.save(voucher);
+            TransactionDto transactionDto = new TransactionDto(transaction);
+
+            //String callBack = "http://13.76.164.246:8080/unauthentic/account/transaction/confirm/" + transaction.getId() + "/1";
+            String callBack = "http://localhost:8080/unauthentic/account/transaction/confirm/" + transaction.getId() + "/1";
+            String messageBody = "<table>\n" +
+                    "    <tbody>\n" +
+                    "        <tr>\n" +
+                    "            <td>Họ Tên : </td>\n" +
+                    "            <td>" + transactionDto.getGuestName()+ "</td>\n" +
+                    "        </tr>\n" +
+                    "        <tr>\n" +
+                    "            <td>Điện Thoại : </td>\n" +
+                    "            <td>"+transactionDto.getGuestPhone()+"</td>\n" +
+                    "        </tr>\n" +
+                    "        <tr>\n" +
+                    "            <td>Nhà Hàng : </td>\n" +
+                    "            <td>"+transactionDto.getStoreName()+"</td>\n" +
+                    "        </tr>\n" +
+                    "        <tr>\n" +
+                    "            <td>Địa chỉ : </td>\n" +
+                    "            <td>"+transactionDto.getStoreAddress()+"</td>\n" +
+                    "        </tr>\n" +
+                    "        <tr>\n" +
+                    "            <td>Thời gian : </td>\n" +
+                    "            <td>"+transactionDto.getTime() + " " + transactionDto.getDay()+"</td>\n" +
+                    "        </tr>\n" +
+                    "        <tr>\n" +
+                    "            <td>Số người : </td>\n" +
+                    "            <td>" + transactionDto.getAdults() + " vả " + transactionDto.getChildren()+ "</td>\n" +
+                    "        </tr>\n" +
+                    "        <tr>\n" +
+                    "            <td>Mã giảm giá : </td>\n" +
+                    "            <td>" + transactionDto.getCode()+"</td>\n" +
+                    "        </tr>\n" +
+                    "        <tr>\n" +
+                    "            <td>Note : </td>\n" +
+                    "            <td>"+ transactionDto.getDescription()+"</td>\n" +
+                    "        </tr>\n" +
+                    "    </tbody>\n" +
+                    "</table>";
+
+            emailServices.sendMessageWithAttachment(accountOptional.get().getUsername(), "Xác nhận đặt bàn", accountOptional.get().getUserInformation().getFullName(), callBack, messageBody);
 
             return new ResponseEntity<>(new RESTResponse.Success()
                     .setStatus(HttpStatus.OK.value())
-                    .setData(new TransactionDto(transaction))
+                    .setData(transactionDto)
                     .setMessage("Success!").build(), HttpStatus.OK);
         }
     }
@@ -504,6 +550,19 @@ public class DefaultTransactionServices implements TransactionServices {
                     .setStatus(HttpStatus.OK.value())
                     .setData(data)
                     .setMessage("Success!").build(), HttpStatus.OK);
+        }
+    }
+
+    @Override
+    public HttpStatus confirmTransaction(long id, int status) {
+        Optional<Transaction> transactionOptional = transactionRepository.findById(id);
+        if (transactionOptional.isPresent()){
+            Transaction transaction = transactionOptional.get();
+            transaction.setStatus(status);
+            transactionRepository.save(transaction);
+            return HttpStatus.OK;
+        }else {
+            return HttpStatus.BAD_REQUEST;
         }
     }
 }

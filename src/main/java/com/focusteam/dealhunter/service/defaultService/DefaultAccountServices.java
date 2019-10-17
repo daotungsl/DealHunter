@@ -120,8 +120,8 @@ public class DefaultAccountServices implements AccountServices {
                 accountRepository.save(acc);
 
                 String callBack = "http://13.76.164.246:8080/unauthentic/account/"+ accountDto.getEmail() + "/confirm/1/1";
-                String messageBody = "Chúng tôi gửi email này ngay sau khi bạn đăng ký tài khoản tại DealHunter. Email này của bạn sẽ được sử dụng trong trường hợp ban quên mật khẩu truy cập tài khoản của mình. Trước tiên bạn cần xác minh email này nhé !";
-                emailServices.sendMessageWithAttachment(accountDto.getEmail(), "Xác nhận email", accountDto.getEmail(), callBack, messageBody);
+                String messageBody = "<td align=\\\"left\\\" style=\\\"padding:0;Margin:0;\\\"><p style=\\\"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;color:#666666;\\\">Chúng tôi gửi email này ngay sau khi bạn đăng ký tài khoản tại DealHunter. Email này của bạn sẽ được sử dụng trong trường hợp ban quên mật khẩu truy cập tài khoản của mình. Trước tiên bạn cần xác minh email này nhé !</p></td>";
+                emailServices.sendMessageWithAttachment(accountDto.getEmail(), "Xác nhận email", accountDto.getFullName(), callBack, messageBody);
 
                 return new ResponseEntity<>(new RESTResponse.Success()
                         .setStatus(HttpStatus.CREATED.value())
