@@ -21,7 +21,7 @@ public class StoreCreateDto {
 
     @NotBlank
     @NotEmpty
-    @Size(min = 50, max = 20000)
+    @Size(min = 5, max = 20000)
     private String images;
 
     @NotNull
