@@ -57,6 +57,18 @@ public class MailService implements EmailServices {
 
     @Override
     public void sendMessageWithAttachment(String to, String subject, String fullName, String callbackUrl, String messageBody) {
+        String button = "";
+        if (subject.equals("Xác nhận email")){
+            button ="<tr style=\"border-collapse:collapse;\">" +
+                        "<td align=\"left\" style=\"padding:0;Margin:0;padding-top:20px;padding-bottom:20px;\">" +
+                            "<span class=\"es-button-border\" style=\"border-style:solid;border-color:#4A7EB0;background:#2CB543;border-width:0px;display:inline-block;border-radius:0px;width:auto;\">" +
+                                "<a href=\" " + callbackUrl + "\" class=\"es-button\" target=\"_blank\" style=\"mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:18px;color:#4A7EB0;border-style:solid;border-color:#EFEFEF;border-width:10px 25px;display:inline-block;background:#EFEFEF;border-radius:0px;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center;\">" + subject + "</a>" +
+                            "</span>" +
+                        "</td></tr>";
+        }else {
+            button = "";
+        }
+
         String body = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
                 "<html style=\"width:100%;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;padding:0;Margin:0;\">\n" +
                 " <head> \n" +
@@ -199,9 +211,7 @@ public class MailService implements EmailServices {
                 "                     <tr style=\"border-collapse:collapse;\"> \n" +
                                         messageBody +
                 "                     </tr> \n" +
-                "                     <tr style=\"border-collapse:collapse;\"> \n" +
-                "                      <td align=\"left\" style=\"padding:0;Margin:0;padding-top:20px;padding-bottom:20px;\"><span class=\"es-button-border\" style=\"border-style:solid;border-color:#4A7EB0;background:#2CB543;border-width:0px;display:inline-block;border-radius:0px;width:auto;\"><a href=\" " + callbackUrl + "\" class=\"es-button\" target=\"_blank\" style=\"mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-size:18px;color:#4A7EB0;border-style:solid;border-color:#EFEFEF;border-width:10px 25px;display:inline-block;background:#EFEFEF;border-radius:0px;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center;\">" + subject + "</a></span></td> \n" +
-                "                     </tr> \n" +
+                                         button       +
                 "                     <tr style=\"border-collapse:collapse;\"> \n" +
                 "                      <td align=\"left\" style=\"padding:0;Margin:0;\"><p style=\"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;color:#666666;\">Nếu bạn cần hỗ trợ hãy truy cập trang hỗ trợ của chúng tôi ! </p></td> \n" +
                 "                     </tr> \n" +

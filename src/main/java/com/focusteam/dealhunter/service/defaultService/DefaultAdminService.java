@@ -17,6 +17,7 @@ import com.focusteam.dealhunter.repository.*;
 import com.focusteam.dealhunter.rest.RESTLogin;
 import com.focusteam.dealhunter.rest.RESTResponse;
 import com.focusteam.dealhunter.service.impl.AdminServices;
+import com.focusteam.dealhunter.service.impl.EmailServices;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,9 @@ import java.util.Optional;
 @Service("adminServices")
 public class DefaultAdminService implements AdminServices {
     private HashMap<String, String> hashMap = new HashMap<>();
+
+    @Autowired
+    private EmailServices emailServices;
 
     @Autowired
     AccountRepository accountRepository;
@@ -102,10 +106,22 @@ public class DefaultAdminService implements AdminServices {
                 Account account = accountOptional1.get();
                 account.setStatus(status);
 
+                AccountInformationDto accountInformationDto = new AccountInformationDto(account);
+
                 accountRepository.save(account);
+
+                String callBack = "";
+                String messageBody = "";
+                if (status==1){
+                    messageBody = "<td align=\\\"left\\\" style=\\\"padding:0;Margin:0;\\\"><p style=\\\"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;color:#666666;\\\">Chúc mừng tài khoản của bạn đã được xác nhận và kích hoạt ! </br> Chúc bạn có những trải nghiệm vui vẻ tại DealHunter !</p></td>";
+                }else {
+                    messageBody = "<td align=\\\"left\\\" style=\\\"padding:0;Margin:0;\\\"><p style=\\\"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;color:#666666;\\\">Thật tiếc vì tài khoản của bạn đã bị khóa vì bạn đã vi phạm chính sách của DealHunter ! Mong bạn tiếp tục sử dụng DealHunter.</p></td>";
+                }
+                emailServices.sendMessageWithAttachment(accountInformationDto.getEmail(), "Thông báo", accountInformationDto.getFullName(), callBack, messageBody);
+
                 return new ResponseEntity<>(new RESTResponse.Success()
                         .setStatus(HttpStatus.OK.value())
-                        .setData(new AccountInformationDto(account))
+                        .setData(accountInformationDto)
                         .setMessage("Success !").build(), HttpStatus.OK);
             }
         }
@@ -162,6 +178,15 @@ public class DefaultAdminService implements AdminServices {
                 StoreDto storeDto = new StoreDto(store);
                 storeDto.setStoreAddresses(storeAddressDtoList);
 
+                String callBack = "";
+                String messageBody = "";
+                if (status==1){
+                    messageBody = "<td align=\\\"left\\\" style=\\\"padding:0;Margin:0;\\\"><p style=\\\"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;color:#666666;\\\">Chúc mừng cửa hàng " + storeDto.getName() + " của bạn đã được xác nhận và kích hoạt ! </br> Chúc bạn có những trải nghiệm vui vẻ tại DealHunter !</p></td>";
+                }else {
+                    messageBody = "<td align=\\\"left\\\" style=\\\"padding:0;Margin:0;\\\"><p style=\\\"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;color:#666666;\\\">Thật tiếc vì cửa hàng " + storeDto.getName() + " của bạn đã bị khóa vì bạn đã vi phạm chính sách của DealHunter ! Mong bạn tiếp tục sử dụng DealHunter.</p></td>";
+                }
+                emailServices.sendMessageWithAttachment(store.getAccount().getUsername(), "Thông báo", store.getAccount().getUserInformation().getFullName(), callBack, messageBody);
+
                 return new ResponseEntity<>(new RESTResponse.Success()
                         .setStatus(HttpStatus.OK.value())
                         .setData(storeDto)
@@ -212,9 +237,19 @@ public class DefaultAdminService implements AdminServices {
                 storeAddress.setStatus(status);
 
                 storeAddressRepository.save(storeAddress);
+
+                StoreAddressDto storeAddressDto = new StoreAddressDto(storeAddress);
+                String callBack = "";
+                String messageBody = "";
+                if (status==1){
+                    messageBody = "<td align=\\\"left\\\" style=\\\"padding:0;Margin:0;\\\"><p style=\\\"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;color:#666666;\\\">Chúc mừng chi nhanh mới của cửa hàng " + storeAddressDto.getStore() + " của bạn đã được xác nhận và kích hoạt ! </br> Chúc bạn có những trải nghiệm vui vẻ tại DealHunter !</p></td>";
+                }else {
+                    messageBody = "<td align=\\\"left\\\" style=\\\"padding:0;Margin:0;\\\"><p style=\\\"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;color:#666666;\\\">Thật tiếc vì chi nhánh của cửa hàng " + storeAddressDto.getStore() + " của bạn đã bị khóa vì bạn đã vi phạm chính sách của DealHunter ! Mong bạn tiếp tục sử dụng DealHunter!</p></td>";
+                }
+                emailServices.sendMessageWithAttachment(storeAddress.getStore().getAccount().getUsername(), "Thông báo", storeAddress.getStore().getAccount().getUserInformation().getFullName(), callBack, messageBody);
                 return new ResponseEntity<>(new RESTResponse.Success()
                         .setStatus(HttpStatus.OK.value())
-                        .setData(new StoreAddressDto(storeAddress))
+                        .setData(storeAddressDto)
                         .setMessage("Success !").build(), HttpStatus.OK);
             }
         }
@@ -320,9 +355,21 @@ public class DefaultAdminService implements AdminServices {
 
                 transactionRepository.save(transaction);
 
+                TransactionDto transactionDto = new TransactionDto(transaction);
+
+                String callBack = "";
+                String messageBody = "";
+                if (status==1){
+                    messageBody = "<td align=\\\"left\\\" style=\\\"padding:0;Margin:0;\\\"><p style=\\\"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;color:#666666;\\\">Chúc mừng bạn đã đặt thành công tại " + transactionDto.getStoreName() + " ! </br> Chúc bạn có những trải nghiệm vui vẻ tại DealHunter !</p></td>";
+                }else {
+                    messageBody = "<td align=\\\"left\\\" style=\\\"padding:0;Margin:0;\\\"><p style=\\\"Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:21px;color:#666666;\\\">Thật tiếc vì đơn hàng của bạn tại  " + transactionDto.getStoreName() + " của bạn đã hủy bỏ vì bạn đã không xác nhận ! Mong bạn tiếp tục sử dụng DealHunter!</p></td>";
+                }
+                emailServices.sendMessageWithAttachment(transactionDto.getGuestEmail(), "Thông báo", transactionDto.getGuestName(), callBack, messageBody);
+
+
                 return new ResponseEntity<>(new RESTResponse.Success()
                         .setStatus(HttpStatus.OK.value())
-                        .setData(new TransactionDto(transaction))
+                        .setData(transactionDto)
                         .setMessage("Success").build(), HttpStatus.OK);
             }
         }
