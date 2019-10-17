@@ -33,4 +33,6 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     @Query("SELECT s FROM Store s WHERE s.status = 1")
     List<Store> getAllByStatus();
 
+    @Query("SELECT COUNT (s) FROM Store s")
+    Integer countAll();
 }

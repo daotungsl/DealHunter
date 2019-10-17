@@ -23,4 +23,13 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     @Query("SELECT COUNT (t) FROM  Transaction t INNER JOIN t.store s WHERE s.id = ?1 AND t.dayLong BETWEEN ?2 AND ?3 GROUP BY t.day")
     List<Integer> countByStoreFromTo(long id, long from, long to);
+
+    @Query("SELECT COUNT (t) FROM Transaction t GROUP BY t.day")
+    List<Integer> countAllGroupDay();
+
+    @Query("SELECT COUNT (t) FROM Transaction t WHERE t.dayLong BETWEEN ?1 AND ?2 GROUP BY t.day")
+    List<Integer> countByStoreFromTo( long from, long to);
+
+    @Query("SELECT COUNT (t) FROM Transaction t")
+    Integer countAll();
 }
