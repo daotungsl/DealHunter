@@ -47,4 +47,8 @@ public interface AdminServices {
     // SET ALL STATUS
 
     public ResponseEntity<Object> statusListObject(@RequestBody SetAllStatus setAllStatus, HttpServletRequest request);
+
+    // COUNT ALL
+
+    public ResponseEntity<Object> countAll(HttpServletRequest request);
 }

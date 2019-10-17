@@ -239,4 +239,12 @@ public class AdminController {
     public ResponseEntity<Object> setListAccount(@RequestBody SetAllStatus setAllStatus, HttpServletRequest request){
         return adminServices.statusListObject(setAllStatus, request);
     }
+
+    // COUNT ALL
+
+    @CrossOrigin
+    @RequestMapping(value = "/api/admin/count-all", method = RequestMethod.GET)
+    public ResponseEntity<Object> countAll( HttpServletRequest request){
+        return adminServices.countAll( request);
+    }
 }

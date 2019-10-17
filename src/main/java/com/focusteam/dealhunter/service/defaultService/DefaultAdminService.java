@@ -1,5 +1,6 @@
 package com.focusteam.dealhunter.service.defaultService;
 
+import com.focusteam.dealhunter.dto.AdminDto.CountAll;
 import com.focusteam.dealhunter.dto.AdminDto.SetAllStatus;
 import com.focusteam.dealhunter.dto.AdminDto.SetStatus;
 import com.focusteam.dealhunter.dto.groupAccountDto.AccountInformationDto;
@@ -1273,6 +1274,48 @@ public class DefaultAdminService implements AdminServices {
                 }
             }
             return response;
+        }
+    }
+
+
+    // COUNT ALL
+
+    @Override
+    public ResponseEntity<Object> countAll(HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        if (!accountOptional.isPresent()){
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(null)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
+        }else if (accountOptional.get().getTypeAccount() != 2){
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(null)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
+        }else {
+            List<Integer> account = accountRepository.countAllGroupType();
+            int store = storeRepository.countAll();
+            int voucher = voucherRepository.countAll();
+            int transaction = transactionRepository.countAll();
+
+            CountAll countAll = new CountAll();
+            countAll.setAccount0(account.get(0));
+            countAll.setAccount1(account.get(1));
+            countAll.setAccount2(account.get(2));
+
+            countAll.setStore(store);
+
+            countAll.setVoucher(voucher);
+
+            countAll.setTransaction(transaction);
+
+            return new ResponseEntity<>(new RESTResponse.Success()
+                    .setStatus(HttpStatus.OK.value())
+                    .setData(countAll)
+                    .setMessage("Success").build(), HttpStatus.OK);
         }
     }
 

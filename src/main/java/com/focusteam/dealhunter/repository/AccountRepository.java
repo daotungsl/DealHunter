@@ -32,4 +32,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query("SELECT a FROM Account a WHERE a.typeAccount = 0 and a.typeAccount = 1")
     List<Account> getAllSoAndUser();
 
+    @Query("SELECT COUNT (a) FROM Account a GROUP BY a.typeAccount")
+    List<Integer> countAllGroupType();
 }
