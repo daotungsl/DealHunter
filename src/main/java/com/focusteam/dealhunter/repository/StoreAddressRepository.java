@@ -18,8 +18,4 @@ public interface StoreAddressRepository extends JpaRepository<StoreAddress, Long
     @Query("SELECT sa FROM StoreAddress sa WHERE sa.status = 1")
     List<StoreAddress> getAllByStatus();
 
-    @Transactional
-    @Modifying
-    @Query(value = "UPDATE store_address sa SET sa.status = ?1 WHERE sa.id = ?2" , nativeQuery = true)
-    int updateSA(int status, long id);
 }

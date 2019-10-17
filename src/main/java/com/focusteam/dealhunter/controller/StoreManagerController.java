@@ -1,6 +1,7 @@
 package com.focusteam.dealhunter.controller;
 
 import com.focusteam.dealhunter.service.impl.TransactionServices;
+import com.focusteam.dealhunter.service.impl.VoucherServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 public class StoreManagerController {
     @Autowired
     TransactionServices transactionServices;
+
+    @Autowired
+    VoucherServices voucherServices;
 
     // Count all transaction of one store
 
@@ -37,5 +41,9 @@ public class StoreManagerController {
         return transactionServices.countByStoreFromToDayString(id , from, to,request);
     }
 
-
+    @CrossOrigin
+    @RequestMapping(value = "/api/stores/{id}/vouchers", method = RequestMethod.GET)
+    public ResponseEntity<Object> getAllVoucherByStoreIdNoStatus(@PathVariable long id, HttpServletRequest request){
+        return voucherServices.getAllByStoreNoStatus(id ,request);
+    }
 }

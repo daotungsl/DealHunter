@@ -483,16 +483,12 @@ public class DefaultAdminService implements AdminServices {
     public ResponseEntity<Object> getAllAccount(HttpServletRequest request) {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         }else if (accountOptional.get().getTypeAccount() != 2){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -510,10 +506,7 @@ public class DefaultAdminService implements AdminServices {
                         .setData(accountInformationDtos)
                         .setMessage("Success!").build(), HttpStatus.OK);
             }else {
-                hashMap.clear();
-                hashMap.put("Account", "No account found !");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
                         .setStatus(HttpStatus.NOT_FOUND.value())
                         .setData("")
                         .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
@@ -525,24 +518,17 @@ public class DefaultAdminService implements AdminServices {
     public ResponseEntity<Object> getAllAccountByType(int type, HttpServletRequest request) {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         }else if (accountOptional.get().getTypeAccount() != 2){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         }else if (type <0 || type >2) {
-            hashMap.clear();
-            hashMap.put("Type-Account", "Type-Account is invalid! (0, 1, 2)");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Type-Account has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -560,10 +546,7 @@ public class DefaultAdminService implements AdminServices {
                         .setData(accountInformationDtos)
                         .setMessage("Success!").build(), HttpStatus.OK);
             }else {
-                hashMap.clear();
-                hashMap.put("Account", "No account found !");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
                         .setStatus(HttpStatus.NOT_FOUND.value())
                         .setData("")
                         .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
@@ -590,7 +573,6 @@ public class DefaultAdminService implements AdminServices {
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         }else {
             List<Store> stores = storeRepository.findAll();
-
             if (!stores.isEmpty()){
                 List<StoreDto> storeDtoList = new ArrayList<>();
                 StoreDto storeDto = null;

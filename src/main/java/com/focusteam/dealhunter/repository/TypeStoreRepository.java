@@ -31,8 +31,4 @@ public interface TypeStoreRepository extends JpaRepository<TypeStore, Long> {
     @Query("SELECT  ts FROM TypeStore ts WHERE ts.status = 1")
     List<TypeStore> getAllByStatus();
 
-    @Transactional
-    @Modifying
-    @Query(value = "UPDATE TypeStore ts SET ts.status = ?1 WHERE ts.id = ?2" , nativeQuery = true)
-    int updateTS(int status, long id);
 }
