@@ -26,11 +26,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query("SELECT a FROM Account a WHERE a.token = ?1")
     Optional<Account> findByTokenAccount (String token);
 
-    @Query("SELECT a FROM Account a WHERE a.typeAccount = ?1 ORDER BY a.id ASC ")
+    @Query("SELECT a FROM Account a WHERE a.typeAccount = ?1")
     List<Account> countAccountByType(int type);
 
-    @Transactional
-    @Modifying
-    @Query(value = "UPDATE Account a SET a.status = ?1 WHERE a.id = ?2" , nativeQuery = true)
-    int updateAccount(int status, long id);
 }

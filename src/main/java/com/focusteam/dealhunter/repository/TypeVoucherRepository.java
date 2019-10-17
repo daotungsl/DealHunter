@@ -29,9 +29,5 @@ public interface TypeVoucherRepository extends JpaRepository<TypeVoucher, Long> 
 
     @Query("SELECT  t FROM TypeVoucher t WHERE t.status = 1")
     List<TypeVoucher> getAllByStatus();
-
-    @Transactional
-    @Modifying
-    @Query(value = "UPDATE TypeVoucher tv SET tv.status = ?1 WHERE tv.id = ?2" , nativeQuery = true)
-    int updateTV(int status, long id);
+    ;
 }

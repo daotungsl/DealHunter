@@ -30,9 +30,4 @@ public interface VoucherRepository extends JpaRepository<Voucher, Long> {
 
     @Query("SELECT v FROM Voucher v INNER JOIN v.typeVoucher tv WHERE tv.nameUnAccent = ?1 AND v.status = 1")
     List<Voucher> getAllByTypeVoucher(String name);
-
-    @Transactional
-    @Modifying
-    @Query(value = "UPDATE Voucher v SET v.status = ?1 WHERE v.id = ?2" , nativeQuery = true)
-    int updateVoucher(int status, long id);
 }

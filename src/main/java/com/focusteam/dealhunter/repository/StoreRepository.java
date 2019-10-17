@@ -33,8 +33,4 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
     @Query("SELECT s FROM Store s WHERE s.status = 1")
     List<Store> getAllByStatus();
 
-    @Transactional
-    @Modifying
-    @Query(value = "UPDATE Store s SET s.status = ?1 WHERE s.id = ?2" , nativeQuery = true)
-    int updateStore(int status, long id);
 }

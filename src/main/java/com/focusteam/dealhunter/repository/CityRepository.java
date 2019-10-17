@@ -36,8 +36,4 @@ public interface CityRepository extends JpaRepository<City, Long> {
     @Query("SELECT c FROM City c")
     List<City> getAll();
 
-    @Transactional
-    @Modifying
-    @Query(value = "UPDATE City ct SET ct.status = ?1 WHERE ct.id = ?2" , nativeQuery = true)
-    int updateCity(int status, long id);
 }

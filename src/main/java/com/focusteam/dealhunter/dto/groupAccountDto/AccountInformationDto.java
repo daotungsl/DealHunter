@@ -36,17 +36,27 @@ public class AccountInformationDto {
         }else {
             this.storeId = account.getStore().getId();
         }
-
-        this.email = account.getUserInformation().getEmail();
-        this.fullName = account.getUserInformation().getFullName();
-        this.gender = account.getUserInformation().getGender();
-        this.birthday = account.getUserInformation().getBirthday();
-        this.phone = account.getUserInformation().getPhone();
-        this.avatar = account.getUserInformation().getAvatar();
-        this.address = account.getUserInformation().getAddress();
-
-        this.created = new StringUtil().dateFormatFromLong(account.getUserInformation().getCreated());
-        this.updated = new StringUtil().dateFormatFromLong(account.getUserInformation().getUpdated());
+        if (account.getUserInformation() != null){
+            this.email = account.getUsername();
+            this.fullName = account.getUserInformation().getFullName();
+            this.gender = account.getUserInformation().getGender();
+            this.birthday = account.getUserInformation().getBirthday();
+            this.phone = account.getUserInformation().getPhone();
+            this.avatar = account.getUserInformation().getAvatar();
+            this.address = account.getUserInformation().getAddress();
+            this.created = new StringUtil().dateFormatFromLong(account.getUserInformation().getCreated());
+            this.updated = new StringUtil().dateFormatFromLong(account.getUserInformation().getUpdated());
+        }else {
+            this.email = account.getUsername();
+            this.fullName = null;
+            this.gender = 0;
+            this.birthday = null;
+            this.phone = null;
+            this.avatar = null;
+            this.address = null;
+            this.created = null;
+            this.updated = null;
+        }
         this.status = account.getStatus();
     }
 
