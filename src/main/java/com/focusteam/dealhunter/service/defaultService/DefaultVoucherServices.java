@@ -517,6 +517,66 @@ public class DefaultVoucherServices implements VoucherServices {
         }
     }
 
+    @Override
+    public ResponseEntity<Object> getAllByStoreNoStatus(long id, HttpServletRequest request) {
+        Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
+        Optional<Store> storeOptional = storeRepository.findById(id);
+        if (!accountOptional.isPresent()){
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (accountOptional.get().getStore().getId() != id || accountOptional.get().getTypeAccount() == 0){
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .setStatus(HttpStatus.UNAUTHORIZED.value())
+                    .setData("")
+                    .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
+        }else if (!storeOptional.isPresent()){
+            return new ResponseEntity<>(new RESTResponse.Error()
+                    .addErrors(hashMap)
+                    .setStatus(HttpStatus.FORBIDDEN.value())
+                    .setData("")
+                    .setMessage("No store found with this id !").build(), HttpStatus.FORBIDDEN);
+        }else {
+            List<Voucher> vouchers = voucherRepository.getAllByStoreIdNoStatus(id);
+            if (!vouchers.isEmpty()){
+                List<VoucherDto> voucherDtos = new ArrayList<>();
+                VoucherDto voucherDto = null;
+                for (Voucher voucher: vouchers
+                ) {
+                    if (voucher.getStore().getStoreAddresses() != null){
+                        List<StoreAddress> storeAddressList = new ArrayList<StoreAddress>(storeOptional.get().getStoreAddresses());
+                        List<StoreAddressDto> storeAddressDtoList = new ArrayList<>();
+                        for (StoreAddress s: storeAddressList
+                        ) {
+                            if (s.getStatus() == 1){
+                                storeAddressDtoList.add(new StoreAddressDto(s));
+                            }
+                        }
+                        voucherDto = new VoucherDto(voucher);
+                        voucherDto.setStoreAddress(storeAddressDtoList);
+
+                        voucherDtos.add(voucherDto);
+                    }else {
+                        voucherDto = new VoucherDto(voucher);
+                        voucherDto.setStoreAddress(null);
+                        voucherDtos.add(voucherDto);
+                    }
+                }
+                return new ResponseEntity<>(new RESTResponse.Success()
+                        .setStatus(HttpStatus.OK.value())
+                        .setData(voucherDtos)
+                        .setMessage("Success!").build(), HttpStatus.OK);
+            }else {
+                return new ResponseEntity<>(new RESTResponse.Error()
+                        .setStatus(HttpStatus.NOT_FOUND.value())
+                        .setData("")
+                        .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
+            }
+        }
+    }
+
     private List<VoucherDto> getVoucherByStore(Store store){
             List<VoucherDto> voucherDtos = new ArrayList<>();
             List<Voucher> vouchers = voucherRepository.getAllByStoreNameUA(store.getNameUnAccent());

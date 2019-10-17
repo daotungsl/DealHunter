@@ -29,4 +29,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query("SELECT a FROM Account a WHERE a.typeAccount = ?1")
     List<Account> countAccountByType(int type);
 
+    @Query("SELECT a FROM Account a WHERE a.typeAccount = 0 and a.typeAccount = 1")
+    List<Account> getAllSoAndUser();
+
 }

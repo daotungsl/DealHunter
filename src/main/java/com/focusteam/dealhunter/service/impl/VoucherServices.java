@@ -21,4 +21,6 @@ public interface VoucherServices {
     public ResponseEntity<Object> getAllByCity(@PathVariable String name);
     public ResponseEntity<Object> update(@PathVariable long id, @Valid @RequestBody VoucherUpdate voucherUpdate, BindingResult bindingResult, HttpServletRequest request);
     public ResponseEntity<Object> delete(@PathVariable long id, HttpServletRequest request);
+
+    public ResponseEntity<Object> getAllByStoreNoStatus(@PathVariable long id, HttpServletRequest request);
 }

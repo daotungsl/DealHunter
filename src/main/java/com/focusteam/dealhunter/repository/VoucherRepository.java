@@ -30,4 +30,7 @@ public interface VoucherRepository extends JpaRepository<Voucher, Long> {
 
     @Query("SELECT v FROM Voucher v INNER JOIN v.typeVoucher tv WHERE tv.nameUnAccent = ?1 AND v.status = 1")
     List<Voucher> getAllByTypeVoucher(String name);
+
+    @Query("SELECT v FROM Voucher v INNER JOIN v.store s WHERE s.id = ?1")
+    List<Voucher> getAllByStoreIdNoStatus(long id);
 }
