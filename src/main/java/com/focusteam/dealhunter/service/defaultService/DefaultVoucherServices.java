@@ -142,7 +142,6 @@ public class DefaultVoucherServices implements VoucherServices {
             }
         }else {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No voucher found with this id = " + id + " !").build(), HttpStatus.FORBIDDEN);
@@ -181,7 +180,6 @@ public class DefaultVoucherServices implements VoucherServices {
             }
         }else {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No voucher found with this nameUA = " + name + " !").build(), HttpStatus.FORBIDDEN);
@@ -193,7 +191,6 @@ public class DefaultVoucherServices implements VoucherServices {
         Optional<Store> storeOptional = storeRepository.findByNameUnAccentAndStatus(sNameUA);
         if (!storeOptional.isPresent()){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No store found with this name = " + sNameUA + " !").build(), HttpStatus.FORBIDDEN);
@@ -232,7 +229,6 @@ public class DefaultVoucherServices implements VoucherServices {
                         .setMessage("Voucher with name = " + vNameUA + " !").build(), HttpStatus.OK);
             }else {
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(null)
                         .setStatus(HttpStatus.NOT_FOUND.value())
                         .setData("")
                         .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
@@ -273,7 +269,6 @@ public class DefaultVoucherServices implements VoucherServices {
                     .setMessage("Success!").build(), HttpStatus.OK);
         }
         return new ResponseEntity<>(new RESTResponse.Error()
-                .addErrors(null)
                 .setStatus(HttpStatus.NOT_FOUND.value())
                 .setData("")
                 .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
@@ -284,7 +279,6 @@ public class DefaultVoucherServices implements VoucherServices {
         Optional<Store> storeOptional = storeRepository.findByNameUnAccentAndStatus(name);
         if (!storeOptional.isPresent()){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No store found with this name = " + name + " !").build(), HttpStatus.FORBIDDEN);
@@ -319,7 +313,6 @@ public class DefaultVoucherServices implements VoucherServices {
                         .setMessage("Success!").build(), HttpStatus.OK);
             }else {
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(null)
                         .setStatus(HttpStatus.NOT_FOUND.value())
                         .setData("")
                         .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
@@ -332,7 +325,6 @@ public class DefaultVoucherServices implements VoucherServices {
         Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findByNameUnAccentAndStatus(name);
         if (!typeVoucherOptional.isPresent()){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No type voucher found with this name = " + name + " !").build(), HttpStatus.FORBIDDEN);
@@ -367,7 +359,6 @@ public class DefaultVoucherServices implements VoucherServices {
                         .setMessage("Success!").build(), HttpStatus.OK);
             }else {
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(null)
                         .setStatus(HttpStatus.NOT_FOUND.value())
                         .setData("")
                         .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
@@ -382,7 +373,6 @@ public class DefaultVoucherServices implements VoucherServices {
         List<List<VoucherDto>> v = new ArrayList<>();
         if (!cityOptional.isPresent()){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No city found with this nameUA = " + name + " !").build(), HttpStatus.FORBIDDEN);
@@ -403,7 +393,6 @@ public class DefaultVoucherServices implements VoucherServices {
                     }
                 }else {
                     return new ResponseEntity<>(new RESTResponse.Error()
-                            .addErrors(null)
                             .setStatus(HttpStatus.NOT_FOUND.value())
                             .setData("")
                             .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
@@ -423,34 +412,22 @@ public class DefaultVoucherServices implements VoucherServices {
         Optional<Store> storeOptional = storeRepository.findById(voucherUpdate.getStoreId());
         Optional<TypeVoucher> typeVoucherOptional = typeVoucherRepository.findById(voucherUpdate.getTypeVoucherId());
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         } else if (accountOptional.get().getStore().getId() != voucherUpdate.getStoreId() || accountOptional.get().getTypeAccount() == 0) {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         }else if (!voucherOptional.isPresent()) {
-            hashMap.clear();
-            hashMap.put("ID", "No voucher found with this id = " + id + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         }else if (id != voucherUpdate.getId()){
-            hashMap.clear();
-            hashMap.put("ID", "The id in path variable does not match the id in the data update !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Data error !").build(), HttpStatus.UNAUTHORIZED);
@@ -467,29 +444,20 @@ public class DefaultVoucherServices implements VoucherServices {
                     .setData("")
                     .setMessage("Voucher data has errors !").build(), HttpStatus.FORBIDDEN);
         } else if (!storeOptional.isPresent()) {
-            hashMap.clear();
-            hashMap.put("ID", "No store found with this id !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         } else if (!typeVoucherOptional.isPresent()) {
-            hashMap.clear();
-            hashMap.put("ID", "No type voucher found with this id !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         }else if (voucherOptional.get().getStatus() == 1){
-            hashMap.clear();
-            hashMap.put("Update", "You cannot change the information once the voucher has been confirmed !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("You cannot change the information once the voucher has been confirmed !").build(), HttpStatus.FORBIDDEN);
         }else {
             Voucher voucher = voucherOptional.get();
             voucher.setName(voucherUpdate.getName());
@@ -524,26 +492,17 @@ public class DefaultVoucherServices implements VoucherServices {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         Optional<Voucher> voucherOptional = voucherRepository.findById(id);
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         } else if (!voucherOptional.isPresent()) {
-            hashMap.clear();
-            hashMap.put("ID", "No voucher found with this id !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         }else if (accountOptional.get().getTypeAccount() == 1 || accountOptional.get().getTypeAccount() == 0) {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);

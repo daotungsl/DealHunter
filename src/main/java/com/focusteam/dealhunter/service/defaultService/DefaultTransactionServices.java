@@ -53,43 +53,36 @@ public class DefaultTransactionServices implements TransactionServices {
         Optional<Voucher> voucherOptional =  voucherRepository.findById(transactionCreateDto.getVoucherId());
         if (!accountOptional.isPresent()){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
         }else if (accountOptional.get().getId() != transactionCreateDto.getAccountId()){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
         }else if (accountOptional.get().getTypeAccount() == 1 && accountOptional.get().getStore() != null && accountOptional.get().getStore().getId() == transactionCreateDto.getStoreId()){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("[SORRY] - You can't book a table at your own store!").build(), HttpStatus.UNAUTHORIZED);
         } else if (accountOptional.get().getStatus() != 1) {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("You need to confirm your email first !").build(), HttpStatus.UNAUTHORIZED);
         } else if (!storeOptional.isPresent()) {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No store found with this id !").build(), HttpStatus.FORBIDDEN);
         } else if (!storeAddressOptional.isPresent()) {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.NOT_FOUND.value())
                     .setData("")
                     .setMessage("No store address found !").build(), HttpStatus.NOT_FOUND);
         } else if (!voucherOptional.isPresent()) {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No voucher found with this id = \" + transactionCreateDto.getVoucherId() + \" !").build(), HttpStatus.FORBIDDEN);
@@ -165,19 +158,16 @@ public class DefaultTransactionServices implements TransactionServices {
         Optional<Transaction> transactionOptional = transactionRepository.findById(id);
         if (!accountOptional.isPresent()){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
         } else if (!transactionOptional.isPresent()) {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No transaction found with this id !").build(), HttpStatus.FORBIDDEN);
         }else if (accountOptional.get().getId() != transactionOptional.get().getAccount().getId()){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
@@ -196,13 +186,11 @@ public class DefaultTransactionServices implements TransactionServices {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         if (!accountOptional.isPresent()){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
         }else if (accountOptional.get().getTypeAccount() == 0 || accountOptional.get().getTypeAccount() == 1){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
@@ -224,7 +212,6 @@ public class DefaultTransactionServices implements TransactionServices {
                         .setMessage("Success!").build(), HttpStatus.OK);
             }else {
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(null)
                         .setStatus(HttpStatus.NOT_FOUND.value())
                         .setData("")
                         .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
@@ -239,19 +226,16 @@ public class DefaultTransactionServices implements TransactionServices {
         Optional<Account> accountOptional1 = accountRepository.findByUsername(email);
         if (!accountOptional.isPresent()){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
         } else if (!accountOptional1.isPresent()) {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
         } else if (!accountOptional.get().equals(accountOptional1.get())) {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
@@ -271,7 +255,6 @@ public class DefaultTransactionServices implements TransactionServices {
                         .setMessage("Success!").build(), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(null)
                         .setStatus(HttpStatus.NOT_FOUND.value())
                         .setData("")
                         .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
@@ -284,26 +267,17 @@ public class DefaultTransactionServices implements TransactionServices {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         Optional<Store> storeOptional = storeRepository.findByNameUnAccent(name);
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         }else if (!storeOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("ID", "No store found with this id = " + name + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("No store found with this id = " + name + " !").build(), HttpStatus.FORBIDDEN);
         } else if (accountOptional.get().getTypeAccount() == 0 || accountOptional.get().getStore().getId() != storeOptional.get().getId()) {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -322,10 +296,7 @@ public class DefaultTransactionServices implements TransactionServices {
                         .setData(transactionDtos)
                         .setMessage("Success!").build(), HttpStatus.OK);
             } else {
-                hashMap.clear();
-                hashMap.put("Transaction", "No transaction found !");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
                         .setStatus(HttpStatus.NOT_FOUND.value())
                         .setData("")
                         .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
@@ -340,42 +311,27 @@ public class DefaultTransactionServices implements TransactionServices {
         Optional<StoreAddress> storeAddressOptional = storeAddressRepository.findById(id);
 
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         } else if (!storeOptional.isPresent()) {
-            hashMap.clear();
-            hashMap.put("ID", "No store found with this id = " + name + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("No store found with this id = " + name + " !").build(), HttpStatus.FORBIDDEN);
         }else if (!storeAddressOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("ID", "No store address found with this id = " + id + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
-                    .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
+                    .setMessage("No store address found with this id = " + id + " !").build(), HttpStatus.FORBIDDEN);
         }else if (accountOptional.get().getStore().getId() != storeOptional.get().getId()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         }else if (storeOptional.get().getId() != storeAddressOptional.get().getStore().getId()){
-            hashMap.clear();
-            hashMap.put("Store-Address", storeOptional.get().getName()+ " has no branch at this address !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -394,10 +350,7 @@ public class DefaultTransactionServices implements TransactionServices {
                         .setData(transactionDtos)
                         .setMessage("Success!").build(), HttpStatus.OK);
             } else {
-                hashMap.clear();
-                hashMap.put("Transaction", "No transaction found !");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
                         .setStatus(HttpStatus.NOT_FOUND.value())
                         .setData("")
                         .setMessage("Not found !").build(), HttpStatus.NOT_FOUND);
@@ -410,22 +363,16 @@ public class DefaultTransactionServices implements TransactionServices {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         Optional<Transaction> transactionOptional = transactionRepository.findById(id);
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         }else if (accountOptional.get().getTypeAccount() == 0 || accountOptional.get().getTypeAccount() == 1){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         }else if (!transactionOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("ID", "No transaction found with this id = " + id + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
                     .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
@@ -447,26 +394,18 @@ public class DefaultTransactionServices implements TransactionServices {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         Optional<Store> storeOptional = storeRepository.findById(id);
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         }else if (!storeOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("ID", "No store found with this id = " + id + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
                     .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         } else if (accountOptional.get().getTypeAccount() == 0 || accountOptional.get().getStore().getId() != storeOptional.get().getId()) {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -484,26 +423,17 @@ public class DefaultTransactionServices implements TransactionServices {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         Optional<Store> storeOptional = storeRepository.findById(id);
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         }else if (!storeOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("ID", "No store found with this id = " + id + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         } else if (accountOptional.get().getTypeAccount() == 0 || accountOptional.get().getStore().getId() != storeOptional.get().getId()) {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -521,26 +451,17 @@ public class DefaultTransactionServices implements TransactionServices {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         Optional<Store> storeOptional = storeRepository.findById(id);
         if (!accountOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
         }else if (!storeOptional.isPresent()){
-            hashMap.clear();
-            hashMap.put("ID", "No store found with this id = " + id + " !");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
         } else if (accountOptional.get().getTypeAccount() == 0 || accountOptional.get().getStore().getId() != storeOptional.get().getId()) {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);

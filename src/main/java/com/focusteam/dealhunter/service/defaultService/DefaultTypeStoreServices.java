@@ -36,10 +36,7 @@ public class DefaultTypeStoreServices implements TypeStoreServices {
         if (accountOptional.isPresent()){
             Account account = accountOptional.get();
             if (account.getTypeAccount() == 1 || account.getTypeAccount() == 0){
-                hashMap.clear();
-                hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
                         .setStatus(HttpStatus.UNAUTHORIZED.value())
                         .setData("")
                         .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -67,21 +64,15 @@ public class DefaultTypeStoreServices implements TypeStoreServices {
                                 .setData(new TypeStoreDto(typeStore))
                                 .setMessage("Created type store success !").build(), HttpStatus.CREATED);
                     }else {
-                        hashMap.clear();
-                        hashMap.put("Name", "This type store name has exist !");
                         return new ResponseEntity<>(new RESTResponse.Error()
-                                .addErrors(hashMap)
                                 .setStatus(HttpStatus.FORBIDDEN.value())
                                 .setData("")
-                                .setMessage("Type store data has errors !").build(), HttpStatus.FORBIDDEN);
+                                .setMessage("This type store name has exist !").build(), HttpStatus.FORBIDDEN);
                     }
                 }
             }
         }else {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -99,7 +90,6 @@ public class DefaultTypeStoreServices implements TypeStoreServices {
                     .setMessage("Type store with id = " + id + " !").build(), HttpStatus.OK);
         }else {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No type store found with this id = " + id + " !").build(), HttpStatus.FORBIDDEN);
@@ -117,7 +107,6 @@ public class DefaultTypeStoreServices implements TypeStoreServices {
                     .setMessage("Type store with id = " + name + " !").build(), HttpStatus.OK);
         }else {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.FORBIDDEN.value())
                     .setData("")
                     .setMessage("No type store found with this id = " + name + " !").build(), HttpStatus.FORBIDDEN);
@@ -141,7 +130,6 @@ public class DefaultTypeStoreServices implements TypeStoreServices {
                     .setMessage("Success!").build(), HttpStatus.OK);
         }
         return new ResponseEntity<>(new RESTResponse.Error()
-                .addErrors(null)
                 .setStatus(HttpStatus.NOT_FOUND.value())
                 .setData("")
                 .setMessage("No type store found !").build(), HttpStatus.NOT_FOUND);
@@ -153,10 +141,7 @@ public class DefaultTypeStoreServices implements TypeStoreServices {
         if (accountOptional.isPresent()){
             Account account1 = accountOptional.get();
             if (account1.getTypeAccount() == 1 || account1.getTypeAccount() == 0){
-                hashMap.clear();
-                hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
                         .setStatus(HttpStatus.UNAUTHORIZED.value())
                         .setData("")
                         .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -189,10 +174,7 @@ public class DefaultTypeStoreServices implements TypeStoreServices {
                                 .setData(new TypeStoreDto(typeStore))
                                 .setMessage("Update type store data success !").build(), HttpStatus.OK);
                     }else {
-                        hashMap.clear();
-                        hashMap.put("ID", "No type store found with this id !");
                         return new ResponseEntity<>(new RESTResponse.Error()
-                                .addErrors(hashMap)
                                 .setStatus(HttpStatus.FORBIDDEN.value())
                                 .setData("")
                                 .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
@@ -200,8 +182,6 @@ public class DefaultTypeStoreServices implements TypeStoreServices {
                 }
             }
         }else {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
                     .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
@@ -216,10 +196,7 @@ public class DefaultTypeStoreServices implements TypeStoreServices {
         if (accountOptional.isPresent()){
             Account account = accountOptional.get();
             if (account.getTypeAccount() == 1 || account.getTypeAccount() == 0){
-                hashMap.clear();
-                hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(hashMap)
                         .setStatus(HttpStatus.UNAUTHORIZED.value())
                         .setData("")
                         .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);
@@ -233,20 +210,14 @@ public class DefaultTypeStoreServices implements TypeStoreServices {
                             .setData(new TypeStoreDto(typeStore))
                             .setMessage("Delete type store success !").build(), HttpStatus.OK);
                 }else {
-                    hashMap.clear();
-                    hashMap.put("ID", "No type store found with this id !");
                     return new ResponseEntity<>(new RESTResponse.Error()
-                            .addErrors(hashMap)
                             .setStatus(HttpStatus.FORBIDDEN.value())
                             .setData("")
                             .setMessage("Not found !").build(), HttpStatus.FORBIDDEN);
                 }
             }
         }else {
-            hashMap.clear();
-            hashMap.put("Authorization", "[ACCESS DENIED] - You do not have access!");
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(hashMap)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("Authorization has errors !").build(), HttpStatus.UNAUTHORIZED);

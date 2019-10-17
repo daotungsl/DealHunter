@@ -264,19 +264,16 @@ public class DefaultAccountServices implements AccountServices {
                             .setMessage("Update user information data success !").build(), HttpStatus.OK);
                 }
                 return new ResponseEntity<>(new RESTResponse.Error()
-                        .addErrors(null)
                         .setStatus(HttpStatus.FORBIDDEN.value())
                         .setData("")
                         .setMessage("Can't change phone number !").build(), HttpStatus.FORBIDDEN);
             }
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.NOT_FOUND.value())
                     .setData("")
                     .setMessage("Can't find account with this email !").build(), HttpStatus.NOT_FOUND);
         }else {
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
@@ -328,13 +325,11 @@ public class DefaultAccountServices implements AccountServices {
         Optional<Account> accountOptional = accountRepository.findByTokenAccount(request.getHeader("Authorization"));
         if (!accountOptional.isPresent()){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
         }else if (!accountOptional.get().getUsername().equalsIgnoreCase(email)){
             return new ResponseEntity<>(new RESTResponse.Error()
-                    .addErrors(null)
                     .setStatus(HttpStatus.UNAUTHORIZED.value())
                     .setData("")
                     .setMessage("[ACCESS DENIED] - You do not have access!").build(), HttpStatus.UNAUTHORIZED);
