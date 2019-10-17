@@ -15,6 +15,7 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    private String codeId;
     @NotNull
     private String time;
     @NotNull
@@ -64,6 +65,14 @@ public class Transaction {
         this.created = Calendar.getInstance().getTimeInMillis();
         this.updated = this.created;
         this.status = 0;
+    }
+
+    public String getCodeId() {
+        return codeId;
+    }
+
+    public void setCodeId(String codeId) {
+        this.codeId = codeId;
     }
 
     public long getDayLong() {

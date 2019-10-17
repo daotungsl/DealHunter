@@ -16,10 +16,7 @@ import org.springframework.validation.BindingResult;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service("transactionServices")
 public class DefaultTransactionServices implements TransactionServices {
@@ -93,7 +90,10 @@ public class DefaultTransactionServices implements TransactionServices {
                     .setData("")
                     .setMessage("No voucher found with this id = \" + transactionCreateDto.getVoucherId() + \" !").build(), HttpStatus.FORBIDDEN);
         } else {
+            Voucher voucher = voucherOptional.get();
             Transaction transaction = new Transaction(transactionCreateDto);
+
+            transaction.setCodeId(voucher.getCodeSale() + Calendar.getInstance().getTimeInMillis());
             transaction.setAccount(accountOptional.get());
             transaction.setStore(storeOptional.get());
             transaction.setStoreAddress(storeAddressOptional.get());
@@ -101,7 +101,6 @@ public class DefaultTransactionServices implements TransactionServices {
 
             transactionRepository.save(transaction);
 
-            Voucher voucher = voucherOptional.get();
             voucher.setSlotLeft(voucher.getSlotLeft() - 1);
 
             voucherRepository.save(voucher);

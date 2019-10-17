@@ -50,8 +50,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .requestMatchers(PROTECTED_URLS)
                 .authenticated()
                 .and()
-                .cors()
-                .and()
                 .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()
@@ -67,17 +65,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     AuthenticationEntryPoint forbiddenEntryPoint(){
         return new HttpStatusEntryPoint(HttpStatus.FORBIDDEN);
-    }
-
-    @Bean
-    CorsConfigurationSource corsConfigurationSource()
-    {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
     }
 
 }
